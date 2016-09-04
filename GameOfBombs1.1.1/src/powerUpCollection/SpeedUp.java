@@ -1,5 +1,5 @@
 package powerUpCollection;
 
-public class SpeedUp {
+public class SpeedUp extends PowerUp{
 
 }
