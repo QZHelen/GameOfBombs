@@ -58,24 +58,24 @@ public abstract class Player{
 	public void moveLeft() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.LEFT);
-		setDx(-10);
+		setDx(-4);
 		
 	}
 	public void moveRight() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.RIGHT);
-		setDx(10);
+		setDx(4);
 		
 	}
 	public void moveUp() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.UP);
-		setDy(-10);
+		setDy(-4);
 	}
 	public void moveDown() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.DOWN);
-		setDy(10);
+		setDy(4);
 	}
 	
 	public void update(double delta) {
