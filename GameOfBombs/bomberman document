@@ -1,0 +1,56 @@
+classes:
+	game 
+		implement keylistener extends jpanel
+		main method
+	character
+		x,y
+		width,height
+		hp
+		life
+		dx,dy
+		minSpeed,maxSpeed
+
+	exploding item 
+		static
+		exploding radius
+	static item
+		walls
+		destroyable boxes/trees
+	power-up
+		static,destroyable item
+		fireup, increasing radius of bomb
+		firedown, increasing radius of bomb
+		bombup : increase number of bombs player set one time
+		bombdown: decrease number of bombs player set one time
+		heart: increase hp by one
+		life: increase one life
+		invincible vest: invincible for some time
+		speedup: increase player speed;
+		speeddown: decrease player speed;
+		bombpass: pass the bomb;
+	map
+		walls/power-ups
+		normal
+		ice
+		//paozi
+		//soccer
+		treasure
+
+	(multiplayer/networking/ai)
+
+
+8 weeks/sprint: 
+	Mon/Wed/Fri: 4pm-7pm UL room reservation
+	Eclipse indigo jdk 1.8
+	Github
+
+Peter: Game, wall, abstract class(powerup),map.
+Kenny: Character, abstract class(different types of items(bombs,powerup))
+Helen: interface(movable,unmovable,destroyable,indestroybale), power up super classes
+
+
+
+
+
+
+
