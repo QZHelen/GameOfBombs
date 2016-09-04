@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;version1.Unmovable&apos; to &apos;Immovable&apos;&#x0A;- Original project: &apos;GameOfBombs&apos;&#x0A;- Original element: &apos;version1.Unmovable&apos;&#x0A;- Renamed element: &apos;version1.Immovable&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Unmovable&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;version1{Unmovable.java[Unmovable" matchStrategy="1" name="Immovable" qualified="false" references="true" similarDeclarations="false" stamp="1472962252186" textual="false" version="1.0"/>
+</session>
