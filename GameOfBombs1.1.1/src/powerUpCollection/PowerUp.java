@@ -1,12 +1,15 @@
 package powerUpCollection;
 
+import gameItemCollection.PerishBlock;
 import interfaceCollection.Destroyable;
 import interfaceCollection.Immovable;
 
-public abstract class PowerUp implements Destroyable, Immovable{
+public  class PowerUp extends PerishBlock {
 	protected enum PowerUpType {FIREUP, FIREDOWN, BOMBUP, BOMBDOWN, HEAART, LIFE, INVINCIBLEVEST, SPEEDUP, SPEEDDOWN, BOMBPASS}; 
 	
-	abstract public PowerUpType getPowerUpType();
+	public PowerUpType getPowerUpType() {
+		return null;
+	}
 	
 	public boolean isDestroyable(){
 		return true;
