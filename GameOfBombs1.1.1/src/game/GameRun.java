@@ -4,30 +4,38 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import mapCollection.*;
+
 
 public class GameRun {
+	
 	static JFrame frame;
 	public static Game game;
+	public static Map gameMap;
+	
 	public static void main(String[] args) {
-		frame = new JFrame("Test");
+		gameSetUp();
+	}
+	
+	public static void gameSetUp() {
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		int xSize = ((int) tk.getScreenSize().getWidth());
 		int ySize = ((int) tk.getScreenSize().getHeight());
+		frame = new JFrame("Test");
 		frame.setSize(xSize,ySize);
 		frame.pack();
 		frame.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
-		game = new Game(null, xSize,ySize);
+		gameMap = new IceMap(xSize,ySize);
+		game = new Game(gameMap, xSize,ySize);
 		frame.getContentPane().add(game);
 		game.setFocusable(true);
 		game.requestFocusInWindow();
 		game.setIgnoreRepaint(true);
-//		System.out.println(xSize + " " + ySize);
 		game.setSize(xSize,ySize);
 		game.createBufferStrategy(2);
 		game.strategy = game.getBufferStrategy();
 		new Thread(game).start();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		
 	}
 }
