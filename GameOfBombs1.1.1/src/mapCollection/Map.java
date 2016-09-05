@@ -1,15 +1,22 @@
 package mapCollection;
 
-import gameItemCollection.Tree;
-import gameItemCollection.Wall;
-
 import java.util.ArrayList;
 
+import gameItemCollection.Bomb;
+import gameItemCollection.Fire;
+import gameItemCollection.Steel;
+import powerUpCollection.PowerUp;
+
 public abstract class Map {
-	ArrayList<Wall> walls;
-	ArrayList<Tree> trees;
+	
+	int[][] grids;
+	ArrayList<Bomb> bombs;
+	PowerUp[][] powerUpGrids;
+	Fire[][] fireGrids;
+	ArrayList<Steel> steels;
 	int width;
 	int height;
+	
 	public Map(int width, int height) {
 		
 	}
