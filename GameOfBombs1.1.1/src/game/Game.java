@@ -10,6 +10,7 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JPanel;
 
+import mapCollection.GridConstants;
 import mapCollection.IceMap;
 import mapCollection.Map;
 import characterCollection.Player;
@@ -22,10 +23,6 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	Map map;
 	public BufferStrategy strategy;
 	boolean gameRunning;
-	/** The last time at which we recorded the frame rate */
-	private long lastFpsTime;
-	/** The current number of frames recorded */
-	private int fps;
 	
 	public Game(Map map,int width, int height) {
 		this.p1 = new PlayerOne(20,20);
@@ -36,12 +33,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		setBackground(Color.BLUE); 
 	    addKeyListener(this);
 	}
-//	public void paint(Graphics g) {
-//		
-//		g.setColor(Color.gray);
-//		g.fillRect(p1.getX(), p1.getY(), p1.getWidth(), p1.getHeight());
-//		
-//	}
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -51,7 +43,6 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int keyCode = e.getKeyCode();
-//	    int d;
 	    if (keyCode == KeyEvent.VK_LEFT) 
 	    	p1.moveLeft();
 	    else if (keyCode == KeyEvent.VK_RIGHT)
@@ -82,43 +73,48 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		long lastLoopTime = System.nanoTime();
 		final int TARGET_FPS = 60;
 		final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;   
-		// TODO Auto-generated method stub
 		while(gameRunning) {
 			
 			long now = System.nanoTime();
-		      long updateLength = now - lastLoopTime;
-		      lastLoopTime = now;
-		      double delta = updateLength / ((double)OPTIMAL_TIME);
+		    long updateLength = now - lastLoopTime;
+		    lastLoopTime = now;
+		    double delta = updateLength / ((double)OPTIMAL_TIME);
 
-		      // update the frame counter
-		      lastFpsTime += updateLength;
-		      fps++;
-		      
-		      // update our FPS counter if a second has passed since
-		      // we last recorded
-		      if (lastFpsTime >= 1000000000)
-		      {
-		         lastFpsTime = 0;
-		         fps = 0;
-		      }
-		      
-		      // update the game logic
-		      p1.update(delta);
-		      
-		      //draw graphics 
-		     
-		      Graphics g = strategy.getDrawGraphics();
-		      g.setColor(Color.CYAN);
-		      g.fillRect(0,0,width,height);
-		      g.setColor(Color.gray);
-		      g.fillRect(p1.getX(), p1.getY(), p1.getWidth(), p1.getHeight());
-//		      render(g);
-		      g.dispose();
-		      strategy.show();
-//			  repaint();
-	          try {
-	        	  Thread.sleep( (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000);
-	          } catch (Exception ex) {}
+		    // update the game logic
+		    updateAll(delta);
+		    //draw graphics 
+		    render();
+	        try {
+	        	Thread.sleep( (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000);
+	        } catch (Exception ex) {}
 		}
 	}
+
+	private void updateAll(double delta) {
+		// TODO Auto-generated method stub
+		p1.update(delta);
+		
+	}
+
+	private void render() {
+		// TODO Auto-generated method stub
+		Graphics g = strategy.getDrawGraphics();
+	    g.setColor(Color.CYAN);
+	    g.fillRect(0,0,width,height);
+	    g.setColor(Color.RED);
+	    int[][] grids = map.getGrids();
+	    for(int i = 0; i < grids.length; i++) {
+	    	for(int j = 0; j < grids[0].length; j++) {
+	    		if(grids[i][j] == GridConstants.BRICK) {
+	    			g.fillRect(j * 20, i * 20, 20, 20);
+	    		}
+	    	}
+	    }
+	    g.setColor(Color.gray);
+	    g.fillRect(p1.getX(), p1.getY(), p1.getWidth(), p1.getHeight());
+	    g.dispose();
+	    strategy.show();
+		
+	}
+	
 }
