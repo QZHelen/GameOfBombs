@@ -11,7 +11,7 @@ public abstract class Map {
 	
 	int[][] grids;
 	ArrayList<Bomb> bombs;
-	PowerUp[][] powerUpGrids;
+	Boolean[][] powerUpGrids;
 	Fire[][] fireGrids;
 	ArrayList<Steel> steels;
 	int width;
