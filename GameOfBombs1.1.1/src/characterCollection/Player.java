@@ -63,24 +63,24 @@ public abstract class Player {
 	public void moveLeft() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.LEFT);
-		setDx(-2);
+		setDx(-3);
 		
 	}
 	public void moveRight() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.RIGHT);
-		setDx(2);
+		setDx(3);
 		
 	}
 	public void moveUp() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.UP);
-		setDy(-2);
+		setDy(-3);
 	}
 	public void moveDown() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.DOWN);
-		setDy(2);
+		setDy(3);
 	}
 	
 	public boolean collisionCheckX(double delta, Map map) {
@@ -100,7 +100,7 @@ public abstract class Player {
 					x = i * 20;
 					return false;
 				}
-				if(j + 1 <= 34) {
+				if(j + 1 <= 35) {
 					if((y + 20) > (j + 1) * 20 && map.getGrids()[j + 1][i - 1] == GridConstants.BRICK) {
 						x = i * 20;
 						return false;
@@ -125,7 +125,7 @@ public abstract class Player {
 					x = i * 20;
 					return false;
 				}
-				if(j + 1 <= 34) {
+				if(j + 1 <= 35) {
 					if((y + 20) > (j + 1) * 20 && map.getGrids()[j + 1][i + 1] == GridConstants.BRICK) {
 						x = i * 20;
 						return false;
@@ -183,7 +183,7 @@ public abstract class Player {
 		} 
 		
 		if((y + dy * delta + 20) > (j * 20 + 20)) {
-			if(j + 1 <= 63) {
+			if(j + 1 <= 35) {
 				if(map.getGrids()[j + 1][i] == GridConstants.BRICK) {
 					y = j * 20;
 					return false;
