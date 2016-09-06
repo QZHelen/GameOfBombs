@@ -81,7 +81,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		    double delta = updateLength / ((double)OPTIMAL_TIME);
 
 		    // update the game logic
-		    updateAll(delta);
+		    updateAll(delta,map);
 		    //draw graphics 
 		    render();
 	        try {
@@ -90,9 +90,9 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		}
 	}
 
-	private void updateAll(double delta) {
+	private void updateAll(double delta, Map map) {
 		// TODO Auto-generated method stub
-		p1.update(delta);
+		p1.update(delta,map);
 		
 	}
 
