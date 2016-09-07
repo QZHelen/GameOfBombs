@@ -63,83 +63,76 @@ public abstract class Player {
 	public void moveLeft() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.LEFT);
-		setDx(-3);
+		setDx(-2);
 		
 	}
 	public void moveRight() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.RIGHT);
-		setDx(3);
+		setDx(2);
 		
 	}
 	public void moveUp() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.UP);
-		setDy(-3);
+		setDy(-2);
 	}
 	public void moveDown() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.DOWN);
-		setDy(3);
+		setDy(2);
 	}
 	
 	public boolean collisionCheckX(double delta, Map map) {
-		int i = x / 20;
-		int j = y / 20;
-		//check boundary
-//		if(x + dx * delta < 0 || x + dx * delta > 1260 || y + dy * delta < 0 || y + dy * delta  + 20 > 725) {
-//			return true;
-//		}
-//		if(x + dx * delta < 0 || x + dx * delta > 1260) return false;
-//		if(i - 1 < 0 || i + 1 > 63 || j - 1 < 0 || j + 1 > 34) return true;
-		//check left block
+		int i = x / GridConstants.GRIDWIDTH;
+		int j = y / GridConstants.GRIDHEIGHT;
 		
-		if((x + dx * delta) < (i * 20)) {
+		if((x + dx * delta) < (i * GridConstants.GRIDWIDTH)) {
 			if(i - 1 >= 0) {
 				if(map.getGrids()[j][i - 1] == GridConstants.BRICK) {
-					x = i * 20;
+					x = i * GridConstants.GRIDWIDTH;
 					return false;
 				}
 				if(j + 1 <= 35) {
-					if((y + 20) > (j + 1) * 20 && map.getGrids()[j + 1][i - 1] == GridConstants.BRICK) {
-						x = i * 20;
+					if((y + 18) > (j + 1) * 20 && map.getGrids()[j + 1][i - 1] == GridConstants.BRICK) {
+						x = i * GridConstants.GRIDWIDTH;
 						return false;
 					}
 				}
 				if(j - 1 >= 0) {
 					if(y < (j) * 20 && map.getGrids()[j - 1][i - 1] == GridConstants.BRICK) {
-						x = i * 20;
+						x = i * GridConstants.GRIDWIDTH;
 						return false;
 					}
 				}
 				
 			} else {
-				x = i * 20;
+				x = i * GridConstants.GRIDWIDTH;
 				return false;
 			}
 			
 		}
-		if((x + dx * delta + 20) > (i * 20 + 20)) {
+		if((x + dx * delta + 18) > (i * 20 + 20)) {
 			if(i + 1 <= 63) {
 				if(map.getGrids()[j][i + 1] == GridConstants.BRICK) {
-					x = i * 20;
+					x = i * 20 + 2;
 					return false;
 				}
 				if(j + 1 <= 35) {
-					if((y + 20) > (j + 1) * 20 && map.getGrids()[j + 1][i + 1] == GridConstants.BRICK) {
-						x = i * 20;
+					if((y + 18) > (j + 1) * 20 && map.getGrids()[j + 1][i + 1] == GridConstants.BRICK) {
+						x = i * 20 + 2;
 						return false;
 					}
 				}
 				if(j - 1 >= 0) {
 					if(y < (j) * 20 && map.getGrids()[j - 1][i + 1] == GridConstants.BRICK) {
-						x = i * 20;
+						x = i * 20 + 2;
 						return false;
 					}
 				}
 				
 			} else {
-				x = i * 20;
+				x = i * 20 + 2;
 				return false;
 			}
 		} 
@@ -151,13 +144,7 @@ public abstract class Player {
 	public boolean collisionCheckY(double delta, Map map) {
 		int i = x / 20;
 		int j = y / 20;
-		//check boundary
-//		if(x + dx * delta < 0 || x + dx * delta > 1260 || y + dy * delta < 0 || y + dy * delta  + 20 > 725) {
-//			return true;
-//		}
-//		if(y + dy * delta < 0 || y + dy * delta + 20 > 725) return false;
-//		if(i - 1 < 0 || i + 1 > 63 || j - 1 < 0 || j + 1 > 34) return true;
-		//check left block
+
 		if ((y + dy * delta) < (j * 20)) {
 			if(j - 1 >= 0) {
 				if(map.getGrids()[j - 1][i] == GridConstants.BRICK) {
@@ -165,7 +152,7 @@ public abstract class Player {
 					return false;
 				}
 				if(i + 1 <= 63) {
-					if((x + 20) > (i + 1) * 20 && map.getGrids()[j - 1][i + 1] == GridConstants.BRICK) {
+					if((x + 18) > (i + 1) * 20 && map.getGrids()[j - 1][i + 1] == GridConstants.BRICK) {
 						y = j * 20;
 						return false;
 					}
@@ -182,27 +169,27 @@ public abstract class Player {
 			}
 		} 
 		
-		if((y + dy * delta + 20) > (j * 20 + 20)) {
+		if((y + dy * delta + 18) > (j * 20 + 20)) {
 			if(j + 1 <= 35) {
 				if(map.getGrids()[j + 1][i] == GridConstants.BRICK) {
-					y = j * 20;
+					y = j * 20 + 2;
 					return false;
 				}
 				if(i + 1 <= 63) {
-					if((x + 20) > (i + 1) * 20 && map.getGrids()[j + 1][i + 1] == GridConstants.BRICK) {
-						y = j * 20;
+					if((x + 18) > (i + 1) * 20 && map.getGrids()[j + 1][i + 1] == GridConstants.BRICK) {
+						y = j * 20 + 2;
 						return false;
 					}
 				}
 				if(i - 1 >= 0) {
 					if((x) < (i) * 20 && map.getGrids()[j + 1][i - 1] == GridConstants.BRICK) {
-						y = j * 20;
+						y = j * 20 + 2;
 						return false;
 					}
 				}
 				
 			} else {
-				y = j * 20;
+				y = j * 20 + 2;
 				return false;
 			}
 		}

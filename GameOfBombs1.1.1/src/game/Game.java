@@ -25,7 +25,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	boolean gameRunning;
 	
 	public Game(Map map,int width, int height) {
-		this.p1 = new PlayerOne(20,20);
+		this.p1 = new PlayerOne(18,18);
 		this.map = map;
 		this.width = width;
 		this.height = height;

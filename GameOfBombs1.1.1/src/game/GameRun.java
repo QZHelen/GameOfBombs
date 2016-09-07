@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -22,16 +23,16 @@ public class GameRun {
 		int xSize = ((int) tk.getScreenSize().getWidth());
 		int ySize = ((int) tk.getScreenSize().getHeight());
 		frame = new JFrame("Test");
-		frame.setSize(xSize,ySize);
 		frame.pack();
-		frame.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+		frame.setMaximumSize(new Dimension(xSize,740));
+		frame.setSize(xSize,740);
 		gameMap = new IceMap(xSize,ySize);
-		game = new Game(gameMap, xSize,ySize);
+		game = new Game(gameMap, xSize,720);
 		frame.getContentPane().add(game);
 		game.setFocusable(true);
 		game.requestFocusInWindow();
 		game.setIgnoreRepaint(true);
-		game.setSize(xSize,ySize);
+		game.setSize(xSize,720);
 		game.createBufferStrategy(2);
 		game.strategy = game.getBufferStrategy();
 		new Thread(game).start();
