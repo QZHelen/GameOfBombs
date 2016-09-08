@@ -4,8 +4,10 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JPanel;
@@ -17,18 +19,20 @@ import characterCollection.Player;
 import characterCollection.PlayerOne;
 
 public class Game extends Canvas implements Runnable, KeyListener{
-	int width;
-	int height;
+	
 	Player p1;
 	Map map;
 	public BufferStrategy strategy;
 	boolean gameRunning;
+	public static int gridWidth;
+	public static int gridHeight;
+	public static int maxWidth;
+	public static int maxHeight;
 	
-	public Game(Map map,int width, int height) {
-		this.p1 = new PlayerOne(18,18);
+	public Game(Map map) {
+		this.p1 = new PlayerOne(gridWidth * .9,gridHeight * .9);
 		this.map = map;
-		this.width = width;
-		this.height = height;
+		
 		gameRunning = true;
 		setBackground(Color.BLUE); 
 	    addKeyListener(this);
@@ -100,18 +104,20 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		// TODO Auto-generated method stub
 		Graphics g = strategy.getDrawGraphics();
 	    g.setColor(Color.CYAN);
-	    g.fillRect(0,0,width,height);
+	    g.fillRect(0,0,Game.maxWidth,Game.maxHeight);
 	    g.setColor(Color.RED);
 	    int[][] grids = map.getGrids();
 	    for(int i = 0; i < grids.length; i++) {
 	    	for(int j = 0; j < grids[0].length; j++) {
 	    		if(grids[i][j] == GridConstants.BRICK) {
-	    			g.fillRect(j * 20, i * 20, 20, 20);
+	    			g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
 	    		}
 	    	}
 	    }
 	    g.setColor(Color.gray);
-	    g.fillRect(p1.getX(), p1.getY(), p1.getWidth(), p1.getHeight());
+	    Rectangle2D.Double player = new Rectangle2D.Double(p1.getX(), p1.getY(), p1.getWidth(), p1.getHeight());
+//	    g.fillRect(p1.getX(), p1.getY(), p1.getWidth(), p1.getHeight());
+	    ((Graphics2D) g).fill(player);
 	    g.dispose();
 	    strategy.show();
 		

@@ -1,7 +1,7 @@
 package mapCollection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 import gameItemCollection.Bomb;
@@ -19,7 +19,7 @@ public abstract class Map {
 		this.grids = grids;
 	}
 
-	ArrayList<Bomb> bombs;
+	PriorityQueue<Bomb> bombs;
 	Boolean[][] powerUpGrids;
 	Fire[][] fireGrids;
 	ArrayList<Steel> steels;
@@ -29,14 +29,14 @@ public abstract class Map {
 	
 	public Map(int width, int height) {
 		rand = new Random();
-		this.grids = new int[height / GridConstants.GRIDHEIGHT][width / GridConstants.GRIDWIDTH];
-		powerUpGrids =  new Boolean[height / GridConstants.GRIDWIDTH][width / GridConstants.GRIDHEIGHT];
-		fireGrids = new Fire[height / GridConstants.GRIDWIDTH][width / GridConstants.GRIDHEIGHT];
+		this.grids = new int[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
+		powerUpGrids =  new Boolean[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
+		fireGrids = new Fire[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		initGrids(grids);
 	}
 	
 	public void initGrids(int[][] grids) {
-		for(int i = 1; i < grids.length - 5; i = i + rand.nextInt(4) + 2) {
+		for(int i = 1; i < grids.length - 1 ; i = i + rand.nextInt(4) + 2) {
 			int count = rand.nextInt(3) + 1;
 			for(int col = rand.nextInt(3) + 1;col < grids[1].length - 1; col++ ) {
 				if(count-- <= 0) {
@@ -49,20 +49,20 @@ public abstract class Map {
 		
 		int countRand = 190;
 		while(countRand-- > 0) {
-			grids[rand.nextInt(33) + 1][rand.nextInt(grids[1].length - 2) + 1] = GridConstants.BRICK;
+			grids[rand.nextInt(grids.length - 2) + 1][rand.nextInt(grids[1].length - 2) + 1] = GridConstants.BRICK;
 		}
-		int countLast = 12;
-		while(countLast-- > 0) {
-			grids[34][rand.nextInt(grids[1].length - 2) + 1] = GridConstants.BRICK;
-		}
+//		countLast = 12;
+//		while(countLast-- > 0) {
+//			grids[34][rand.nextInt(grids[1].length - 2) + 1] = GridConstants.BRICK;
+//		}
 	}
 
 
-	public ArrayList<Bomb> getBombs() {
+	public PriorityQueue<Bomb> getBombs() {
 		return bombs;
 	}
 
-	public void setBombs(ArrayList<Bomb> bombs) {
+	public void setBombs(PriorityQueue<Bomb> bombs) {
 		this.bombs = bombs;
 	}
 
