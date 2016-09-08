@@ -22,17 +22,25 @@ public class GameRun {
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		int xSize = ((int) tk.getScreenSize().getWidth());
 		int ySize = ((int) tk.getScreenSize().getHeight());
+		Game.maxHeight = (int) (xSize * GridConstants.RATIO);
+		Game.maxWidth = (int) (ySize / GridConstants.RATIO);
+		if(Game.maxHeight > ySize) {
+			Game.maxHeight = ySize;
+		} else {
+			Game.maxWidth = xSize;
+		}
+		Game.gridWidth = Game.maxWidth / GridConstants.GRIDNUMX;
+		Game.gridHeight = Game.maxHeight / GridConstants.GRIDNUMY;
 		frame = new JFrame("Test");
 		frame.pack();
-		frame.setMaximumSize(new Dimension(xSize,740));
-		frame.setSize(xSize,740);
-		gameMap = new IceMap(xSize,ySize);
-		game = new Game(gameMap, xSize,720);
+		frame.setMaximumSize(new Dimension(Game.maxWidth,Game.maxHeight));
+		frame.setSize(Game.maxWidth,Game.maxHeight);
+		gameMap = new IceMap(Game.maxWidth,Game.maxHeight);
+		game = new Game(gameMap);
 		frame.getContentPane().add(game);
 		game.setFocusable(true);
 		game.requestFocusInWindow();
 		game.setIgnoreRepaint(true);
-		game.setSize(xSize,720);
 		game.createBufferStrategy(2);
 		game.strategy = game.getBufferStrategy();
 		new Thread(game).start();
