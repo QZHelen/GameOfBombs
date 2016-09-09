@@ -10,15 +10,17 @@ import mapCollection.Map;
 public abstract class Player {
 	private int x = 0;
 	private int y = 0;
-	private double width;
-	private double height;
+	private int width;
+	private int height;
 	private int dx = 0;
 	private int dy = 0;
+	private int diff = 0;
 	private Direction direction;
 	
-	public Player(double width, double height) {
+	public Player(int width, int height, int diff) {
 		this.setWidth(width);
 		this.setHeight(height);
+		this.diff = diff;
 	}
 	public int getX() {
 		return x;
@@ -32,16 +34,16 @@ public abstract class Player {
 	public void setY(int y) {
 		this.y = y;
 	}
-	public double getWidth() {
+	public int getWidth() {
 		return width;
 	}
-	public void setWidth(double width2) {
+	public void setWidth(int width2) {
 		this.width = width2;
 	}
-	public double getHeight() {
+	public int getHeight() {
 		return height;
 	}
-	public void setHeight(double height2) {
+	public void setHeight(int height2) {
 		this.height = height2;
 	}
 	public void setDirection(Direction direction) {
@@ -64,37 +66,37 @@ public abstract class Player {
 	public void moveLeft() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.LEFT);
-		setDx(-2);
+		setDx(-4);
 		
 	}
 	public void moveRight() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.RIGHT);
-		setDx(2);
+		setDx(4);
 		
 	}
 	public void moveUp() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.UP);
-		setDy(-2);
+		setDy(-4);
 	}
 	public void moveDown() {
 		// TODO Auto-generated method stub
 		setDirection(Direction.DOWN);
-		setDy(2);
+		setDy(4);
 	}
 	
 	public boolean collisionCheckX(double delta, Map map) {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;
-		
+//		System.out.println(x + " " + i + " " + y + " " + j);
 		if((x + dx * delta) < (i * Game.gridWidth)) {
 			if(i - 1 >= 0) {
 				if(map.getGrids()[j][i - 1] == GridConstants.BRICK) {
 					x = i * Game.gridWidth;
 					return false;
 				}
-				if(j + 1 <= GridConstants.GRIDNUMY) {
+				if(j + 1 < GridConstants.GRIDNUMY) {
 					if((y + width) > (j + 1) * Game.gridWidth && map.getGrids()[j + 1][i - 1] == GridConstants.BRICK) {
 						x = i * Game.gridWidth;
 						return false;
@@ -114,26 +116,27 @@ public abstract class Player {
 			
 		}
 		if((x + dx * delta + width) > (i * Game.gridWidth + Game.gridWidth)) {
-			if(i + 1 <= GridConstants.GRIDNUMX) {
+			if(i + 1 < GridConstants.GRIDNUMX) {
 				if(map.getGrids()[j][i + 1] == GridConstants.BRICK) {
-					x = i * Game.gridWidth + 2;
+					x = i * Game.gridWidth + diff;
 					return false;
 				}
-				if(j + 1 <= GridConstants.GRIDNUMY) {
+				if(j + 1 < GridConstants.GRIDNUMY) {
 					if((y + width) > (j + 1) * Game.gridWidth && map.getGrids()[j + 1][i + 1] == GridConstants.BRICK) {
-						x = i * Game.gridWidth + 2;
+						x = i * Game.gridWidth + diff;
 						return false;
 					}
 				}
 				if(j - 1 >= 0) {
 					if(y < (j) * Game.gridWidth && map.getGrids()[j - 1][i + 1] == GridConstants.BRICK) {
-						x = i * Game.gridWidth + 2;
+						x = i * Game.gridWidth + diff;
 						return false;
 					}
 				}
 				
 			} else {
-				x = i * Game.gridWidth + 2;
+				x = i * Game.gridWidth + diff;
+//				System.out.println(i + " " + x);
 				return false;
 			}
 		} 
@@ -152,7 +155,7 @@ public abstract class Player {
 					y = j * Game.gridWidth;
 					return false;
 				}
-				if(i + 1 <= GridConstants.GRIDNUMX) {
+				if(i + 1 <GridConstants.GRIDNUMX) {
 					if((x + width) > (i + 1) * Game.gridWidth && map.getGrids()[j - 1][i + 1] == GridConstants.BRICK) {
 						y = j * Game.gridWidth;
 						return false;
@@ -171,26 +174,26 @@ public abstract class Player {
 		} 
 		
 		if((y + dy * delta + width) > (j * Game.gridWidth + Game.gridWidth)) {
-			if(j + 1 <= GridConstants.GRIDNUMY) {
+			if(j + 1 < GridConstants.GRIDNUMY) {
 				if(map.getGrids()[j + 1][i] == GridConstants.BRICK) {
-					y = j * Game.gridWidth + 2;
+					y = j * Game.gridWidth + diff;
 					return false;
 				}
-				if(i + 1 <= GridConstants.GRIDNUMX) {
+				if(i + 1 < GridConstants.GRIDNUMX) {
 					if((x + width) > (i + 1) * Game.gridWidth && map.getGrids()[j + 1][i + 1] == GridConstants.BRICK) {
-						y = j * Game.gridWidth + 2;
+						y = j * Game.gridWidth + diff;
 						return false;
 					}
 				}
 				if(i - 1 >= 0) {
 					if((x) < (i) * Game.gridWidth && map.getGrids()[j + 1][i - 1] == GridConstants.BRICK) {
-						y = j * Game.gridWidth + 2;
+						y = j * Game.gridWidth + diff;
 						return false;
 					}
 				}
 				
 			} else {
-				y = j * Game.gridWidth + 2;
+				y = j * Game.gridWidth + diff;
 				return false;
 			}
 		}
@@ -200,5 +203,11 @@ public abstract class Player {
 	public void update(double delta,Map map) {
 		if(collisionCheckX(delta,map)) x += dx * delta;
 		if(collisionCheckY(delta,map)) y += dy * delta;
+	}
+	public int getDiff() {
+		return diff;
+	}
+	public void setDiff(int diff) {
+		this.diff = diff;
 	}
 }

@@ -30,7 +30,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public static int maxHeight;
 	
 	public Game(Map map) {
-		this.p1 = new PlayerOne(gridWidth * .9,gridHeight * .9);
+		this.p1 = new PlayerOne((int)Math.floor(gridWidth * .9),(int)Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9));
 		this.map = map;
 		
 		gameRunning = true;
@@ -115,9 +115,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    	}
 	    }
 	    g.setColor(Color.gray);
-	    Rectangle2D.Double player = new Rectangle2D.Double(p1.getX(), p1.getY(), p1.getWidth(), p1.getHeight());
-//	    g.fillRect(p1.getX(), p1.getY(), p1.getWidth(), p1.getHeight());
-	    ((Graphics2D) g).fill(player);
+	    g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
 	    g.dispose();
 	    strategy.show();
 		

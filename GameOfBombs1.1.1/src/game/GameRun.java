@@ -1,6 +1,8 @@
 package game;
 
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -22,6 +24,9 @@ public class GameRun {
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		int xSize = ((int) tk.getScreenSize().getWidth());
 		int ySize = ((int) tk.getScreenSize().getHeight());
+		xSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
+		ySize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height;
+		ySize -= ySize % GridConstants.GRIDNUMY;
 		Game.maxHeight = (int) (xSize * GridConstants.RATIO);
 		Game.maxWidth = (int) (ySize / GridConstants.RATIO);
 		if(Game.maxHeight > ySize) {
@@ -29,12 +34,18 @@ public class GameRun {
 		} else {
 			Game.maxWidth = xSize;
 		}
+		System.out.println(Game.maxHeight + " " + Game.maxWidth);
 		Game.gridWidth = Game.maxWidth / GridConstants.GRIDNUMX;
 		Game.gridHeight = Game.maxHeight / GridConstants.GRIDNUMY;
+		System.out.println(Game.gridWidth + " " + Game.gridHeight);
 		frame = new JFrame("Test");
 		frame.pack();
-		frame.setMaximumSize(new Dimension(Game.maxWidth,Game.maxHeight));
-		frame.setSize(Game.maxWidth,Game.maxHeight);
+		Insets insets = frame.getInsets();
+//		System.out.println(insets.bottom);
+		frame.setMaximumSize(new Dimension(Game.maxWidth,Game.maxHeight + insets.top));
+		
+		frame.setSize(Game.maxWidth,Game.maxHeight + insets.top);
+		frame.setLocationRelativeTo(null);
 		gameMap = new IceMap(Game.maxWidth,Game.maxHeight);
 		game = new Game(gameMap);
 		frame.getContentPane().add(game);
@@ -44,6 +55,7 @@ public class GameRun {
 		game.createBufferStrategy(2);
 		game.strategy = game.getBufferStrategy();
 		new Thread(game).start();
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
