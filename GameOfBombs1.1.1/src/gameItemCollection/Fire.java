@@ -2,4 +2,9 @@ package gameItemCollection;
 
 public class Fire extends PerishBlock {
 
+	public Fire(int x, int y, int width, int height) {
+		super(x, y, width, height);
+		// TODO Auto-generated constructor stub
+	}
+
 }

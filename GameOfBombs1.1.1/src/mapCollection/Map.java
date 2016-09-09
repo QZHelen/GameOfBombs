@@ -32,6 +32,7 @@ public abstract class Map {
 		this.grids = new int[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		powerUpGrids =  new Boolean[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		fireGrids = new Fire[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
+		bombs = new PriorityQueue<Bomb>();
 		initGrids(grids);
 	}
 	
