@@ -30,7 +30,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public static int maxHeight;
 	
 	public Game(Map map) {
-		this.p1 = new PlayerOne((int)Math.floor(gridWidth * .9),(int)Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9));
+		this.p1 = new PlayerOne((int)Math.floor(gridWidth * .9),(int)Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
 		this.map = map;
 		
 		gameRunning = true;
@@ -55,6 +55,8 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    	p1.moveUp();
 	    else if (keyCode == KeyEvent.VK_DOWN)
 	    	p1.moveDown();
+	    else if (keyCode == KeyEvent.VK_SPACE)
+	    	p1.setBomb();
 		
 	}
 	@Override
@@ -114,6 +116,12 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    		}
 	    	}
 	    }
+	    g.setColor(Color.BLACK);
+	    if(!map.getBombs().isEmpty()) {
+	    	
+	    }
+//	    	map.getBombs().
+	    	
 	    g.setColor(Color.gray);
 	    g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
 	    g.dispose();

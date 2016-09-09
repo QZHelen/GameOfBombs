@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import game.Direction;
 import game.Game;
+import gameItemCollection.Bomb;
 import mapCollection.GridConstants;
 import mapCollection.Map;
 
@@ -16,11 +17,13 @@ public abstract class Player {
 	private int dy = 0;
 	private int diff = 0;
 	private Direction direction;
+	Map map;
 	
-	public Player(int width, int height, int diff) {
+	public Player(int width, int height, int diff, Map map) {
 		this.setWidth(width);
 		this.setHeight(height);
 		this.diff = diff;
+		this.map = map;
 	}
 	public int getX() {
 		return x;
@@ -84,6 +87,13 @@ public abstract class Player {
 		// TODO Auto-generated method stub
 		setDirection(Direction.DOWN);
 		setDy(4);
+	}
+	
+	public void setBomb() {
+		int i = x / Game.gridWidth;
+		int j = y / Game.gridHeight;
+		if(this.map.getBombs().isEmpty())
+			this.map.getBombs().add(new Bomb(i * Game.gridWidth,j * Game.gridHeight,Game.gridWidth,Game.gridHeight,false));
 	}
 	
 	public boolean collisionCheckX(double delta, Map map) {
