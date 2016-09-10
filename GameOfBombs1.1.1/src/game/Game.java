@@ -107,7 +107,6 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int keyCode = e.getKeyCode();
-//	    int d;
 	    if (keyCode == KeyEvent.VK_LEFT) 
 	    	p1.setDx(0);
 	    else if (keyCode == KeyEvent.VK_RIGHT)
@@ -163,7 +162,8 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    }
 	    g.setColor(Color.BLACK);
 	    if(!map.getBombs().isEmpty()) {
-	    	
+	    	if(!map.getBombs().get(0).isExplode()) 
+	    		 g.fillOval(map.getBombs().get(0).getX(),map.getBombs().get(0).getY(),map.getBombs().get(0).getWidth(),map.getBombs().get(0).getHeight());
 	    }
 //	    	map.getBombs().
 	    	
