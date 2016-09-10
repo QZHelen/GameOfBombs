@@ -1,15 +1,23 @@
 package gameItemCollection;
 
+import characterCollection.Player;
+import game.Game;
+import mapCollection.Map;
+
 public class Bomb extends PerishBlock {
 	private long creationTime;
 	private double timeDuration;
 	boolean explode;
-	public Bomb(int x, int y, int width, int height, boolean explode) {
+	Map map;
+	Player p;
+	
+	public Bomb(int x, int y, int width, int height, boolean explode, Map map, Player p) {
 		super(x, y, width, height);
 		this.creationTime = System.nanoTime();
-		this.timeDuration = 3.0;
+		this.timeDuration = mapCollection.GridConstants.TIMESPAN;
 		this.explode = false;
-		// TODO Auto-generated constructor stub
+		this.map = map;
+		this.p = p;
 	}
 	
 	public boolean isExplode() {
@@ -18,7 +26,10 @@ public class Bomb extends PerishBlock {
 	public long getCreationTime() {
 		return creationTime;
 	}
-
+	public void explode() {
+		map.setFireGrids(x/Game.gridWidth, y/Game.gridHeight, new Fire(x, y, width, height, p.getFireRadius()));
+	}
+	
 	public void setCreationTime(long creationTime) {
 		this.creationTime = creationTime;
 	}

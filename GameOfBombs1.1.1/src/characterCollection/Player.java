@@ -17,13 +17,22 @@ public abstract class Player {
 	private int dy = 0;
 	private int diff = 0;
 	private Direction direction;
+	private int fireRadius;
 	Map map;
 	
+	
+	public int getFireRadius() {
+		return fireRadius;
+	}
+	public void setFireRadius(int fireRadius) {
+		this.fireRadius = fireRadius;
+	}
 	public Player(int width, int height, int diff, Map map) {
 		this.setWidth(width);
 		this.setHeight(height);
 		this.diff = diff;
 		this.map = map;
+		this.fireRadius = 1;
 	}
 	public int getX() {
 		return x;
@@ -98,7 +107,7 @@ public abstract class Player {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;
 		if(this.map.getBombs().isEmpty())
-			this.map.getBombs().add(new Bomb(i * Game.gridWidth,j * Game.gridHeight,Game.gridWidth,Game.gridHeight,false));
+			this.map.getBombs().add(new Bomb(i * Game.gridWidth,j * Game.gridHeight,Game.gridWidth,Game.gridHeight,false, map, this));
 	}
 	
 	public boolean collisionCheckX(double delta, Map map) {

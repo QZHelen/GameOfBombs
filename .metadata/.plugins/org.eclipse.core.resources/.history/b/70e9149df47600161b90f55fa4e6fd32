@@ -1,0 +1,18 @@
+package gameItemCollection;
+
+public class Fire extends PerishBlock {
+
+	private long creationTime;
+	private double timeDuration;
+	
+	public Fire(int x, int y, int width, int height) {
+		super(x, y, width, height);
+		this.creationTime = System.nanoTime();
+		this.timeDuration = 1.0;
+	}
+
+	public Fire(int width, int height) {
+		super(width, height);
+	}
+
+}

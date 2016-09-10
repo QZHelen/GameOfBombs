@@ -17,6 +17,7 @@ import mapCollection.IceMap;
 import mapCollection.Map;
 import characterCollection.Player;
 import characterCollection.PlayerOne;
+import gameItemCollection.Bomb;
 
 public class Game extends Canvas implements Runnable, KeyListener{
 	
@@ -161,10 +162,23 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    }
 	    g.setColor(Color.BLACK);
 	    if(!map.getBombs().isEmpty()) {
+	    	for (Bomb bomb: map.getBombs()) {
+	    		if(!bomb.isExplode()) {
+		    		 g.fillOval(bomb.getX(),bomb.getY(),bomb.getWidth(),bomb.getHeight());
+		    		 break;
+		    	} else {
+		    		// set fire
+		    		bomb.explode();
+		    		map.getBombs().remove(bomb);
+		    	}
+	    		
+	    	}
+	    	
 	    	if(!map.getBombs().get(0).isExplode()) {
 	    		 g.fillOval(map.getBombs().get(0).getX(),map.getBombs().get(0).getY(),map.getBombs().get(0).getWidth(),map.getBombs().get(0).getHeight());
 	    	} else {
-	    		map.getBombs().clear();
+	    		
+	    		map.getBombs().remove(0);
 	    	}
 	    		
 	    }

@@ -5,10 +5,10 @@ import interfaceCollection.Immovable;
 
 public class PerishBlock implements Destroyable,Immovable {
 	
-	private int x;
-	private int y;
-	private int width;
-	private int height;
+	protected int x;
+	protected int y;
+	protected int width;
+	protected int height;
 	
 	public PerishBlock(int x, int y, int width, int height) {
 		this.x = x;
@@ -18,16 +18,19 @@ public class PerishBlock implements Destroyable,Immovable {
 		
 	}
 	
+	public PerishBlock(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
+	
 
 	@Override
 	public boolean isMovable() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isDestroyable() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

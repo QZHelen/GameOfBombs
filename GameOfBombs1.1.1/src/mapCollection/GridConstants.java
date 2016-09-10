@@ -10,4 +10,5 @@ public class GridConstants {
 	public static final int GRIDNUMX = 50;
 	public static final int GRIDNUMY = 40;
 	public static final double RATIO = 0.8;
+	public static final double TIMESPAN = 3.0;
 }

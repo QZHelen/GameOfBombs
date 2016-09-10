@@ -82,6 +82,15 @@ public abstract class Map {
 	public void setFireGrids(Fire[][] fireGrids) {
 		this.fireGrids = fireGrids;
 	}
+	
+	public void setFireGrids(int row, int col, Fire centerFire) {
+		int radius = centerFire.getRadius();
+		
+		this.fireGrids[row][col] = centerFire;
+		
+		
+		
+	}
 
 	public ArrayList<Steel> getSteels() {
 		return steels;
@@ -90,4 +99,6 @@ public abstract class Map {
 	public void setSteels(ArrayList<Steel> steels) {
 		this.steels = steels;
 	}
+	
+	
 }
