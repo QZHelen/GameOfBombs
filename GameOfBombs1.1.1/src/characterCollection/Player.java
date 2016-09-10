@@ -102,7 +102,7 @@ public abstract class Player {
 	public void setBomb() {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;
-//		if(this.map.getBombs().isEmpty())
+		System.out.println(bombNum);
 		if(bombNum > 0) {
 			this.map.getBombGrids()[j][i] = new Bomb(i,j,Game.gridWidth,Game.gridHeight,false, map, this);
 			this.map.getGrids()[j][i] = GridConstants.BOMB;
@@ -123,18 +123,18 @@ public abstract class Player {
 //		System.out.println(x + " " + i + " " + y + " " + j);
 		if((x + dx * delta) < (i * Game.gridWidth)) {
 			if(i - 1 >= 0) {
-				if(map.getGrids()[j][i - 1] == GridConstants.BRICK) {
+				if(map.getGrids()[j][i - 1] == GridConstants.BRICK || map.getBombGrids()[j][i - 1] != null) {
 					x = i * Game.gridWidth;
 					return false;
 				}
 				if(j + 1 < GridConstants.GRIDNUMY) {
-					if((y + width) > (j + 1) * Game.gridWidth && map.getGrids()[j + 1][i - 1] == GridConstants.BRICK) {
+					if((y + width) > (j + 1) * Game.gridWidth && (map.getGrids()[j + 1][i - 1] == GridConstants.BRICK ||  map.getBombGrids()[j + 1][i - 1] != null)) {
 						x = i * Game.gridWidth;
 						return false;
 					}
 				}
 				if(j - 1 >= 0) {
-					if(y < (j) * Game.gridWidth && map.getGrids()[j - 1][i - 1] == GridConstants.BRICK) {
+					if(y < (j) * Game.gridWidth && (map.getGrids()[j - 1][i - 1] == GridConstants.BRICK ||  map.getBombGrids()[j + 1][i - 1] != null)) {
 						x = i * Game.gridWidth;
 						return false;
 					}
@@ -148,18 +148,18 @@ public abstract class Player {
 		}
 		if((x + dx * delta + width) > (i * Game.gridWidth + Game.gridWidth)) {
 			if(i + 1 < GridConstants.GRIDNUMX) {
-				if(map.getGrids()[j][i + 1] == GridConstants.BRICK) {
+				if(map.getGrids()[j][i + 1] == GridConstants.BRICK || map.getBombGrids()[j][i + 1] != null) {
 					x = i * Game.gridWidth + diff;
 					return false;
 				}
 				if(j + 1 < GridConstants.GRIDNUMY) {
-					if((y + width) > (j + 1) * Game.gridWidth && map.getGrids()[j + 1][i + 1] == GridConstants.BRICK) {
+					if((y + width) > (j + 1) * Game.gridWidth && (map.getGrids()[j + 1][i + 1] == GridConstants.BRICK ||  map.getBombGrids()[j + 1][i + 1] != null)) {
 						x = i * Game.gridWidth + diff;
 						return false;
 					}
 				}
 				if(j - 1 >= 0) {
-					if(y < (j) * Game.gridWidth && map.getGrids()[j - 1][i + 1] == GridConstants.BRICK) {
+					if(y < (j) * Game.gridWidth && (map.getGrids()[j - 1][i + 1] == GridConstants.BRICK || map.getBombGrids()[j - 1][i + 1] != null)) {
 						x = i * Game.gridWidth + diff;
 						return false;
 					}
@@ -182,18 +182,18 @@ public abstract class Player {
 
 		if ((y + dy * delta) < (j * Game.gridWidth)) {
 			if(j - 1 >= 0) {
-				if(map.getGrids()[j - 1][i] == GridConstants.BRICK) {
+				if(map.getGrids()[j - 1][i] == GridConstants.BRICK || map.getBombGrids()[j - 1][i] != null) {
 					y = j * Game.gridWidth;
 					return false;
 				}
-				if(i + 1 <GridConstants.GRIDNUMX) {
-					if((x + width) > (i + 1) * Game.gridWidth && map.getGrids()[j - 1][i + 1] == GridConstants.BRICK) {
+				if(i + 1 < GridConstants.GRIDNUMX) {
+					if((x + width) > (i + 1) * Game.gridWidth && (map.getGrids()[j - 1][i + 1] == GridConstants.BRICK ||  map.getBombGrids()[j - 1][i + 1] != null)) {
 						y = j * Game.gridWidth;
 						return false;
 					}
 				}
 				if(i - 1 >= 0) {
-					if((x) < (i) * Game.gridWidth && map.getGrids()[j - 1][i - 1] == GridConstants.BRICK) {
+					if((x) < (i) * Game.gridWidth && (map.getGrids()[j - 1][i - 1] == GridConstants.BRICK || map.getBombGrids()[j - 1][i - 1] != null)) {
 						y = j * Game.gridWidth;
 						return false;
 					}
@@ -206,18 +206,18 @@ public abstract class Player {
 		
 		if((y + dy * delta + width) > (j * Game.gridWidth + Game.gridWidth)) {
 			if(j + 1 < GridConstants.GRIDNUMY) {
-				if(map.getGrids()[j + 1][i] == GridConstants.BRICK) {
+				if(map.getGrids()[j + 1][i] == GridConstants.BRICK || map.getBombGrids()[j + 1][i] != null) {
 					y = j * Game.gridWidth + diff;
 					return false;
 				}
 				if(i + 1 < GridConstants.GRIDNUMX) {
-					if((x + width) > (i + 1) * Game.gridWidth && map.getGrids()[j + 1][i + 1] == GridConstants.BRICK) {
+					if((x + width) > (i + 1) * Game.gridWidth && (map.getGrids()[j + 1][i + 1] == GridConstants.BRICK || map.getBombGrids()[j + 1][i + 1] != null)) {
 						y = j * Game.gridWidth + diff;
 						return false;
 					}
 				}
 				if(i - 1 >= 0) {
-					if((x) < (i) * Game.gridWidth && map.getGrids()[j + 1][i - 1] == GridConstants.BRICK) {
+					if((x) < (i) * Game.gridWidth && (map.getGrids()[j + 1][i - 1] == GridConstants.BRICK || map.getBombGrids()[j + 1][i - 1] != null)) {
 						y = j * Game.gridWidth + diff;
 						return false;
 					}

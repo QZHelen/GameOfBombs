@@ -1,12 +1,9 @@
 package mapCollection;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.PriorityQueue;
+
 import java.util.Random;
 
 import characterCollection.Player;
-import game.Game;
 import gameItemCollection.Bomb;
 import gameItemCollection.Fire;
 import gameItemCollection.Steel;
@@ -14,7 +11,6 @@ import gameItemCollection.Steel;
 public abstract class Map {
 	
 	int[][] grids;
-//	ArrayList<Bomb> bombs;
 	Bomb[][] bombGrids;
 	Boolean[][] powerUpGrids;
 	Fire[][] fireGrids;
@@ -141,8 +137,8 @@ public abstract class Map {
 			    	Bomb temp = bombGrids[i][col];
 			    	bombGrids[i][col] = null;
 			    	temp.explode();
-			    	p1 = temp.getP();
-	    			p1.setBombNum(p1.getBombNum() + 1);
+//			    	p1 = temp.getP();
+//	    			p1.setBombNum(p1.getBombNum() + 1);
 			    }
 			}
 			
@@ -179,8 +175,8 @@ public abstract class Map {
 			    	Bomb temp = bombGrids[i][col];
 			    	bombGrids[i][col] = null;
 			    	temp.explode();
-			    	p1 = temp.getP();
-	    			p1.setBombNum(p1.getBombNum() + 1);
+//			    	p1 = temp.getP();
+//	    			p1.setBombNum(p1.getBombNum() + 1);
 			    }
 			}
 		}
@@ -216,8 +212,8 @@ public abstract class Map {
 			    	Bomb temp = bombGrids[row][i];
 			    	bombGrids[row][i] = null;
 			    	temp.explode();
-			    	p1 = temp.getP();
-	    			p1.setBombNum(p1.getBombNum() + 1);
+//			    	p1 = temp.getP();
+//	    			p1.setBombNum(p1.getBombNum() + 1);
 			    }
 			}
 		}
@@ -253,8 +249,8 @@ public abstract class Map {
 			    	Bomb temp = bombGrids[row][i];
 			    	bombGrids[row][i] = null;
 			    	temp.explode();
-			    	p1 = temp.getP();
-	    			p1.setBombNum(p1.getBombNum() + 1);
+//			    	p1 = temp.getP();
+//	    			p1.setBombNum(p1.getBombNum() + 1);
 			    }
 			}
 		}
