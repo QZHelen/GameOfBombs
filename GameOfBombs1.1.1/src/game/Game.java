@@ -108,13 +108,13 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int keyCode = e.getKeyCode();
-	    if (keyCode == KeyEvent.VK_LEFT) 
+	    if (keyCode == KeyEvent.VK_LEFT && !right) 
 	    	p1.setDx(0);
-	    else if (keyCode == KeyEvent.VK_RIGHT)
+	    else if (keyCode == KeyEvent.VK_RIGHT && !left)
 	    	p1.setDx(0);
-	    else if (keyCode == KeyEvent.VK_UP)
+	    else if (keyCode == KeyEvent.VK_UP && !down)
 	    	p1.setDy(0);
-	    else if (keyCode == KeyEvent.VK_DOWN)
+	    else if (keyCode == KeyEvent.VK_DOWN && !up)
 	    	p1.setDy(0);
 	    System.out.println("released " + keyCode);
 		
