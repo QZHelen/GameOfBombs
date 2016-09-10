@@ -28,7 +28,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public static int gridHeight;
 	public static int maxWidth;
 	public static int maxHeight;
-	
+	public static boolean left,right,up,down;
 	public Game(Map map) {
 		this.p1 = new PlayerOne((int)Math.floor(gridWidth * .9),(int)Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
 		this.map = map;
@@ -36,6 +36,10 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		gameRunning = true;
 		setBackground(Color.BLUE); 
 	    addKeyListener(this);
+	    left = false;
+	    right = false;
+	    up = false;
+	    down = false;
 	}
 
 	@Override
@@ -47,17 +51,57 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int keyCode = e.getKeyCode();
-	    if (keyCode == KeyEvent.VK_LEFT) 
+	    if (keyCode == KeyEvent.VK_LEFT) {
+	    	setKeys('l');
 	    	p1.moveLeft();
-	    else if (keyCode == KeyEvent.VK_RIGHT)
+	    }	else if (keyCode == KeyEvent.VK_RIGHT) {
+	    	setKeys('r');
 	    	p1.moveRight();
-	    else if (keyCode == KeyEvent.VK_UP)
+	    }	else if (keyCode == KeyEvent.VK_UP) {
+	    	setKeys('u');
 	    	p1.moveUp();
-	    else if (keyCode == KeyEvent.VK_DOWN)
+	    }	else if (keyCode == KeyEvent.VK_DOWN) {
+	    	setKeys('d');
 	    	p1.moveDown();
-	    else if (keyCode == KeyEvent.VK_SPACE)
+	    }	else if (keyCode == KeyEvent.VK_SPACE) {
+	    	setKeys('s');
 	    	p1.setBomb();
+	    }
+	    	
+	    System.out.println("pressed " + keyCode);
 		
+	}
+	
+	public void setKeys(char key) {
+		switch (key){
+			case 'l':
+				Game.left = true;
+				Game.right = false;
+				Game.up = false;
+				Game.down = false;
+				break;
+			case 'r':
+				Game.left = false;
+				Game.right = true;
+				Game.up = false;
+				Game.down = false;
+				break;
+			case 'u':
+				Game.left = false;
+				Game.right = false;
+				Game.up = true;
+				Game.down = false;
+				break;
+			case 'd':
+				Game.left = false;
+				Game.right = false;
+				Game.up = false;
+				Game.down = true;
+				break;
+			default:
+				//TODO
+				break;
+		}
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -72,6 +116,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    	p1.setDy(0);
 	    else if (keyCode == KeyEvent.VK_DOWN)
 	    	p1.setDy(0);
+	    System.out.println("released " + keyCode);
 		
 	}
 	@Override

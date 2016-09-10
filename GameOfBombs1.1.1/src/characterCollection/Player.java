@@ -68,25 +68,30 @@ public abstract class Player {
 	}
 	public void moveLeft() {
 		// TODO Auto-generated method stub
-		setDirection(Direction.LEFT);
-		setDx(-4);
+		
+//		setDirection(Direction.LEFT);
+		if(Game.left)
+			setDx(-4);
 		
 	}
 	public void moveRight() {
 		// TODO Auto-generated method stub
-		setDirection(Direction.RIGHT);
-		setDx(4);
+//		setDirection(Direction.RIGHT);
+		if(Game.right)
+			setDx(4);
 		
 	}
 	public void moveUp() {
 		// TODO Auto-generated method stub
-		setDirection(Direction.UP);
-		setDy(-4);
+//		setDirection(Direction.UP);
+		if(Game.up)
+			setDy(-4);
 	}
 	public void moveDown() {
 		// TODO Auto-generated method stub
-		setDirection(Direction.DOWN);
-		setDy(4);
+//		setDirection(Direction.DOWN);
+		if(Game.down)
+			setDy(4);
 	}
 	
 	public void setBomb() {
