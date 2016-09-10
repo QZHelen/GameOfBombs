@@ -64,7 +64,6 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    	setKeys('d');
 	    	p1.moveDown();
 	    }	else if (keyCode == KeyEvent.VK_SPACE) {
-	    	setKeys('s');
 	    	p1.setBomb();
 	    }
 	    	
@@ -162,8 +161,12 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    }
 	    g.setColor(Color.BLACK);
 	    if(!map.getBombs().isEmpty()) {
-	    	if(!map.getBombs().get(0).isExplode()) 
+	    	if(!map.getBombs().get(0).isExplode()) {
 	    		 g.fillOval(map.getBombs().get(0).getX(),map.getBombs().get(0).getY(),map.getBombs().get(0).getWidth(),map.getBombs().get(0).getHeight());
+	    	} else {
+	    		map.getBombs().clear();
+	    	}
+	    		
 	    }
 //	    	map.getBombs().
 	    	
