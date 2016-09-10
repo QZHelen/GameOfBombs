@@ -100,7 +100,7 @@ public abstract class Player {
 	public void setBomb() {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;
-		if(this.map.getBombs().isEmpty())
+//		if(this.map.getBombs().isEmpty())
 			this.map.getBombs().add(new Bomb(i,j,Game.gridWidth,Game.gridHeight,false, map, this));
 	}
 	
