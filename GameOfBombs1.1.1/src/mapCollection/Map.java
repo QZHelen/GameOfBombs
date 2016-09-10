@@ -11,18 +11,9 @@ import gameItemCollection.Steel;
 public abstract class Map {
 	
 	int[][] grids;
-	public int[][] getGrids() {
-		return grids;
-	}
-
-	public void setGrids(int[][] grids) {
-		this.grids = grids;
-	}
-
 	ArrayList<Bomb> bombs;
 	Boolean[][] powerUpGrids;
 	Fire[][] fireGrids;
-	ArrayList<Steel> steels;
 	int width;
 	int height;
 	Random rand;
@@ -58,7 +49,13 @@ public abstract class Map {
 //		}
 	}
 
+	public int[][] getGrids() {
+		return grids;
+	}
 
+	public void setGrids(int[][] grids) {
+		this.grids = grids;
+	}
 	public ArrayList<Bomb> getBombs() {
 		return bombs;
 	}
@@ -85,19 +82,75 @@ public abstract class Map {
 	
 	public void setFireGrids(int row, int col, Fire centerFire) {
 		int radius = centerFire.getRadius();
+		fireGrids[row][col] = centerFire;
+		int rowstart,rowend,colstart,colend;
+		rowstart = row - radius;
+		rowend = row + radius;
+		colstart = col - radius;
+		colend = col + radius;
+		if(rowstart < 0) rowstart = 0;
+		if(rowend > GridConstants.GRIDNUMY - 1) rowend = GridConstants.GRIDNUMY - 1;
+		if(colstart < 0) colstart = 0;
+		if(colend > GridConstants.GRIDNUMX - 1) colend = GridConstants.GRIDNUMX - 1;
+		for(int i = row - 1; i >= rowstart; i--) {
+			if(grids[i][col] == GridConstants.NOTHING) {
+				fireGrids[i][col] = centerFire;
+				continue;
+			}
+			if(grids[i][col] == GridConstants.BRICK) {
+				grids[i][col] = GridConstants.NOTHING;
+				fireGrids[i][col] = centerFire;
+				break;
+			}
+			if(grids[i][col] == GridConstants.STEEL) {
+				break;
+			}
+		}
+		for(int i = row + 1; i <= rowend; i++) {
+			if(grids[i][col] == GridConstants.NOTHING) {
+				fireGrids[i][col] = centerFire;
+				continue;
+			}
+			if(grids[i][col] == GridConstants.BRICK) {
+				grids[i][col] = GridConstants.NOTHING;
+				fireGrids[i][col] = centerFire;
+				break;
+			}
+			if(grids[i][col] == GridConstants.STEEL) {
+				break;
+			}
+		}
+		for(int i = col - 1; i >= colstart; i--) {
+			if(grids[row][i] == GridConstants.NOTHING) {
+				fireGrids[row][i] = centerFire;
+				continue;
+			}
+			if(grids[row][i] == GridConstants.BRICK) {
+				grids[row][i] = GridConstants.NOTHING;
+				fireGrids[row][i] = centerFire;
+				break;
+			}
+			if(grids[row][i] == GridConstants.STEEL) {
+				break;
+			}
+		}
+		for(int i = col + 1; i <= colend; i++) {
+			if(grids[row][i] == GridConstants.NOTHING) {
+				fireGrids[row][i] = centerFire;
+				continue;
+			}
+			if(grids[row][i] == GridConstants.BRICK) {
+				grids[row][i] = GridConstants.NOTHING;
+				fireGrids[row][i] = centerFire;
+				break;
+			}
+			if(grids[row][i] == GridConstants.STEEL) {
+				break;
+			}
+		}
 		
-		this.fireGrids[row][col] = centerFire;
 		
 		
-		
-	}
-
-	public ArrayList<Steel> getSteels() {
-		return steels;
-	}
-
-	public void setSteels(ArrayList<Steel> steels) {
-		this.steels = steels;
 	}
 	
 	

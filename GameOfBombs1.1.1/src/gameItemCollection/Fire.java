@@ -18,19 +18,21 @@ public class Fire extends PerishBlock {
 		return timeDuration;
 		//
 	}
-
+	public boolean timeUp() {
+		return ((System.nanoTime() - this.creationTime) / 1000000000.0 > this.timeDuration);
+	}
 	
 	public Fire(int x, int y, int width, int height, int radius) {
 		super(x, y, width, height);
 		this.creationTime = System.nanoTime();
-		this.timeDuration = 1.0;
+		this.timeDuration = 0.5;
 		this.radius = radius;
 	}
 
 	public Fire(int width, int height, int radius) {
 		super(width, height);
 		this.creationTime = System.nanoTime();
-		this.timeDuration = 1.0;
+		this.timeDuration = 0.5;
 		this.radius = radius;
 	}
 

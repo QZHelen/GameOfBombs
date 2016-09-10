@@ -19,6 +19,7 @@ import mapCollection.Map;
 import characterCollection.Player;
 import characterCollection.PlayerOne;
 import gameItemCollection.Bomb;
+import gameItemCollection.Fire;
 
 public class Game extends Canvas implements Runnable, KeyListener{
 	
@@ -161,6 +162,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    		}
 	    	}
 	    }
+	    //draw bomb
 	    g.setColor(Color.BLACK);
 	    Bomb b;
 	    if(!map.getBombs().isEmpty()) {
@@ -177,7 +179,21 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    	}
 	    	b = null;
 	    }
-	    	
+	    //draw fire
+	    g.setColor(Color.ORANGE);
+	    Fire[][] fg = map.getFireGrids();
+	    for(int i = 0; i < grids.length; i++) {
+	    	for(int j = 0; j < grids[0].length; j++) {
+	    		if(fg[i][j] != null) {
+	    			if(!fg[i][j].timeUp())
+	    				g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
+	    			else
+	    				fg[i][j] = null;
+	    		}
+	    	}
+	    }
+	    fg = null;
+	    //draw player	
 	    g.setColor(Color.gray);
 	    g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
 	    g.dispose();
