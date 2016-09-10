@@ -19,7 +19,7 @@ public abstract class Map {
 		this.grids = grids;
 	}
 
-	PriorityQueue<Bomb> bombs;
+	ArrayList<Bomb> bombs;
 	Boolean[][] powerUpGrids;
 	Fire[][] fireGrids;
 	ArrayList<Steel> steels;
@@ -32,7 +32,7 @@ public abstract class Map {
 		this.grids = new int[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		powerUpGrids =  new Boolean[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		fireGrids = new Fire[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
-		bombs = new PriorityQueue<Bomb>();
+		bombs = new ArrayList<Bomb>();
 		initGrids(grids);
 	}
 	
@@ -59,11 +59,11 @@ public abstract class Map {
 	}
 
 
-	public PriorityQueue<Bomb> getBombs() {
+	public ArrayList<Bomb> getBombs() {
 		return bombs;
 	}
 
-	public void setBombs(PriorityQueue<Bomb> bombs) {
+	public void setBombs(ArrayList<Bomb> bombs) {
 		this.bombs = bombs;
 	}
 
