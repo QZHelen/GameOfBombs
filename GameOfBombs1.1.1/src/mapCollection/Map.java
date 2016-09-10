@@ -46,13 +46,25 @@ public abstract class Map {
 			for(int col = rand.nextInt(3) + 1;col < grids[1].length - 1; col++ ) {
 				if(count-- <= 0) {
 					count = rand.nextInt(3) + 1;
+					col += rand.nextInt(2) + 1;
 				} else {
 					grids[i][col] = GridConstants.BRICK;
 				}
 			}
 		}
 		
-		int countRand = 190;
+		for(int i = 1; i < grids[0].length - 1 ; i = i + rand.nextInt(4) + 2) {
+			int count = rand.nextInt(3) + 1;
+			for(int row = rand.nextInt(3) + 1;row < grids.length - 1; row++ ) {
+				if(count-- <= 0) {
+					count = rand.nextInt(3) + 1;
+					row += rand.nextInt(2) + 1;
+				} else {
+					grids[row][i] = GridConstants.BRICK;
+				}
+			}
+		}
+		int countRand = 30;
 		while(countRand-- > 0) {
 			grids[rand.nextInt(grids.length - 2) + 1][rand.nextInt(grids[1].length - 2) + 1] = GridConstants.BRICK;
 		}
