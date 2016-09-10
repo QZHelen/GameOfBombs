@@ -16,7 +16,6 @@ public abstract class Player {
 	private int dx = 0;
 	private int dy = 0;
 	private int diff = 0;
-	private Direction direction;
 	private int fireRadius;
 	Map map;
 	
@@ -57,11 +56,6 @@ public abstract class Player {
 	}
 	public void setHeight(int height2) {
 		this.height = height2;
-	}
-	public void setDirection(Direction direction) {
-		// TODO Auto-generated method stub
-		this.direction = direction;
-		
 	}
 	public int getDx() {
 		return dx;
