@@ -17,8 +17,6 @@ public class Fire extends PerishBlock {
 	public double getTimeDuration() {
 		return timeDuration;
 		//
-		//
-		//
 	}
 
 	
