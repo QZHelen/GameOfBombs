@@ -1,9 +1,12 @@
 package mapCollection;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Random;
 
+import characterCollection.Player;
+import game.Game;
 import gameItemCollection.Bomb;
 import gameItemCollection.Fire;
 import gameItemCollection.Steel;
@@ -11,22 +14,36 @@ import gameItemCollection.Steel;
 public abstract class Map {
 	
 	int[][] grids;
-	ArrayList<Bomb> bombs;
+//	ArrayList<Bomb> bombs;
+	Bomb[][] bombGrids;
 	Boolean[][] powerUpGrids;
 	Fire[][] fireGrids;
 	int width;
 	int height;
 	Random rand;
+	Player p1;
 	
 	public Map(int width, int height) {
 		rand = new Random();
 		this.grids = new int[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		powerUpGrids =  new Boolean[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		fireGrids = new Fire[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
-		bombs = new ArrayList<Bomb>();
+//		bombs = new ArrayList<Bomb>();
+		bombGrids = new Bomb[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		initGrids(grids);
 	}
 	
+
+	public Bomb[][] getBombGrids() {
+		return bombGrids;
+	}
+
+
+	public void setBombGrids(Bomb[][] bombGrids) {
+		this.bombGrids = bombGrids;
+	}
+
+
 	public void initGrids(int[][] grids) {
 		for(int i = 1; i < grids.length - 1 ; i = i + rand.nextInt(4) + 2) {
 			int count = rand.nextInt(3) + 1;
@@ -56,13 +73,13 @@ public abstract class Map {
 	public void setGrids(int[][] grids) {
 		this.grids = grids;
 	}
-	public ArrayList<Bomb> getBombs() {
-		return bombs;
-	}
-
-	public void setBombs(ArrayList<Bomb> bombs) {
-		this.bombs = bombs;
-	}
+//	public ArrayList<Bomb> getBombs() {
+//		return bombs;
+//	}
+//
+//	public void setBombs(ArrayList<Bomb> bombs) {
+//		this.bombs = bombs;
+//	}
 
 	public Boolean[][] getPowerUpGrids() {
 		return powerUpGrids;
@@ -105,6 +122,30 @@ public abstract class Map {
 			if(grids[i][col] == GridConstants.STEEL) {
 				break;
 			}
+			if(grids[i][col] == GridConstants.BOMB) {
+//				Bomb b;
+//			    if(!getBombs().isEmpty()) {
+//			    	for(Iterator<Bomb> iterator = getBombs().iterator();iterator.hasNext();) {
+//			    		b = iterator.next();
+//			    		if(b.getRow() == i && b.getCol() == col) {
+//			    			iterator.remove();
+//			    			b.explode();
+//			    			p1 = b.getP();
+//			    			p1.setBombNum(p1.getBombNum() + 1);
+////				    		iterator.remove();
+//			    		}
+//			    	}
+//			    	b = null;
+//			    }
+			    if(bombGrids[i][col] != null) {
+			    	Bomb temp = bombGrids[i][col];
+			    	bombGrids[i][col] = null;
+			    	temp.explode();
+			    	p1 = temp.getP();
+	    			p1.setBombNum(p1.getBombNum() + 1);
+			    }
+			}
+			
 		}
 		for(int i = row + 1; i <= rowend; i++) {
 			if(grids[i][col] == GridConstants.NOTHING) {
@@ -118,6 +159,29 @@ public abstract class Map {
 			}
 			if(grids[i][col] == GridConstants.STEEL) {
 				break;
+			}
+			if(grids[i][col] == GridConstants.BOMB) {
+//				Bomb b;
+//			    if(!getBombs().isEmpty()) {
+//			    	for(Iterator<Bomb> iterator = getBombs().iterator();iterator.hasNext();) {
+//			    		b = iterator.next();
+//			    		if(b.getRow() == i && b.getCol() == col) {
+//			    			iterator.remove();
+//			    			b.explode();
+//			    			p1 = b.getP();
+//			    			p1.setBombNum(p1.getBombNum() + 1);
+////				    		iterator.remove();
+//			    		}
+//			    	}
+//			    	b = null;
+//			    }
+				if(bombGrids[i][col] != null) {
+			    	Bomb temp = bombGrids[i][col];
+			    	bombGrids[i][col] = null;
+			    	temp.explode();
+			    	p1 = temp.getP();
+	    			p1.setBombNum(p1.getBombNum() + 1);
+			    }
 			}
 		}
 		for(int i = col - 1; i >= colstart; i--) {
@@ -133,6 +197,29 @@ public abstract class Map {
 			if(grids[row][i] == GridConstants.STEEL) {
 				break;
 			}
+			if(grids[row][i] == GridConstants.BOMB) {
+//				Bomb b;
+//			    if(!getBombs().isEmpty()) {
+//			    	for(Iterator<Bomb> iterator = getBombs().iterator();iterator.hasNext();) {
+//			    		b = iterator.next();
+//			    		if(b.getRow() == row && b.getCol() == i) {
+//			    			iterator.remove();
+//			    			b.explode();
+//			    			p1 = b.getP();
+//			    			p1.setBombNum(p1.getBombNum() + 1);
+////				    		iterator.remove();
+//			    		}
+//			    	}
+//			    	b = null;
+//			    }
+				if(bombGrids[row][i] != null) {
+			    	Bomb temp = bombGrids[row][i];
+			    	bombGrids[row][i] = null;
+			    	temp.explode();
+			    	p1 = temp.getP();
+	    			p1.setBombNum(p1.getBombNum() + 1);
+			    }
+			}
 		}
 		for(int i = col + 1; i <= colend; i++) {
 			if(grids[row][i] == GridConstants.NOTHING) {
@@ -146,6 +233,29 @@ public abstract class Map {
 			}
 			if(grids[row][i] == GridConstants.STEEL) {
 				break;
+			}
+			if(grids[row][i] == GridConstants.BOMB) {
+//				Bomb b;
+//			    if(!getBombs().isEmpty()) {
+//			    	for(Iterator<Bomb> iterator = getBombs().iterator();iterator.hasNext();) {
+//			    		b = iterator.next();
+//			    		if(b.getRow() == row && b.getCol() == i) {
+//			    			iterator.remove();
+//			    			b.explode();
+//			    			p1 = b.getP();
+//			    			p1.setBombNum(p1.getBombNum() + 1);
+////				    		iterator.remove();
+//			    		}
+//			    	}
+//			    	b = null;
+//			    }
+				if(bombGrids[row][i] != null) {
+			    	Bomb temp = bombGrids[row][i];
+			    	bombGrids[row][i] = null;
+			    	temp.explode();
+			    	p1 = temp.getP();
+	    			p1.setBombNum(p1.getBombNum() + 1);
+			    }
 			}
 		}
 		

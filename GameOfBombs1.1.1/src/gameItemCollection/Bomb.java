@@ -1,7 +1,7 @@
 package gameItemCollection;
 
 import characterCollection.Player;
-import game.Game;
+import mapCollection.GridConstants;
 import mapCollection.Map;
 
 public class Bomb extends PerishBlock {
@@ -23,15 +23,25 @@ public class Bomb extends PerishBlock {
 	public boolean isExplode() {
 		return ((System.nanoTime() - this.creationTime) / 1000000000.0 > this.timeDuration);
 	}
+
 	public long getCreationTime() {
 		return creationTime;
 	}
 	public void explode() {
+//		map.getBombs().remove(this);
+		map.getGrids()[row][col] = GridConstants.NOTHING;
 		map.setFireGrids(row, col, new Fire(width, height, p.getFireRadius()));
 	}
 	
 	public void setCreationTime(long creationTime) {
 		this.creationTime = creationTime;
+	}
+	public Player getP() {
+		return p;
+	}
+
+	public void setP(Player p) {
+		this.p = p;
 	}
 	
 

@@ -17,6 +17,7 @@ public abstract class Player {
 	private int dy = 0;
 	private int diff = 0;
 	private int fireRadius;
+	private int bombNum;
 	Map map;
 	
 	
@@ -31,7 +32,8 @@ public abstract class Player {
 		this.setHeight(height);
 		this.diff = diff;
 		this.map = map;
-		this.fireRadius = 1;
+		this.fireRadius = 3;
+		this.bombNum = 3;
 	}
 	public int getX() {
 		return x;
@@ -101,9 +103,20 @@ public abstract class Player {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;
 //		if(this.map.getBombs().isEmpty())
-			this.map.getBombs().add(new Bomb(i,j,Game.gridWidth,Game.gridHeight,false, map, this));
+		if(bombNum > 0) {
+			this.map.getBombGrids()[j][i] = new Bomb(i,j,Game.gridWidth,Game.gridHeight,false, map, this);
+			this.map.getGrids()[j][i] = GridConstants.BOMB;
+			bombNum--;
+		}
+			
 	}
 	
+	public int getBombNum() {
+		return bombNum;
+	}
+	public void setBombNum(int bombNum) {
+		this.bombNum = bombNum;
+	}
 	public boolean collisionCheckX(double delta, Map map) {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;
