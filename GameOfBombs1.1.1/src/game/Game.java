@@ -3,16 +3,10 @@ package game;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.util.Iterator;
-
-import javax.swing.JPanel;
-
 import mapCollection.GridConstants;
 import mapCollection.IceMap;
 import mapCollection.Map;
@@ -32,6 +26,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public static int maxWidth;
 	public static int maxHeight;
 	public static boolean left,right,up,down;
+	
 	public Game(Map map) {
 		this.p1 = new PlayerOne((int)Math.floor(gridWidth * .9),(int)Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
 		this.map = map;
@@ -69,8 +64,6 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    }	else if (keyCode == KeyEvent.VK_SPACE) {
 	    	p1.setBomb();
 	    }
-	    	
-	    System.out.println("pressed " + keyCode);
 		
 	}
 	
@@ -117,7 +110,6 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    	p1.setDy(0);
 	    else if (keyCode == KeyEvent.VK_DOWN && !up)
 	    	p1.setDy(0);
-	    System.out.println("released " + keyCode);
 		
 	}
 	@Override
@@ -170,7 +162,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    		b = iterator.next();
 	    		if(!b.isExplode()) {
 		    		 g.fillOval(b.getCol() * Game.gridWidth,b.getRow() * Game.gridHeight,b.getWidth(),b.getHeight());
-		    		 break;
+//		    		 break;
 		    	} else {
 		    		// set fire
 		    		b.explode();
