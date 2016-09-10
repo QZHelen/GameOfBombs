@@ -27,7 +27,7 @@ public class Bomb extends PerishBlock {
 		return creationTime;
 	}
 	public void explode() {
-		map.setFireGrids(row, col, new Fire(width, height, p.getFireRadius()));
+		map.setFireGrids(x/Game.gridWidth, y/Game.gridHeight, new Fire(x, y, width, height, p.getFireRadius()));
 	}
 	
 	public void setCreationTime(long creationTime) {

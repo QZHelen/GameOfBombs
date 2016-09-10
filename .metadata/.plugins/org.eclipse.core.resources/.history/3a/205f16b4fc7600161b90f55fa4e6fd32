@@ -172,10 +172,10 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		    	} else {
 		    		// set fire
 		    		b.explode();
-		    		iterator.remove();
+		    		map.getBombs().remove(b);
 		    	}
 	    	}
-	    	b = null;
+		
 	    }
 	    	
 	    g.setColor(Color.gray);

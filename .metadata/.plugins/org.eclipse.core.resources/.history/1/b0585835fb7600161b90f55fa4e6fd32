@@ -107,7 +107,7 @@ public abstract class Player {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;
 		if(this.map.getBombs().isEmpty())
-			this.map.getBombs().add(new Bomb(i,j,Game.gridWidth,Game.gridHeight,false, map, this));
+			this.map.getBombs().add(new Bomb(i * Game.gridWidth,j * Game.gridHeight,Game.gridWidth,Game.gridHeight,false, map, this));
 	}
 	
 	public boolean collisionCheckX(double delta, Map map) {

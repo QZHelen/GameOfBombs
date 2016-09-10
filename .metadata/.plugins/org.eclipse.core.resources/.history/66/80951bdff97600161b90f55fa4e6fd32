@@ -11,8 +11,8 @@ public class Bomb extends PerishBlock {
 	Map map;
 	Player p;
 	
-	public Bomb(int col, int row, int width, int height, boolean explode, Map map, Player p) {
-		super(col, row, width, height);
+	public Bomb(int x, int y, int width, int height, boolean explode, Map map, Player p) {
+		super(x, y, width, height);
 		this.creationTime = System.nanoTime();
 		this.timeDuration = mapCollection.GridConstants.TIMESPAN;
 		this.explode = false;
@@ -27,7 +27,7 @@ public class Bomb extends PerishBlock {
 		return creationTime;
 	}
 	public void explode() {
-		map.setFireGrids(row, col, new Fire(width, height, p.getFireRadius()));
+		map.setFireGrids(x/Game.gridWidth, y/Game.gridHeight, new Fire(x, y, width, height, p.getFireRadius()));
 	}
 	
 	public void setCreationTime(long creationTime) {

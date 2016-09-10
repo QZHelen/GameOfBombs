@@ -162,21 +162,32 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    	}
 	    }
 	    g.setColor(Color.BLACK);
-	    Bomb b;
 	    if(!map.getBombs().isEmpty()) {
 	    	for(Iterator<Bomb> iterator = map.getBombs().iterator();iterator.hasNext();) {
-	    		b = iterator.next();
+	    		Bomb b = iterator.next();
 	    		if(!b.isExplode()) {
-		    		 g.fillOval(b.getCol() * Game.gridWidth,b.getRow() * Game.gridHeight,b.getWidth(),b.getHeight());
+		    		 g.fillOval(b.getCol() * Game.gridWidth,b.getRow() * Game.gridHeight,bomb.getWidth(),bomb.getHeight());
 		    		 break;
 		    	} else {
 		    		// set fire
-		    		b.explode();
-		    		iterator.remove();
+		    		bomb.explode();
+		    		map.getBombs().remove(bomb);
 		    	}
 	    	}
-	    	b = null;
+//	    	for (Bomb bomb: map.getBombs()) {
+//	    	
+//	    		
+//	    	}
+	    	
+//	    	if(!map.getBombs().get(0).isExplode()) {
+//	    		 g.fillOval(map.getBombs().get(0).getCol() * Game.gridWidth,map.getBombs().get(0).getRow() * Game.gridHeight,map.getBombs().get(0).getWidth(),map.getBombs().get(0).getHeight());
+//	    	} else {
+//	    		
+//	    		map.getBombs().remove(0);
+//	    	}
+	    		
 	    }
+//	    	map.getBombs().
 	    	
 	    g.setColor(Color.gray);
 	    g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
