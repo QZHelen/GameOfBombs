@@ -185,7 +185,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 			    		// set fire
 			    		map.getBombGrids()[i][j] = null;
 			    		b.explode();
-			    		p1.setBombNum(p1.getBombNum() + 1);
+//			    		p1.setBombNum(p1.getBombNum() + 1);
 //			    		iterator.remove();
 			    	}
 //	    			g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
