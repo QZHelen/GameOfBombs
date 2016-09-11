@@ -7,15 +7,13 @@ import mapCollection.Map;
 public class Bomb extends PerishBlock {
 	private long creationTime;
 	private double timeDuration;
-	private boolean explode;
 	Map map;
 	Player p;
 	
-	public Bomb(int col, int row, int width, int height, boolean explode, Map map, Player p) {
+	public Bomb(int col, int row, int width, int height,Map map, Player p) {
 		super(col, row, width, height);
 		this.creationTime = System.nanoTime();
 		this.timeDuration = mapCollection.GridConstants.TIMESPAN;
-		this.explode = false;
 		this.map = map;
 		this.p = p;
 	}
