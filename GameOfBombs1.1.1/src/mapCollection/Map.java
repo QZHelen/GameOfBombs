@@ -8,7 +8,7 @@ import game.Game;
 import gameItemCollection.Bomb;
 import gameItemCollection.Fire;
 import gameItemCollection.Steel;
-import powerUpCollection.PowerUp;
+import powerUpCollection.*;
 
 public abstract class Map {
 	
@@ -20,7 +20,10 @@ public abstract class Map {
 	int height;
 	Random rand;
 	Player p1;
-	
+	PowerUpFactory powerFactory;
+	static int bombmin = 4;
+	static int speedmin = 3;
+	static int firemin = 4;
 	public Map(int width, int height) {
 		rand = new Random();
 		this.grids = new int[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
@@ -29,6 +32,7 @@ public abstract class Map {
 //		bombs = new ArrayList<Bomb>();
 		bombGrids = new Bomb[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		initGrids(grids);
+		powerFactory = new PowerUpFactory();
 	}
 	
 
@@ -69,7 +73,23 @@ public abstract class Map {
 		}
 		int countRand = 30;
 		while(countRand-- > 0) {
-			grids[rand.nextInt(grids.length - 2) + 1][rand.nextInt(grids[1].length - 2) + 1] = GridConstants.POWERBRICK;
+			int row = rand.nextInt(grids.length - 2) + 1;
+			int col = rand.nextInt(grids[1].length - 2) + 1;
+			grids[row][col] = GridConstants.POWERBRICK;
+			if(bombmin-- > 0) {
+				powerUpGrids[row][col] = new BombUp(row, col, Game.gridWidth, Game.gridHeight, PowerUpType.BOMBUP, null);
+				continue;
+			}
+			if(speedmin-- > 0) {
+				powerUpGrids[row][col] = new SpeedUp(row, col, Game.gridWidth, Game.gridHeight, PowerUpType.SPEEDUP, null);
+				continue;
+			}
+			if(firemin-- > 0) {
+				powerUpGrids[row][col] = new FireUp(row, col, Game.gridWidth, Game.gridHeight, PowerUpType.FIREUP, null);
+				continue;
+			}
+			powerUpGrids[row][col] = new SpeedUp(row, col, Game.gridWidth, Game.gridHeight, PowerUpType.randomType(), null);
+			
 		}
 //		countLast = 12;
 //		while(countLast-- > 0) {
@@ -132,7 +152,7 @@ public abstract class Map {
 			}
 			if(grids[i][col] == GridConstants.POWERBRICK) {
 				grids[i][col] = GridConstants.POWERUP;
-				powerUpGrids[i][col] = PowerUp.powerUpFactory(i, col, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
+//				powerUpGrids[i][col] = PowerUp.powerUpFactory(i, col, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
 				fireGrids[i][col] = centerFire;
 				break;
 			}
@@ -177,7 +197,7 @@ public abstract class Map {
 			}
 			if(grids[i][col] == GridConstants.POWERBRICK) {
 				grids[i][col] = GridConstants.POWERUP;
-				powerUpGrids[i][col] = PowerUp.powerUpFactory(i, col, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
+//				powerUpGrids[i][col] = PowerUp.powerUpFactory(i, col, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
 				fireGrids[i][col] = centerFire;
 				break;
 			}
@@ -185,20 +205,7 @@ public abstract class Map {
 				break;
 			}
 			if(grids[i][col] == GridConstants.BOMB) {
-//				Bomb b;
-//			    if(!getBombs().isEmpty()) {
-//			    	for(Iterator<Bomb> iterator = getBombs().iterator();iterator.hasNext();) {
-//			    		b = iterator.next();
-//			    		if(b.getRow() == i && b.getCol() == col) {
-//			    			iterator.remove();
-//			    			b.explode();
-//			    			p1 = b.getP();
-//			    			p1.setBombNum(p1.getBombNum() + 1);
-////				    		iterator.remove();
-//			    		}
-//			    	}
-//			    	b = null;
-//			    }
+
 				if(bombGrids[i][col] != null) {
 			    	Bomb temp = bombGrids[i][col];
 			    	bombGrids[i][col] = null;
@@ -220,7 +227,7 @@ public abstract class Map {
 			}
 			if(grids[row][i] == GridConstants.POWERBRICK) {
 				grids[row][i] = GridConstants.POWERUP;
-				powerUpGrids[row][i] = PowerUp.powerUpFactory(row, i, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
+//				powerUpGrids[row][i] = PowerUp.powerUpFactory(row, i, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
 				fireGrids[row][i] = centerFire;
 				break;
 			}
@@ -263,7 +270,7 @@ public abstract class Map {
 			}
 			if(grids[row][i] == GridConstants.POWERBRICK) {
 				grids[row][i] = GridConstants.POWERUP;
-				powerUpGrids[row][i] = PowerUp.powerUpFactory(row, i, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
+//				powerUpGrids[row][i] = PowerUp.powerUpFactory(row, i, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
 				fireGrids[row][i] = centerFire;
 				break;
 			}

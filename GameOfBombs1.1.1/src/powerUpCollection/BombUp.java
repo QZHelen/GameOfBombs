@@ -1,10 +1,14 @@
 package powerUpCollection;
 
+import characterCollection.Player;
+
 public class BombUp extends PowerUp {
 
-	public BombUp(int row, int col, int width, int height) {
-		super(row, col, width, height);
-		
+	public BombUp(int row, int col, int width, int height, PowerUpType powerUpType, Player myplayer) {
+		super(row, col, width, height, powerUpType, myplayer);
+		// TODO Auto-generated constructor stub
 	}
+
+	
 
 }
