@@ -18,6 +18,7 @@ public abstract class Player {
 	private int diff = 0;
 	private int fireRadius;
 	private int bombNum;
+	private int speed;
 	Map map;
 	
 	
@@ -34,6 +35,7 @@ public abstract class Player {
 		this.map = map;
 		this.fireRadius = 3;
 		this.bombNum = 3;
+		this.speed = 2;
 	}
 	public int getX() {
 		return x;
@@ -76,37 +78,53 @@ public abstract class Player {
 		
 //		setDirection(Direction.LEFT);
 		if(Game.left)
-			setDx(-4);
+			setDx(-speed);
 		
 	}
 	public void moveRight() {
 		// TODO Auto-generated method stub
 //		setDirection(Direction.RIGHT);
 		if(Game.right)
-			setDx(4);
+			setDx(speed);
 		
 	}
 	public void moveUp() {
 		// TODO Auto-generated method stub
 //		setDirection(Direction.UP);
 		if(Game.up)
-			setDy(-4);
+			setDy(-speed);
 	}
 	public void moveDown() {
 		// TODO Auto-generated method stub
 //		setDirection(Direction.DOWN);
 		if(Game.down)
-			setDy(4);
+			setDy(speed);
 	}
 	
 	public void setBomb() {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;
-		System.out.println(bombNum);
+		int imod = x % Game.gridWidth;
+		int jmod = y % Game.gridHeight;
+		System.out.println(imod + " " + jmod);
+		if(imod >= (int)(.7 * Game.gridWidth) && imod <= (int)(.99 * Game.gridWidth)) {
+				i = i + 1;
+		}
+		
+		if(jmod >= (int)(.7 * Game.gridHeight) && jmod <= (int)(.99 * Game.gridWidth)) {
+			j = j + 1;
+		}
+		
+		
+		
+//		if(jmod >= (int)(.5 * Game.gridHeight) && jmod <= (int)(.75 * Game.gridHeight)) j = j - 1;
+//		if(jmod >= (int)(.76 * Game.gridHeight) && jmod <= (int)(.99 * Game.gridHeight)) j = j + 1;
+//		System.out.println(bombNum);
 		if(bombNum > 0) {
+			bombNum--;
 			this.map.getBombGrids()[j][i] = new Bomb(i,j,Game.gridWidth,Game.gridHeight,false, map, this);
 			this.map.getGrids()[j][i] = GridConstants.BOMB;
-			bombNum--;
+			
 		}
 			
 	}
