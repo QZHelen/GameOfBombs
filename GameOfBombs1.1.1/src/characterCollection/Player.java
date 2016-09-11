@@ -1,8 +1,6 @@
 package characterCollection;
 
-import java.util.HashMap;
 
-import game.Direction;
 import game.Game;
 import gameItemCollection.Bomb;
 import mapCollection.GridConstants;
@@ -74,29 +72,22 @@ public abstract class Player {
 		this.dy = dy;
 	}
 	public void moveLeft() {
-		// TODO Auto-generated method stub
-		
-//		setDirection(Direction.LEFT);
 		if(Game.left)
 			setDx(-speed);
 		
 	}
 	public void moveRight() {
-		// TODO Auto-generated method stub
-//		setDirection(Direction.RIGHT);
+
 		if(Game.right)
 			setDx(speed);
 		
 	}
 	public void moveUp() {
-		// TODO Auto-generated method stub
-//		setDirection(Direction.UP);
+
 		if(Game.up)
 			setDy(-speed);
 	}
 	public void moveDown() {
-		// TODO Auto-generated method stub
-//		setDirection(Direction.DOWN);
 		if(Game.down)
 			setDy(speed);
 	}
@@ -108,18 +99,17 @@ public abstract class Player {
 		int jmod = y % Game.gridHeight;
 		System.out.println(imod + " " + jmod);
 		if(imod >= (int)(.7 * Game.gridWidth) && imod <= (int)(.99 * Game.gridWidth)) {
-				i = i + 1;
+			if(Game.right) x = (i + 1) * Game.gridWidth;
+			i = i + 1;
 		}
 		
 		if(jmod >= (int)(.7 * Game.gridHeight) && jmod <= (int)(.99 * Game.gridWidth)) {
+			if(Game.down) y = (j + 1) * Game.gridHeight;
 			j = j + 1;
 		}
 		
 		
 		
-//		if(jmod >= (int)(.5 * Game.gridHeight) && jmod <= (int)(.75 * Game.gridHeight)) j = j - 1;
-//		if(jmod >= (int)(.76 * Game.gridHeight) && jmod <= (int)(.99 * Game.gridHeight)) j = j + 1;
-//		System.out.println(bombNum);
 		if(bombNum > 0) {
 			bombNum--;
 			this.map.getBombGrids()[j][i] = new Bomb(i,j,Game.gridWidth,Game.gridHeight,false, map, this);

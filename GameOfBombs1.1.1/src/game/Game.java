@@ -156,23 +156,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    }
 	    //draw bomb
 	    g.setColor(Color.BLACK);
-//	    Bomb b;
-//	    if(!map.getBombs().isEmpty()) {
-//	    	for(Iterator<Bomb> iterator = map.getBombs().iterator();iterator.hasNext();) {
-//	    		b = iterator.next();
-//	    		if(!b.isExplode()) {
-//		    		 g.fillOval(b.getCol() * Game.gridWidth,b.getRow() * Game.gridHeight,b.getWidth(),b.getHeight());
-////		    		 break;
-//		    	} else {
-//		    		// set fire
-//		    		iterator.remove();
-//		    		b.explode();
-//		    		p1.setBombNum(p1.getBombNum() + 1);
-////		    		iterator.remove();
-//		    	}
-//	    	}
-//	    	b = null;
-//	    }
+
 	    
 	    for(int i = 0; i < map.getBombGrids().length; i++) {
 	    	for(int j = 0; j < map.getBombGrids()[0].length; j++) {
@@ -185,10 +169,8 @@ public class Game extends Canvas implements Runnable, KeyListener{
 			    		// set fire
 			    		map.getBombGrids()[i][j] = null;
 			    		b.explode();
-//			    		p1.setBombNum(p1.getBombNum() + 1);
-//			    		iterator.remove();
+
 			    	}
-//	    			g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
 	    		}
 	    	}
 	    }
