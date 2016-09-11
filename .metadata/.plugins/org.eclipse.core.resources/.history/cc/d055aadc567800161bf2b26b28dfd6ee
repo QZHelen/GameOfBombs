@@ -49,7 +49,6 @@ public abstract class Map {
 					col += rand.nextInt(2) + 1;
 				} else {
 					grids[i][col] = GridConstants.BRICK;
-					
 				}
 			}
 		}
@@ -67,7 +66,7 @@ public abstract class Map {
 		}
 		int countRand = 30;
 		while(countRand-- > 0) {
-			grids[rand.nextInt(grids.length - 2) + 1][rand.nextInt(grids[1].length - 2) + 1] = GridConstants.POWERBRICK;
+			grids[rand.nextInt(grids.length - 2) + 1][rand.nextInt(grids[1].length - 2) + 1] = GridConstants.BRICK;
 		}
 //		countLast = 12;
 //		while(countLast-- > 0) {
@@ -128,12 +127,6 @@ public abstract class Map {
 				fireGrids[i][col] = centerFire;
 				break;
 			}
-			if(grids[i][col] == GridConstants.POWERBRICK) {
-				grids[i][col] = GridConstants.POWERUP;
-				fireGrids[i][col] = centerFire;
-				break;
-			}
-
 			if(grids[i][col] == GridConstants.STEEL) {
 				break;
 			}
@@ -169,11 +162,6 @@ public abstract class Map {
 			}
 			if(grids[i][col] == GridConstants.BRICK) {
 				grids[i][col] = GridConstants.NOTHING;
-				fireGrids[i][col] = centerFire;
-				break;
-			}
-			if(grids[i][col] == GridConstants.POWERBRICK) {
-				grids[i][col] = GridConstants.POWERUP;
 				fireGrids[i][col] = centerFire;
 				break;
 			}
@@ -214,11 +202,6 @@ public abstract class Map {
 				fireGrids[row][i] = centerFire;
 				break;
 			}
-			if(grids[row][i] == GridConstants.POWERBRICK) {
-				grids[row][i] = GridConstants.POWERUP;
-				fireGrids[row][i] = centerFire;
-				break;
-			}
 			if(grids[row][i] == GridConstants.STEEL) {
 				break;
 			}
@@ -253,11 +236,6 @@ public abstract class Map {
 			}
 			if(grids[row][i] == GridConstants.BRICK) {
 				grids[row][i] = GridConstants.NOTHING;
-				fireGrids[row][i] = centerFire;
-				break;
-			}
-			if(grids[row][i] == GridConstants.POWERBRICK) {
-				grids[row][i] = GridConstants.POWERUP;
 				fireGrids[row][i] = centerFire;
 				break;
 			}

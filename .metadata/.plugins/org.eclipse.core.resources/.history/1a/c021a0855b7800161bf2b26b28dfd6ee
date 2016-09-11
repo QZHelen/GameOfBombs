@@ -172,12 +172,12 @@ public abstract class Map {
 				fireGrids[i][col] = centerFire;
 				break;
 			}
-			if(grids[i][col] == GridConstants.POWERBRICK) {
+			else if(grids[i][col] == GridConstants.POWERBRICK) {
 				grids[i][col] = GridConstants.POWERUP;
 				fireGrids[i][col] = centerFire;
 				break;
 			}
-			if(grids[i][col] == GridConstants.STEEL) {
+			else if(grids[i][col] == GridConstants.STEEL) {
 				break;
 			}
 			if(grids[i][col] == GridConstants.BOMB) {
@@ -211,11 +211,6 @@ public abstract class Map {
 			}
 			if(grids[row][i] == GridConstants.BRICK) {
 				grids[row][i] = GridConstants.NOTHING;
-				fireGrids[row][i] = centerFire;
-				break;
-			}
-			if(grids[row][i] == GridConstants.POWERBRICK) {
-				grids[row][i] = GridConstants.POWERUP;
 				fireGrids[row][i] = centerFire;
 				break;
 			}
@@ -253,11 +248,6 @@ public abstract class Map {
 			}
 			if(grids[row][i] == GridConstants.BRICK) {
 				grids[row][i] = GridConstants.NOTHING;
-				fireGrids[row][i] = centerFire;
-				break;
-			}
-			if(grids[row][i] == GridConstants.POWERBRICK) {
-				grids[row][i] = GridConstants.POWERUP;
 				fireGrids[row][i] = centerFire;
 				break;
 			}

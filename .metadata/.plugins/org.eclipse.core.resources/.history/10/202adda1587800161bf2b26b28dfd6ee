@@ -145,15 +145,15 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		Graphics g = strategy.getDrawGraphics();
 	    g.setColor(Color.CYAN);
 	    g.fillRect(0,0,Game.maxWidth,Game.maxHeight);
+	    g.setColor(Color.RED);
 	    int[][] grids = map.getGrids();
 	    for(int i = 0; i < grids.length; i++) {
 	    	for(int j = 0; j < grids[0].length; j++) {
 	    		if(grids[i][j] == GridConstants.BRICK || grids[i][j] == GridConstants.POWERBRICK ) { // TODO modified here for powerup
-	    			g.setColor(Color.RED);
 	    			g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
-	    		} else if (grids[i][j] == GridConstants.POWERUP ) { // TODO modified here for powerup
-	    			g.setColor(new Color((int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256)));
-	    			g.fillOval(j * Game.gridWidth, i * Game.gridHeight, (int)(Game.gridWidth * .9),(int) (.9 * Game.gridHeight));
+	    		}
+	    		if(grids[i][j] == GridConstants.POWERUP ) { // TODO modified here for powerup
+	    			g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
 	    		}
 	    	}
 	    }
