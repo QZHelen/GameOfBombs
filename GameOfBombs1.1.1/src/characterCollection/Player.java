@@ -107,12 +107,10 @@ public abstract class Player {
 			if(Game.down) y = (j + 1) * Game.gridHeight;
 			j = j + 1;
 		}
-		
-		
-		
-		if(bombNum > 0) {
+		if(bombNum > 0 && this.map.getBombGrids()[j][i] == null) {
 			bombNum--;
-			this.map.getBombGrids()[j][i] = new Bomb(i,j,Game.gridWidth,Game.gridHeight,false, map, this);
+			
+			this.map.getBombGrids()[j][i] = new Bomb(i,j,Game.gridWidth,Game.gridHeight, map, this);
 			this.map.getGrids()[j][i] = GridConstants.BOMB;
 			
 		}
