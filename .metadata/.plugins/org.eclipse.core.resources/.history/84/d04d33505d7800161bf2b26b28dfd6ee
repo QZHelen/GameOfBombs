@@ -5,13 +5,7 @@ import interfaceCollection.Destroyable;
 import interfaceCollection.Immovable;
 
 public  class PowerUp extends PerishBlock {
-	
-	
-	public static PowerUp powerUpFactory(int row, int col, int width, int height) {
-		return new PowerUp(row, col, width, height);
-	}
-	
-	protected PowerUp(int row, int col, int width, int height) {
+	public PowerUp(int row, int col, int width, int height) {
 		super(row, col, width, height);
 	}
 

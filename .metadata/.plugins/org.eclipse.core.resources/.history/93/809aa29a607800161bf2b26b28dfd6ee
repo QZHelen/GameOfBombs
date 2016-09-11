@@ -220,7 +220,7 @@ public abstract class Map {
 			}
 			if(grids[row][i] == GridConstants.POWERBRICK) {
 				grids[row][i] = GridConstants.POWERUP;
-				powerUpGrids[row][i] = PowerUp.powerUpFactory(row, i, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
+				powerUpGrids[i][col] = PowerUp.powerUpFactory(i, col, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
 				fireGrids[row][i] = centerFire;
 				break;
 			}
@@ -263,7 +263,7 @@ public abstract class Map {
 			}
 			if(grids[row][i] == GridConstants.POWERBRICK) {
 				grids[row][i] = GridConstants.POWERUP;
-				powerUpGrids[row][i] = PowerUp.powerUpFactory(row, i, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
+				powerUpGrids[i][col] = PowerUp.powerUpFactory(i, col, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
 				fireGrids[row][i] = centerFire;
 				break;
 			}
