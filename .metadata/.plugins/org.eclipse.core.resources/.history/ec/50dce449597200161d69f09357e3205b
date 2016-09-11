@@ -1,8 +1,0 @@
-package version1;
-
-
-//interfaces(movable,unmovable,destroyable,indestroybale)
-public interface Movable {
-	boolean isMovable();
-
-}

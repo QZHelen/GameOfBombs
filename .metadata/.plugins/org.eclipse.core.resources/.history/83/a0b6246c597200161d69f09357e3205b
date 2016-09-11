@@ -1,5 +1,0 @@
-package version1;
-
-public abstract class PowerUp implements Destroyable, Immovable{
-
-}
