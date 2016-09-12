@@ -6,9 +6,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
-import java.util.Iterator;
 import mapCollection.GridConstants;
-import mapCollection.IceMap;
 import mapCollection.Map;
 import characterCollection.Player;
 import characterCollection.PlayerOne;
@@ -152,7 +150,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    			g.setColor(Color.RED);
 	    			g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
 	    		} else if (grids[i][j] == GridConstants.POWERUP ) { // TODO modified here for powerup
-	    			g.setColor(new Color((int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256)));
+	    			g.setColor(map.getPowerUpGrids()[i][j].renderColor(map.getPowerUpGrids()[i][j].getPowertype()));
 	    			g.fillOval(j * Game.gridWidth, i * Game.gridHeight, (int)(Game.gridWidth * .9),(int) (.9 * Game.gridHeight));
 	    		}
 	    	}
