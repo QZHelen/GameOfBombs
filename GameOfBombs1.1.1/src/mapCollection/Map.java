@@ -26,13 +26,14 @@ public abstract class Map {
 	static int firemin = 4;
 	public Map(int width, int height) {
 		rand = new Random();
+		powerFactory = new PowerUpFactory();
 		this.grids = new int[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		powerUpGrids =  new PowerUp[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		fireGrids = new Fire[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 //		bombs = new ArrayList<Bomb>();
 		bombGrids = new Bomb[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		initGrids(grids);
-		powerFactory = new PowerUpFactory();
+		
 	}
 	
 
@@ -88,7 +89,7 @@ public abstract class Map {
 				powerUpGrids[row][col] = new FireUp(row, col, Game.gridWidth, Game.gridHeight, PowerUpType.FIREUP, null);
 				continue;
 			}
-			powerUpGrids[row][col] = new SpeedUp(row, col, Game.gridWidth, Game.gridHeight, PowerUpType.randomType(), null);
+			powerUpGrids[row][col] = powerFactory.createType(row,col,Game.gridWidth,Game.gridHeight, null);
 			
 		}
 //		countLast = 12;

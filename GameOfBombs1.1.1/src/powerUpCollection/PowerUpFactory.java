@@ -16,4 +16,10 @@ public class PowerUpFactory {
 		
 		
 	}
+	public PowerUp createType(int row, int col, int width, int height,Player myplayer) {
+		
+		return new PowerUp(row, col, width, height, PowerUpType.randomType(), myplayer);
+		
+		
+	}
 }

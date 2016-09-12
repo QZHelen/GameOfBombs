@@ -1,39 +1,59 @@
 package characterCollection;
 
 
+import java.util.Stack;
+
 import game.Game;
 import gameItemCollection.Bomb;
 import mapCollection.GridConstants;
 import mapCollection.Map;
+import powerUpCollection.PowerUp;
 
 public abstract class Player {
 	private int x = 0;
 	private int y = 0;
 	private int width;
 	private int height;
-	private int dx = 0;
-	private int dy = 0;
+	private double dx = 0;
+	private double dy = 0;
 	private int diff = 0;
 	private int fireRadius;
 	private int bombNum;
-	private int speed;
+	private double speed;
+	private Stack<PowerUp> powerUpList;
+	private PowerUp pu;
 	Map map;
 	
+	public Player(int width, int height, int diff, Map map) {
+		setWidth(width);
+		setHeight(height);
+		this.diff = diff;
+		this.map = map;
+		fireRadius = 1;
+		bombNum = 1;
+		speed = 1;
+		powerUpList = new Stack<PowerUp>();
+	}
 	
+	public double getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
 	public int getFireRadius() {
 		return fireRadius;
 	}
 	public void setFireRadius(int fireRadius) {
 		this.fireRadius = fireRadius;
 	}
-	public Player(int width, int height, int diff, Map map) {
-		this.setWidth(width);
-		this.setHeight(height);
-		this.diff = diff;
-		this.map = map;
-		this.fireRadius = 3;
-		this.bombNum = 3;
-		this.speed = 2;
+	public Stack<PowerUp> getPowerUpList() {
+		return powerUpList;
+	}
+	public void setPowerUpList(Stack<PowerUp> powerUpList) {
+		this.powerUpList = powerUpList;
 	}
 	public int getX() {
 		return x;
@@ -59,17 +79,17 @@ public abstract class Player {
 	public void setHeight(int height2) {
 		this.height = height2;
 	}
-	public int getDx() {
+	public double getDx() {
 		return dx;
 	}
-	public void setDx(int dx) {
-		this.dx = dx;
+	public void setDx(double speed2) {
+		this.dx = speed2;
 	}
-	public int getDy() {
+	public double getDy() {
 		return dy;
 	}
-	public void setDy(int dy) {
-		this.dy = dy;
+	public void setDy(double speed2) {
+		this.dy = speed2;
 	}
 	public void moveLeft() {
 		if(Game.left)
@@ -123,26 +143,48 @@ public abstract class Player {
 	public void setBombNum(int bombNum) {
 		this.bombNum = bombNum;
 	}
+	
+	public void checkPowerUp(int row, int col) {
+		pu = map.getPowerUpGrids()[row][col];
+		pu.setMyPlayer(this);
+		pu.takeEffect(pu.getPowertype());
+		powerUpList.add(pu);
+		map.getPowerUpGrids()[row][col] = null;
+		map.getGrids()[row][col] = GridConstants.NOTHING;
+	}
 	public boolean collisionCheckX(double delta, Map map) {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;
 //		System.out.println(x + " " + i + " " + y + " " + j);
 		if((x + dx * delta) < (i * Game.gridWidth)) {
 			if(i - 1 >= 0) {
-				if(map.getGrids()[j][i - 1] == GridConstants.BRICK || map.getGrids()[j][i - 1] == GridConstants.POWERBRICK || map.getBombGrids()[j][i - 1] != null) {
+				if(map.getGrids()[j][i - 1] == GridConstants.BRICK || map.getGrids()[j][i - 1] == GridConstants.POWERBRICK || map.getGrids()[j][i - 1] == GridConstants.BOMB) {
 					x = i * Game.gridWidth;
 					return false;
 				}
+				if(map.getGrids()[j][i - 1] == GridConstants.POWERUP) {
+					checkPowerUp(j, i - 1);
+					return true;
+				}
 				if(j + 1 < GridConstants.GRIDNUMY) {
-					if((y + width) > (j + 1) * Game.gridWidth && (map.getGrids()[j + 1][i - 1] == GridConstants.BRICK ||  map.getGrids()[j + 1][i - 1] == GridConstants.POWERBRICK || map.getBombGrids()[j + 1][i - 1] != null)) {
+					if((y + width) > (j + 1) * Game.gridWidth && (map.getGrids()[j + 1][i - 1] == GridConstants.BRICK || map.getGrids()[j + 1][i - 1] == GridConstants.POWERBRICK || map.getGrids()[j + 1][i - 1] == GridConstants.BOMB)) {
 						x = i * Game.gridWidth;
 						return false;
 					}
+					if((y + width) > (j + 1) * Game.gridWidth && map.getGrids()[j + 1][i - 1] == GridConstants.POWERUP) {
+						checkPowerUp(j + 1, i - 1);
+						return true;
+					}
 				}
 				if(j - 1 >= 0) {
-					if(y < (j) * Game.gridWidth && (map.getGrids()[j - 1][i - 1] == GridConstants.BRICK || map.getGrids()[j - 1][i - 1] == GridConstants.POWERBRICK || map.getBombGrids()[j + 1][i - 1] != null)) {
+					if(y < (j) * Game.gridWidth && (map.getGrids()[j - 1][i - 1] == GridConstants.BRICK || map.getGrids()[j - 1][i - 1] == GridConstants.POWERBRICK || map.getGrids()[j - 1][i - 1] == GridConstants.BOMB)) {
 						x = i * Game.gridWidth;
 						return false;
+					}
+					
+					if(y < (j) * Game.gridWidth && map.getGrids()[j - 1][i - 1] == GridConstants.POWERUP) {
+						checkPowerUp(j - 1, i - 1);
+						return true;
 					}
 				}
 				
@@ -154,20 +196,34 @@ public abstract class Player {
 		}
 		if((x + dx * delta + width) > (i * Game.gridWidth + Game.gridWidth)) {
 			if(i + 1 < GridConstants.GRIDNUMX) {
-				if(map.getGrids()[j][i + 1] == GridConstants.BRICK || map.getGrids()[j][i + 1] == GridConstants.POWERBRICK || map.getBombGrids()[j][i + 1] != null) {
+				if(map.getGrids()[j][i + 1] == GridConstants.BRICK || map.getGrids()[j][i + 1] == GridConstants.POWERBRICK || map.getGrids()[j][i + 1] == GridConstants.BOMB) {
 					x = i * Game.gridWidth + diff;
 					return false;
 				}
+				if(map.getGrids()[j][i + 1] == GridConstants.POWERUP) {
+					checkPowerUp(j, i + 1);
+					return true;
+				}
 				if(j + 1 < GridConstants.GRIDNUMY) {
-					if((y + width) > (j + 1) * Game.gridWidth && (map.getGrids()[j + 1][i + 1] == GridConstants.BRICK || map.getGrids()[j + 1][i + 1] == GridConstants.POWERBRICK || map.getBombGrids()[j + 1][i + 1] != null)) {
+					if((y + width) > (j + 1) * Game.gridWidth && (map.getGrids()[j + 1][i + 1] == GridConstants.BRICK || map.getGrids()[j + 1][i + 1] == GridConstants.POWERBRICK || map.getGrids()[j + 1][i + 1] == GridConstants.BOMB)) {
 						x = i * Game.gridWidth + diff;
 						return false;
 					}
+					
+					if((y + width) > (j + 1) * Game.gridWidth && map.getGrids()[j + 1][i + 1] == GridConstants.POWERUP) {
+						checkPowerUp(j + 1, i + 1);
+						return true;
+					}
+					
 				}
 				if(j - 1 >= 0) {
-					if(y < (j) * Game.gridWidth && (map.getGrids()[j - 1][i + 1] == GridConstants.BRICK || map.getGrids()[j - 1][i + 1] == GridConstants.POWERBRICK || map.getBombGrids()[j - 1][i + 1] != null)) {
+					if(y < (j) * Game.gridWidth && (map.getGrids()[j - 1][i + 1] == GridConstants.BRICK || map.getGrids()[j - 1][i + 1] == GridConstants.POWERBRICK || map.getGrids()[j - 1][i + 1] == GridConstants.BOMB)) {
 						x = i * Game.gridWidth + diff;
 						return false;
+					}
+					if(y < (j) * Game.gridWidth && map.getGrids()[j - 1][i + 1] == GridConstants.POWERUP) {
+						checkPowerUp(j - 1, i + 1);
+						return true;
 					}
 				}
 				
@@ -188,20 +244,32 @@ public abstract class Player {
 
 		if ((y + dy * delta) < (j * Game.gridWidth)) {
 			if(j - 1 >= 0) {
-				if(map.getGrids()[j - 1][i] == GridConstants.BRICK || map.getGrids()[j - 1][i] == GridConstants.POWERBRICK || map.getBombGrids()[j - 1][i] != null) {
+				if(map.getGrids()[j - 1][i] == GridConstants.BRICK || map.getGrids()[j - 1][i] == GridConstants.POWERBRICK || map.getGrids()[j - 1][i] == GridConstants.BOMB) {
 					y = j * Game.gridWidth;
 					return false;
 				}
+				if(map.getGrids()[j - 1][i] == GridConstants.POWERUP) {
+					checkPowerUp(j - 1, i);
+					return true;
+				}
 				if(i + 1 < GridConstants.GRIDNUMX) {
-					if((x + width) > (i + 1) * Game.gridWidth && (map.getGrids()[j - 1][i + 1] == GridConstants.BRICK || map.getGrids()[j - 1][i + 1] == GridConstants.POWERBRICK || map.getBombGrids()[j - 1][i + 1] != null)) {
+					if((x + width) > (i + 1) * Game.gridWidth && (map.getGrids()[j - 1][i + 1] == GridConstants.BRICK || map.getGrids()[j - 1][i + 1] == GridConstants.POWERBRICK || map.getGrids()[j - 1][i + 1] == GridConstants.BOMB)) {
 						y = j * Game.gridWidth;
 						return false;
 					}
+					if((x + width) > (i + 1) * Game.gridWidth && map.getGrids()[j - 1][i + 1] == GridConstants.POWERUP) {
+						checkPowerUp(j - 1, i + 1);
+						return true;
+					}
 				}
 				if(i - 1 >= 0) {
-					if((x) < (i) * Game.gridWidth && (map.getGrids()[j - 1][i - 1] == GridConstants.BRICK || map.getGrids()[j - 1][i - 1] == GridConstants.POWERBRICK || map.getBombGrids()[j - 1][i - 1] != null)) {
+					if((x) < (i) * Game.gridWidth && (map.getGrids()[j - 1][i - 1] == GridConstants.BRICK || map.getGrids()[j - 1][i - 1] == GridConstants.POWERBRICK || map.getGrids()[j - 1][i - 1] == GridConstants.BOMB)) {
 						y = j * Game.gridWidth;
 						return false;
+					}
+					if((x) < (i) * Game.gridWidth && (map.getGrids()[j - 1][i - 1] == GridConstants.POWERUP)) {
+						checkPowerUp(j - 1, i - 1);
+						return true;
 					}
 				}
 			} else {
@@ -212,20 +280,32 @@ public abstract class Player {
 		
 		if((y + dy * delta + width) > (j * Game.gridWidth + Game.gridWidth)) {
 			if(j + 1 < GridConstants.GRIDNUMY) {
-				if(map.getGrids()[j + 1][i] == GridConstants.BRICK || map.getGrids()[j + 1][i] == GridConstants.POWERBRICK || map.getBombGrids()[j + 1][i] != null) {
+				if(map.getGrids()[j + 1][i] == GridConstants.BRICK || map.getGrids()[j + 1][i] == GridConstants.POWERBRICK || map.getGrids()[j + 1][i] == GridConstants.BOMB) {
 					y = j * Game.gridWidth + diff;
 					return false;
 				}
+				if(map.getGrids()[j + 1][i] == GridConstants.POWERUP) {
+					checkPowerUp(j + 1, i);
+					return true;
+				}
 				if(i + 1 < GridConstants.GRIDNUMX) {
-					if((x + width) > (i + 1) * Game.gridWidth && (map.getGrids()[j + 1][i + 1] == GridConstants.BRICK || map.getGrids()[j + 1][i + 1] == GridConstants.POWERBRICK || map.getBombGrids()[j + 1][i + 1] != null)) {
+					if((x + width) > (i + 1) * Game.gridWidth && (map.getGrids()[j + 1][i + 1] == GridConstants.BRICK || map.getGrids()[j + 1][i + 1] == GridConstants.POWERBRICK || map.getGrids()[j + 1][i + 1] == GridConstants.BOMB)) {
 						y = j * Game.gridWidth + diff;
 						return false;
 					}
+					if((x + width) > (i + 1) * Game.gridWidth && map.getGrids()[j + 1][i + 1] == GridConstants.POWERUP) {
+						checkPowerUp(j + 1, i + 1);
+						return true;
+					}
 				}
 				if(i - 1 >= 0) {
-					if((x) < (i) * Game.gridWidth && (map.getGrids()[j + 1][i - 1] == GridConstants.BRICK || map.getGrids()[j + 1][i - 1] == GridConstants.POWERBRICK || map.getBombGrids()[j + 1][i - 1] != null)) {
+					if((x) < (i) * Game.gridWidth && (map.getGrids()[j + 1][i - 1] == GridConstants.BRICK || map.getGrids()[j + 1][i - 1] == GridConstants.POWERBRICK || map.getGrids()[j + 1][i - 1] == GridConstants.BOMB)) {
 						y = j * Game.gridWidth + diff;
 						return false;
+					}
+					if((x) < (i) * Game.gridWidth && map.getGrids()[j + 1][i - 1] == GridConstants.POWERUP) {
+						checkPowerUp(j + 1, i - 1);
+						return true;
 					}
 				}
 				

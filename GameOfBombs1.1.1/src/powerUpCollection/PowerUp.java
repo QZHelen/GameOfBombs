@@ -1,5 +1,7 @@
 package powerUpCollection;
 
+import java.awt.Color;
+
 import characterCollection.Player;
 import gameItemCollection.PerishBlock;
 import interfaceCollection.Destroyable;
@@ -12,13 +14,72 @@ public class PowerUp extends PerishBlock {
 //	public static PowerUp powerUpFactory(int row, int col, int width, int height) {
 //		return new PowerUp(row, col, width, height);
 //	}
+	//FIREUP, BOMBUP, SPEEDUP, HEARTUP, FIREDOWN, BOMBDOWN, SPEEDDOWN,BOMBPASS,LIFEUP,INVINCIBLEVEST,MAXHEALTH;
 	
+	public PowerUpType getPowertype() {
+		return powertype;
+	}
+
+	public void setPowertype(PowerUpType powertype) {
+		this.powertype = powertype;
+	}
+
+	public Player getMyPlayer() {
+		return myPlayer;
+	}
+
+	public void setMyPlayer(Player myPlayer) {
+		this.myPlayer = myPlayer;
+	}
+
 	protected PowerUp(int row, int col, int width, int height,PowerUpType powerUpType,Player myplayer) {
 		super(row, col, width, height);
 		powertype = powerUpType;
 		this.myPlayer = myplayer;
 	}
 	
+	public void takeEffect(PowerUpType powertype) {
+		switch(powertype) {
+			case FIREUP:
+				myPlayer.setFireRadius(myPlayer.getFireRadius() + 1);
+				break;
+			case BOMBUP:
+				myPlayer.setBombNum(myPlayer.getBombNum() + 1);
+				break;
+			case SPEEDUP:
+				myPlayer.setSpeed(myPlayer.getSpeed() + .5);
+				break;
+			case HEARTUP:break;
+			case FIREDOWN:break;
+			case BOMBDOWN:break;
+			case SPEEDDOWN:break;
+			case BOMBPASS:break;
+			case LIFEUP:break;
+			case INVINCIBLEVEST:break;
+			case MAXHEALTH:break;
+			default: break;
+		}
+	}
+	
+	public Color renderColor(PowerUpType powertype) {
+		switch(powertype) {
+		case FIREUP:
+			return Color.DARK_GRAY;
+		case BOMBUP:
+			return Color.GRAY;
+		case SPEEDUP:
+			return Color.GREEN;
+		case HEARTUP:return Color.LIGHT_GRAY;
+		case FIREDOWN:return Color.MAGENTA;
+		case BOMBDOWN:return Color.ORANGE;
+		case SPEEDDOWN:return Color.PINK;
+		case BOMBPASS:return Color.WHITE;
+		case LIFEUP:return new Color((int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256));
+		case INVINCIBLEVEST:return new Color((int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256));
+		case MAXHEALTH:return new Color((int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256));
+		default: return Color.YELLOW;
+		}
+	}
 	public boolean isDestroyable(){
 		return true;
 	}
