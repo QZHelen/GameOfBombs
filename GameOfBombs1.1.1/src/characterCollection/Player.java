@@ -63,6 +63,7 @@ public abstract class Player {
 		speed = 2;
 		powerUpList = new Stack<PowerUp>();
 		active = true;
+		health = 100;
 	}
 	
 	public double getSpeed() {
