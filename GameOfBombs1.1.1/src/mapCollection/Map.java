@@ -83,7 +83,7 @@ public abstract class Map {
 				}
 			}
 		}
-		int countRand = 330;
+		int countRand = 30;
 		while(countRand-- > 0) {
 			int row = rand.nextInt(grids.length - 2) + 1;
 			int col = rand.nextInt(grids[1].length - 2) + 1;

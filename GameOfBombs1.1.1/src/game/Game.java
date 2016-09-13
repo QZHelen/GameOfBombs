@@ -25,9 +25,11 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public static int maxHeight;
 	public static boolean left,right,up,down;
 	public static int panelHeight;
+	static TopPanel tPanel;
+	static BottomPanel bPanel;
 	
 	public Game(Map map) {
-		this.p1 = new PlayerOne((int)Math.floor(gridWidth * .9),(int)Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
+		this.p1 = new PlayerOne((int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
 		this.map = map;
 		
 		gameRunning = true;
@@ -41,12 +43,10 @@ public class Game extends Canvas implements Runnable, KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 		if(!p1.isActive()) return;
 		int keyCode = e.getKeyCode();
 	    if (keyCode == KeyEvent.VK_LEFT) {
@@ -94,14 +94,12 @@ public class Game extends Canvas implements Runnable, KeyListener{
 				Game.down = true;
 				break;
 			default:
-				//TODO
 				break;
 		}
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if(!p1.isActive()) return;
-		// TODO Auto-generated method stub
 		int keyCode = e.getKeyCode();
 	    if (keyCode == KeyEvent.VK_LEFT && !right) 
 	    	p1.setDx(0);
@@ -144,13 +142,11 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	}
 
 	private void updateAll(double delta, Map map) {
-		// TODO Auto-generated method stub
 		p1.update(delta,map);
 		
 	}
 
 	private void render() {
-		// TODO Auto-generated method stub
 		Graphics g = strategy.getDrawGraphics();
 	    g.setColor(Color.CYAN);
 	    g.fillRect(0,0,Game.maxWidth,Game.maxHeight);
@@ -176,7 +172,6 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    			Bomb b = map.getBombGrids()[i][j];
 	    			if(!b.isExplode()) {
 			    		 g.fillOval(b.getCol() * Game.gridWidth,b.getRow() * Game.gridHeight,b.getWidth(),b.getHeight());
-//			    		 break;
 			    	} else {
 			    		// set fire
 			    		map.getBombGrids()[i][j] = null;

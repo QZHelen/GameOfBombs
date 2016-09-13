@@ -25,7 +25,17 @@ public abstract class Player {
 	private boolean active;
 	private int row;
 	private int col;
+	private int health;
 	Map map;
+	
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	
 	public int getRow() {
 		return y / Game.gridHeight;
 	}
