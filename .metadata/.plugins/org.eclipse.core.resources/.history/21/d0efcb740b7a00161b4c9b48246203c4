@@ -71,29 +71,14 @@ public abstract class Player {
 	}
 
 	public void setSpeed(double speed) {
-		if (speed <=4 || speed >=0) {
 		this.speed = speed;
-		}
-	}
-	
-	public void changeSpeedBy(double amount) {
-		if (speed + amount <=4 || speed + amount >=0) {
-			this.speed = speed + amount;
-			}
 	}
 
 	public int getFireRadius() {
 		return fireRadius;
 	}
 	public void setFireRadius(int fireRadius) {
-		if (fireRadius > 0) {
 		this.fireRadius = fireRadius;
-		}
-	}
-	public void changeFireRadiusBy(int amount) {
-		if (this.fireRadius + amount > 0) {
-		this.fireRadius += amount;
-		}
 	}
 	public Stack<PowerUp> getPowerUpList() {
 		return powerUpList;
@@ -201,14 +186,7 @@ public abstract class Player {
 		return bombNum;
 	}
 	public void setBombNum(int bombNum) {
-		if (bombNum > 0) {
 		this.bombNum = bombNum;
-		}
-	}
-	public void changeBombNumBy(int amount) {
-		if (this.bombNum + amount > 0) {
-			this.bombNum += amount;
-		}
 	}
 	
 	public void checkPowerUp(int row, int col) {
