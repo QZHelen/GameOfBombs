@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
 
 import mapCollection.*;
 
@@ -28,7 +29,7 @@ public class GameRun {
 	public static Map gameMap;
 	static JMenuBar jmbar;
 	static JProgressBar p1healthbar;
-	JProgressBar p2healthbar;
+	static JProgressBar p2healthbar;
 	
 	public static void main(String[] args) {
 		gameSetUp();
@@ -97,5 +98,15 @@ public class GameRun {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		try {
+	        SwingUtilities.invokeLater(new Runnable() {
+	          public void run() {
+	        	  p1healthbar.setValue(game.getP1().getHealth());
+	          }
+	        });
+	        java.lang.Thread.sleep(100);
+	      } catch (InterruptedException e) {
+	        ;
+	      }
 	}
 }
