@@ -4,6 +4,7 @@
 <fullyQualifiedTypeName name="mapCollection.Map"/>
 <fullyQualifiedTypeName name="mapCollection.GridConstants"/>
 <fullyQualifiedTypeName name="characterCollection.Player"/>
-<fullyQualifiedTypeName name="game.Game"/>
 <fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="powerUpCollection.PowerUp"/>
+<fullyQualifiedTypeName name="game.Game"/>
 </qualifiedTypeNameHistroy>

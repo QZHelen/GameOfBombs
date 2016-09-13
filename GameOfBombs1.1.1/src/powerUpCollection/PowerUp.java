@@ -41,18 +41,26 @@ public class PowerUp extends PerishBlock {
 	public void takeEffect(PowerUpType powertype) {
 		switch(powertype) {
 			case FIREUP:
-				myPlayer.setFireRadius(myPlayer.getFireRadius() + 1);
+				myPlayer.changeFireRadiusBy(1);
 				break;
 			case BOMBUP:
-				myPlayer.setBombNum(myPlayer.getBombNum() + 1);
+				myPlayer.changeBombNumBy(myPlayer.getBombNum() + 1);
 				break;
 			case SPEEDUP:
-				myPlayer.setSpeed(myPlayer.getSpeed() + .5);
+				myPlayer.changeSpeedBy(.5);;
 				break;
-			case HEARTUP:break;
-			case FIREDOWN:break;
-			case BOMBDOWN:break;
-			case SPEEDDOWN:break;
+			case HEARTUP:
+				
+				break;
+			case FIREDOWN:
+				myPlayer.changeFireRadiusBy(-1);
+				break;
+			case BOMBDOWN:
+				myPlayer.changeBombNumBy(-1);
+				break;
+			case SPEEDDOWN:
+				myPlayer.changeSpeedBy(-.5);
+				break;
 			case BOMBPASS:break;
 			case LIFEUP:break;
 			case INVINCIBLEVEST:break;
