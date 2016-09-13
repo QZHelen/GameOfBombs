@@ -46,6 +46,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+		if(!p1.isActive()) return;
 		int keyCode = e.getKeyCode();
 	    if (keyCode == KeyEvent.VK_LEFT) {
 	    	setKeys('l');
@@ -98,6 +99,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
+		if(!p1.isActive()) return;
 		// TODO Auto-generated method stub
 		int keyCode = e.getKeyCode();
 	    if (keyCode == KeyEvent.VK_LEFT && !right) 
@@ -110,6 +112,14 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    	p1.setDy(0);
 		
 	}
+	public Player getP1() {
+		return p1;
+	}
+
+	public void setP1(Player p1) {
+		this.p1 = p1;
+	}
+
 	@Override
 	public void run() {
 		long lastLoopTime = System.nanoTime();
@@ -181,8 +191,10 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    for(int i = 0; i < grids.length; i++) {
 	    	for(int j = 0; j < grids[0].length; j++) {
 	    		if(fg[i][j] != null) {
-	    			if(!fg[i][j].timeUp())
+	    			if(!fg[i][j].timeUp()) {
 	    				g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
+	    				p1.checkFire(i, j);
+	    			}
 	    			else
 	    				fg[i][j] = null;
 	    		}
@@ -191,7 +203,9 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    fg = null;
 	    //draw player	
 	    g.setColor(Color.gray);
-	    g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
+	    if(p1.isActive()) {
+	    	g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
+	    }
 	    g.dispose();
 	    strategy.show();
 		
