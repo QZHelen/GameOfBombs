@@ -24,6 +24,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public static int maxWidth;
 	public static int maxHeight;
 	public static boolean left,right,up,down;
+	public static int panelHeight;
 	
 	public Game(Map map) {
 		this.p1 = new PlayerOne((int)Math.floor(gridWidth * .9),(int)Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
