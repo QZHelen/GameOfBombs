@@ -22,7 +22,26 @@ public abstract class Player {
 	private double speed;
 	private Stack<PowerUp> powerUpList;
 	private PowerUp pu;
+	private boolean active;
+	private int row;
+	private int col;
 	Map map;
+	public int getRow() {
+		return y / Game.gridHeight;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getCol() {
+		return x / Game.gridWidth;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
+	}
+	
 	
 	public Player(int width, int height, int diff, Map map) {
 		setWidth(width);
@@ -31,8 +50,9 @@ public abstract class Player {
 		this.map = map;
 		fireRadius = 1;
 		bombNum = 1;
-		speed = 1;
+		speed = 2;
 		powerUpList = new Stack<PowerUp>();
+		active = true;
 	}
 	
 	public double getSpeed() {
@@ -112,6 +132,20 @@ public abstract class Player {
 			setDy(speed);
 	}
 	
+	public void hurt() {
+		
+	}
+	public void die() {
+		active = false;
+	}
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	public void setBomb() {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;
@@ -151,6 +185,11 @@ public abstract class Player {
 		powerUpList.add(pu);
 		map.getPowerUpGrids()[row][col] = null;
 		map.getGrids()[row][col] = GridConstants.NOTHING;
+	}
+	
+	public void checkFire(int row, int col) {
+		if(getRow() == row && getCol() == col)
+			die();
 	}
 	public boolean collisionCheckX(double delta, Map map) {
 		int i = x / Game.gridWidth;

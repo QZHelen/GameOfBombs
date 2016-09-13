@@ -46,8 +46,9 @@ public class GameRun {
 		
 		frame.setSize(Game.maxWidth,Game.maxHeight + insets.top);
 		frame.setLocationRelativeTo(null);
-		gameMap = new IceMap(Game.maxWidth,Game.maxHeight);
+		gameMap = new IceMap(Game.maxWidth,Game.maxHeight,null);
 		game = new Game(gameMap);
+		gameMap.setP1(game.getP1());
 		frame.getContentPane().add(game);
 		game.setFocusable(true);
 		game.requestFocusInWindow();

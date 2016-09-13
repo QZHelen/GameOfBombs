@@ -24,7 +24,7 @@ public abstract class Map {
 	static int bombmin = 4;
 	static int speedmin = 3;
 	static int firemin = 4;
-	public Map(int width, int height) {
+	public Map(int width, int height,Player p1) {
 		rand = new Random();
 		powerFactory = new PowerUpFactory();
 		this.grids = new int[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
@@ -33,9 +33,20 @@ public abstract class Map {
 //		bombs = new ArrayList<Bomb>();
 		bombGrids = new Bomb[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		initGrids(grids);
+		this.p1 = p1;
 		
 	}
 	
+
+	public Player getP1() {
+		return p1;
+	}
+
+
+	public void setP1(Player p1) {
+		this.p1 = p1;
+	}
+
 
 	public Bomb[][] getBombGrids() {
 		return bombGrids;
@@ -72,7 +83,7 @@ public abstract class Map {
 				}
 			}
 		}
-		int countRand = 30;
+		int countRand = 330;
 		while(countRand-- > 0) {
 			int row = rand.nextInt(grids.length - 2) + 1;
 			int col = rand.nextInt(grids[1].length - 2) + 1;
@@ -132,6 +143,10 @@ public abstract class Map {
 	public void setFireGrids(int row, int col, Fire centerFire) {
 		int radius = centerFire.getRadius();
 		fireGrids[row][col] = centerFire;
+//		if(row == p1.getRow() && col == p1.getCol()) {
+//			fireGrids[row][col] = centerFire;
+//			p1.die();
+//		}
 		int rowstart,rowend,colstart,colend;
 		rowstart = row - radius;
 		rowend = row + radius;
@@ -141,6 +156,7 @@ public abstract class Map {
 		if(rowend > GridConstants.GRIDNUMY - 1) rowend = GridConstants.GRIDNUMY - 1;
 		if(colstart < 0) colstart = 0;
 		if(colend > GridConstants.GRIDNUMX - 1) colend = GridConstants.GRIDNUMX - 1;
+		System.out.println(p1);
 		for(int i = row - 1; i >= rowstart; i--) {
 			if(grids[i][col] == GridConstants.NOTHING) {
 				fireGrids[i][col] = centerFire;
@@ -162,31 +178,17 @@ public abstract class Map {
 				break;
 			}
 			if(grids[i][col] == GridConstants.BOMB) {
-//				Bomb b;
-//			    if(!getBombs().isEmpty()) {
-//			    	for(Iterator<Bomb> iterator = getBombs().iterator();iterator.hasNext();) {
-//			    		b = iterator.next();
-//			    		if(b.getRow() == i && b.getCol() == col) {
-//			    			iterator.remove();
-//			    			b.explode();
-//			    			p1 = b.getP();
-//			    			p1.setBombNum(p1.getBombNum() + 1);
-////				    		iterator.remove();
-//			    		}
-//			    	}
-//			    	b = null;
-//			    }
 			    if(bombGrids[i][col] != null) {
 			    	Bomb temp = bombGrids[i][col];
 			    	bombGrids[i][col] = null;
 			    	temp.explode();
-//			    	p1 = temp.getP();
-//	    			p1.setBombNum(p1.getBombNum() + 1);
+
 			    }
 			}
 			
 		}
 		for(int i = row + 1; i <= rowend; i++) {
+
 			if(grids[i][col] == GridConstants.NOTHING) {
 				fireGrids[i][col] = centerFire;
 				continue;
@@ -236,26 +238,11 @@ public abstract class Map {
 				break;
 			}
 			if(grids[row][i] == GridConstants.BOMB) {
-//				Bomb b;
-//			    if(!getBombs().isEmpty()) {
-//			    	for(Iterator<Bomb> iterator = getBombs().iterator();iterator.hasNext();) {
-//			    		b = iterator.next();
-//			    		if(b.getRow() == row && b.getCol() == i) {
-//			    			iterator.remove();
-//			    			b.explode();
-//			    			p1 = b.getP();
-//			    			p1.setBombNum(p1.getBombNum() + 1);
-////				    		iterator.remove();
-//			    		}
-//			    	}
-//			    	b = null;
-//			    }
+
 				if(bombGrids[row][i] != null) {
 			    	Bomb temp = bombGrids[row][i];
 			    	bombGrids[row][i] = null;
 			    	temp.explode();
-//			    	p1 = temp.getP();
-//	    			p1.setBombNum(p1.getBombNum() + 1);
 			    }
 			}
 		}
@@ -279,20 +266,6 @@ public abstract class Map {
 				break;
 			}
 			if(grids[row][i] == GridConstants.BOMB) {
-//				Bomb b;
-//			    if(!getBombs().isEmpty()) {
-//			    	for(Iterator<Bomb> iterator = getBombs().iterator();iterator.hasNext();) {
-//			    		b = iterator.next();
-//			    		if(b.getRow() == row && b.getCol() == i) {
-//			    			iterator.remove();
-//			    			b.explode();
-//			    			p1 = b.getP();
-//			    			p1.setBombNum(p1.getBombNum() + 1);
-////				    		iterator.remove();
-//			    		}
-//			    	}
-//			    	b = null;
-//			    }
 				if(bombGrids[row][i] != null) {
 			    	Bomb temp = bombGrids[row][i];
 			    	bombGrids[row][i] = null;
