@@ -30,7 +30,6 @@ public abstract class Map {
 		this.grids = new int[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		powerUpGrids =  new PowerUp[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		fireGrids = new Fire[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
-//		bombs = new ArrayList<Bomb>();
 		bombGrids = new Bomb[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		initGrids(grids);
 		this.p1 = p1;
@@ -101,7 +100,7 @@ public abstract class Map {
 				continue;
 			}
 			powerUpGrids[row][col] = powerFactory.createType(row,col,Game.gridWidth,Game.gridHeight, null);
-//			powerUpGrids[row][col] = new BombPass(row, col, Game.gridWidth, Game.gridHeight, PowerUpType.BOMBPASS, null);
+
 			
 		}
 
@@ -156,7 +155,6 @@ public abstract class Map {
 			}
 			if(grids[i][col] == GridConstants.POWERBRICK) {
 				grids[i][col] = GridConstants.POWERUP;
-//				powerUpGrids[i][col] = PowerUp.powerUpFactory(i, col, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
 				fireGrids[i][col] = centerFire;
 				break;
 			}
@@ -187,7 +185,6 @@ public abstract class Map {
 			}
 			if(grids[i][col] == GridConstants.POWERBRICK) {
 				grids[i][col] = GridConstants.POWERUP;
-//				powerUpGrids[i][col] = PowerUp.powerUpFactory(i, col, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
 				fireGrids[i][col] = centerFire;
 				break;
 			}
@@ -200,8 +197,6 @@ public abstract class Map {
 			    	Bomb temp = bombGrids[i][col];
 			    	bombGrids[i][col] = null;
 			    	temp.explode();
-//			    	p1 = temp.getP();
-//	    			p1.setBombNum(p1.getBombNum() + 1);
 			    }
 			}
 		}
@@ -217,7 +212,6 @@ public abstract class Map {
 			}
 			if(grids[row][i] == GridConstants.POWERBRICK) {
 				grids[row][i] = GridConstants.POWERUP;
-//				powerUpGrids[row][i] = PowerUp.powerUpFactory(row, i, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
 				fireGrids[row][i] = centerFire;
 				break;
 			}
@@ -257,8 +251,6 @@ public abstract class Map {
 			    	Bomb temp = bombGrids[row][i];
 			    	bombGrids[row][i] = null;
 			    	temp.explode();
-//			    	p1 = temp.getP();
-//	    			p1.setBombNum(p1.getBombNum() + 1);
 			    }
 			}
 		}

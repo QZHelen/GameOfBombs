@@ -156,14 +156,15 @@ public class Game extends Canvas implements Runnable, KeyListener{
 
 	private void render() {
 		Graphics g = strategy.getDrawGraphics();
+		//draw background
 	    g.setColor(Color.CYAN);
-	    g.fillRect(0,0,Game.maxWidth,Game.maxHeight);
+//	    g.fillRect(0,0,Game.maxWidth,Game.maxHeight);
+	    g.drawImage(assetsManager.getBackground(),0,0,Game.maxWidth,Game.maxHeight,null);
 	    int[][] grids = map.getGrids();
 	    for(int i = 0; i < grids.length; i++) {
 	    	for(int j = 0; j < grids[0].length; j++) {
 	    		if(grids[i][j] == GridConstants.BRICK || grids[i][j] == GridConstants.POWERBRICK ) { // TODO modified here for powerup
 	    			g.setColor(Color.RED);
-//	    			g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
 	    			g.drawImage(assetsManager.getBrick(), j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight, null);
 	    		} else if (grids[i][j] == GridConstants.POWERUP ) { // TODO modified here for powerup
 	    			g.setColor(map.getPowerUpGrids()[i][j].renderColor(map.getPowerUpGrids()[i][j].getPowertype()));
@@ -180,12 +181,11 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    		if(map.getBombGrids()[i][j] != null) {
 	    			Bomb b = map.getBombGrids()[i][j];
 	    			if(!b.isExplode()) {
-			    		 g.fillOval(b.getCol() * Game.gridWidth,b.getRow() * Game.gridHeight,b.getWidth(),b.getHeight());
+			    		 g.drawImage(assetsManager.getBomb(),b.getCol() * Game.gridWidth,b.getRow() * Game.gridHeight,b.getWidth(),b.getHeight(), null);
 			    	} else {
 			    		// set fire
 			    		map.getBombGrids()[i][j] = null;
 			    		b.explode();
-
 			    	}
 	    		}
 	    	}
@@ -221,7 +221,8 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    //draw player	
 	    g.setColor(Color.gray);
 	    if(p1.isActive()) {
-	    	g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
+//	    	g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
+	    	g.drawImage(assetsManager.getBombManFace(), p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight(), null);
 	    }
 	    g.dispose();
 	    strategy.show();

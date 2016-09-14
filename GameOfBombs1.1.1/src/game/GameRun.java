@@ -1,18 +1,14 @@
 package game;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.MenuBar;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -21,7 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JProgressBar;
-
 import mapCollection.*;
 
 
@@ -57,7 +52,6 @@ public class GameRun {
 		} else {
 			Game.maxWidth = xSize;
 		}
-		System.out.println(Game.maxHeight + " " + Game.maxWidth);
 		BorderLayout border = new BorderLayout(); 
 		Game.gridWidth = Game.maxWidth / GridConstants.GRIDNUMX;
 		Game.gridHeight = Game.maxHeight / GridConstants.GRIDNUMY;
@@ -65,7 +59,6 @@ public class GameRun {
 		frame = new JFrame("Test");
 		frame.pack();
 		Insets insets = frame.getInsets();
-//		System.out.println(insets.bottom);
 		frame.setMaximumSize(new Dimension(Game.maxWidth,Game.maxHeight + insets.top + Game.panelHeight));
 		
 		frame.setSize(Game.maxWidth,Game.maxHeight + insets.top + Game.panelHeight);
@@ -106,7 +99,6 @@ public class GameRun {
 		Game.tPanel.add(hl2);
 		Game.tPanel.add(hl3);
 		window.add(Game.tPanel,BorderLayout.NORTH);
-		
 		window.add(Game.bPanel, BorderLayout.SOUTH);
 		game.setFocusable(true);
 		game.requestFocusInWindow();
