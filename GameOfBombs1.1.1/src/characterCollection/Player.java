@@ -182,7 +182,6 @@ public abstract class Player {
 	public void hurt() {
 		health -= 1;
 		GameRun.p1healthbar.setValue(health);
-		GameRun.p1healthbar.updateUI();
 	}
 	public void die() {
 		active = false;

@@ -98,22 +98,5 @@ public class GameRun {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-//		SwingUtilities.invokeLater(new Runnable() {
-//		  public void run() {
-//			  while(true) {
-////	        		  System.out.println(100);
-//		    	  p1healthbar.setValue(game.getP1().getHealth());
-//		    	  
-//		    	  p1healthbar.updateUI();
-//		    	  try {
-//						Thread.sleep(100);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//			  }
-//			  
-//		  }
-//		});
 	}
 }
