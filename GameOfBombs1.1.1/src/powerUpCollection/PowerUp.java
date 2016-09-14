@@ -1,8 +1,12 @@
 package powerUpCollection;
 
 import java.awt.Color;
+import java.util.Timer;
 
 import characterCollection.Player;
+import game.BombPassTimerTask;
+import game.Game;
+import game.GodModTimerTask;
 import gameItemCollection.PerishBlock;
 import interfaceCollection.Destroyable;
 import interfaceCollection.Immovable;
@@ -50,7 +54,7 @@ public class PowerUp extends PerishBlock {
 				myPlayer.changeSpeedBy(.5);;
 				break;
 			case HEARTUP:
-				
+				myPlayer.changeHealthBy(10);
 				break;
 			case FIREDOWN:
 				myPlayer.changeFireRadiusBy(-1);
@@ -61,10 +65,22 @@ public class PowerUp extends PerishBlock {
 			case SPEEDDOWN:
 				myPlayer.changeSpeedBy(-.5);
 				break;
-			case BOMBPASS:break;
-			case LIFEUP:break;
-			case INVINCIBLEVEST:break;
-			case MAXHEALTH:break;
+			case BOMBPASS:
+				myPlayer.setBombPassMode(true);
+				if(Game.bombPasstimer == null) {
+					Game.bombPasstimer = new Timer();
+					Game.bombPasstimer.schedule(new BombPassTimerTask(myPlayer), 10 * 1000);
+				}
+				break;
+			case LIFEUP:
+				myPlayer.changeLifeBy(1);
+				break;
+			case INVINCIBLEVEST:
+				myPlayer.setGodMode(true);
+				break;
+			case MAXHEALTH:
+				myPlayer.setHealth(100);
+				break;
 			default: break;
 		}
 	}

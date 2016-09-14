@@ -83,7 +83,7 @@ public abstract class Map {
 				}
 			}
 		}
-		int countRand = 30;
+		int countRand = 230;
 		while(countRand-- > 0) {
 			int row = rand.nextInt(grids.length - 2) + 1;
 			int col = rand.nextInt(grids[1].length - 2) + 1;
@@ -101,12 +101,10 @@ public abstract class Map {
 				continue;
 			}
 			powerUpGrids[row][col] = powerFactory.createType(row,col,Game.gridWidth,Game.gridHeight, null);
+//			powerUpGrids[row][col] = new BombPass(row, col, Game.gridWidth, Game.gridHeight, PowerUpType.BOMBPASS, null);
 			
 		}
-//		countLast = 12;
-//		while(countLast-- > 0) {
-//			grids[34][rand.nextInt(grids[1].length - 2) + 1] = GridConstants.BRICK;
-//		}
+
 	}
 
 	public int[][] getGrids() {
@@ -116,13 +114,6 @@ public abstract class Map {
 	public void setGrids(int[][] grids) {
 		this.grids = grids;
 	}
-//	public ArrayList<Bomb> getBombs() {
-//		return bombs;
-//	}
-//
-//	public void setBombs(ArrayList<Bomb> bombs) {
-//		this.bombs = bombs;
-//	}
 
 	public PowerUp[][] getPowerUpGrids() {
 		return powerUpGrids;

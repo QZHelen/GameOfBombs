@@ -5,19 +5,22 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.MenuBar;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
 
 import mapCollection.*;
 
@@ -30,12 +33,15 @@ public class GameRun {
 	static JMenuBar jmbar;
 	public static JProgressBar p1healthbar;
 	public static JProgressBar p2healthbar;
+	public static HeartLabel hl1;
+	public static HeartLabel hl2;
+	public static HeartLabel hl3;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		gameSetUp();
 	}
 	
-	public static void gameSetUp() {
+	public static void gameSetUp() throws IOException {
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		int xSize = ((int) tk.getScreenSize().getWidth());
 		int ySize = ((int) tk.getScreenSize().getHeight());
@@ -82,10 +88,23 @@ public class GameRun {
 		Game.tPanel.add(Box.createRigidArea(new Dimension(20,0)));
 		p1healthbar = new JProgressBar(0, 100);
 		p1healthbar.setValue(100);
+		Game.tPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		
 		p1healthbar.setMinimumSize(new Dimension(Game.maxWidth / 8,100));
 		p1healthbar.setMaximumSize(new Dimension(Game.maxWidth / 8,100));
 		p1healthbar.setStringPainted(true);
 		Game.tPanel.add(p1healthbar);
+		Game.tPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		Image image = ImageIO.read(new File("src/images/heart.png")); 
+		ImageIcon icon1 = new ImageIcon();
+		image = image.getScaledInstance(Game.gridWidth,Game.gridHeight, Image.SCALE_SMOOTH);
+		icon1.setImage(image);
+		hl1 = new HeartLabel(icon1);
+		hl2 = new HeartLabel(icon1);
+		hl3 = new HeartLabel(icon1);
+		Game.tPanel.add(hl1);
+		Game.tPanel.add(hl2);
+		Game.tPanel.add(hl3);
 		window.add(Game.tPanel,BorderLayout.NORTH);
 		
 		window.add(Game.bPanel, BorderLayout.SOUTH);

@@ -6,6 +6,10 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import mapCollection.GridConstants;
 import mapCollection.Map;
 import characterCollection.Player;
@@ -27,8 +31,11 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public static int panelHeight;
 	static TopPanel tPanel;
 	static BottomPanel bPanel;
+	static Timer godModetimer;
+	public static Timer bombPasstimer;
+	AssetsManager assetsManager;
 	
-	public Game(Map map) {
+	public Game(Map map) throws IOException {
 		this.p1 = new PlayerOne((int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
 		this.map = map;
 		
@@ -39,6 +46,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    right = false;
 	    up = false;
 	    down = false;
+	    assetsManager = new AssetsManager();
 	}
 
 	@Override
@@ -155,7 +163,8 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    	for(int j = 0; j < grids[0].length; j++) {
 	    		if(grids[i][j] == GridConstants.BRICK || grids[i][j] == GridConstants.POWERBRICK ) { // TODO modified here for powerup
 	    			g.setColor(Color.RED);
-	    			g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
+//	    			g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
+	    			g.drawImage(assetsManager.getBrick(), j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight, null);
 	    		} else if (grids[i][j] == GridConstants.POWERUP ) { // TODO modified here for powerup
 	    			g.setColor(map.getPowerUpGrids()[i][j].renderColor(map.getPowerUpGrids()[i][j].getPowertype()));
 	    			g.fillOval(j * Game.gridWidth, i * Game.gridHeight, (int)(Game.gridWidth * .9),(int) (.9 * Game.gridHeight));
@@ -190,8 +199,14 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    			if(!fg[i][j].timeUp()) {
 	    				g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
 	    				if(!p1.isFirechecked()) {
-	    					System.out.println("test");
-	    					p1.checkFire(i, j);
+	    					if(!p1.isGodMode()) {
+	    						p1.checkFire(i, j);
+	    					} else {
+	    						if(godModetimer == null) {
+	    							godModetimer = new Timer();
+	    							godModetimer.schedule(new GodModTimerTask(p1), 10 * 1000);
+	    						}
+	    					}
 	    				}
 	    			}
 	    			else {
