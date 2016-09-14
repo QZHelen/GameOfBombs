@@ -4,6 +4,7 @@ package characterCollection;
 import java.util.Stack;
 
 import game.Game;
+import game.GameRun;
 import gameItemCollection.Bomb;
 import mapCollection.GridConstants;
 import mapCollection.Map;
@@ -26,6 +27,24 @@ public abstract class Player {
 	private int row;
 	private int col;
 	private int health;
+	private int life;
+	private boolean firechecked;
+	
+	public boolean isFirechecked() {
+		return firechecked;
+	}
+
+	public void setFirechecked(boolean firechecked) {
+		this.firechecked = firechecked;
+	}
+
+	public int getLife() {
+		return life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
+	}
 	Map map;
 	
 	public int getHealth() {
@@ -64,6 +83,8 @@ public abstract class Player {
 		powerUpList = new Stack<PowerUp>();
 		active = true;
 		health = 100;
+		life = 3;
+		firechecked = false;
 	}
 	
 	public double getSpeed() {
@@ -159,7 +180,9 @@ public abstract class Player {
 	}
 	
 	public void hurt() {
-		
+		health -= 1;
+		GameRun.p1healthbar.setValue(health);
+		GameRun.p1healthbar.updateUI();
 	}
 	public void die() {
 		active = false;
@@ -221,8 +244,15 @@ public abstract class Player {
 	}
 	
 	public void checkFire(int row, int col) {
-		if(getRow() == row && getCol() == col)
-			die();
+		if(getRow() == row && getCol() == col) {
+			if(health > 50) {
+				hurt();
+			} else {
+				hurt();
+				die();
+			}
+		}
+			
 	}
 	public boolean collisionCheckX(double delta, Map map) {
 		int i = x / Game.gridWidth;

@@ -143,10 +143,6 @@ public abstract class Map {
 	public void setFireGrids(int row, int col, Fire centerFire) {
 		int radius = centerFire.getRadius();
 		fireGrids[row][col] = centerFire;
-//		if(row == p1.getRow() && col == p1.getCol()) {
-//			fireGrids[row][col] = centerFire;
-//			p1.die();
-//		}
 		int rowstart,rowend,colstart,colend;
 		rowstart = row - radius;
 		rowend = row + radius;
