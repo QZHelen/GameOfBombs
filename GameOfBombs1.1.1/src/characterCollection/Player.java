@@ -244,7 +244,10 @@ public abstract class Player {
 	}
 	
 	public void checkFire(int row, int col) {
+		System.out.println(row + " " + this.getRow());
+		System.out.println(col + " " + this.getCol());
 		if(getRow() == row && getCol() == col) {
+			setFirechecked(true);
 			if(health > 50) {
 				hurt();
 			} else {

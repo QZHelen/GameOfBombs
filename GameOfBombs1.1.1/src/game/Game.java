@@ -190,8 +190,8 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    			if(!fg[i][j].timeUp()) {
 	    				g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
 	    				if(!p1.isFirechecked()) {
+	    					System.out.println("test");
 	    					p1.checkFire(i, j);
-	    					p1.setFirechecked(true);
 	    				}
 	    			}
 	    			else {
