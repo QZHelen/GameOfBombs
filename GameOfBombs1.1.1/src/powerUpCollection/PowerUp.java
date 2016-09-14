@@ -44,7 +44,7 @@ public class PowerUp extends PerishBlock {
 				myPlayer.changeFireRadiusBy(1);
 				break;
 			case BOMBUP:
-				myPlayer.changeBombNumBy(myPlayer.getBombNum() + 1);
+				myPlayer.changeBombNumBy(1);
 				break;
 			case SPEEDUP:
 				myPlayer.changeSpeedBy(.5);;
