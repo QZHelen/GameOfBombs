@@ -100,6 +100,7 @@ public abstract class Map {
 				continue;
 			}
 			powerUpGrids[row][col] = powerFactory.createType(row,col,Game.gridWidth,Game.gridHeight, null);
+//			powerUpGrids[row][col] = new SpeedUp(row, col, Game.gridWidth, Game.gridHeight, PowerUpType.SPEEDUP, null);
 
 			
 		}

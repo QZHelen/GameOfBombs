@@ -31,6 +31,7 @@ public abstract class Player {
 	private boolean firechecked;
 	private boolean godMode;
 	private boolean bombPassMode;
+	static int healthCheck;
 	Map map;
 
 	public boolean isBombPassMode() {
@@ -104,6 +105,7 @@ public abstract class Player {
 		firechecked = false;
 		godMode = false;
 		bombPassMode = false;
+		healthCheck = 20;
 	}
 	
 	public double getSpeed() {
@@ -119,7 +121,7 @@ public abstract class Player {
 	public void changeSpeedBy(double amount) {
 		if (speed + amount <=4 || speed + amount >=0) {
 			this.speed = speed + amount;
-			}
+		}
 	}
 
 	public int getFireRadius() {
@@ -199,7 +201,7 @@ public abstract class Player {
 	}
 	
 	public void hurt() {
-		health -= 10;
+		health -= healthCheck;
 		GameRun.p1healthbar.setValue(health);
 	}
 	public void die() {
@@ -291,7 +293,7 @@ public abstract class Player {
 	public void checkFire(int row, int col) {
 		if(getRow() == row && getCol() == col) {
 			setFirechecked(true);
-			if(health > 10) {
+			if(health > healthCheck) {
 				hurt();
 			} else {
 				die();

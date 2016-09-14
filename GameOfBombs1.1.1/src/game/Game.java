@@ -20,6 +20,7 @@ import gameItemCollection.Fire;
 public class Game extends Canvas implements Runnable, KeyListener{
 	
 	Player p1;
+	Player p2;
 	Map map;
 	public BufferStrategy strategy;
 	boolean gameRunning;
@@ -37,6 +38,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	
 	public Game(Map map) throws IOException {
 		this.p1 = new PlayerOne((int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
+		this.p2 = new PlayerOne((int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
 		this.map = map;
 		
 		gameRunning = true;
