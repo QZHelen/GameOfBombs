@@ -3,12 +3,15 @@ package game;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.swing.AbstractAction;
 
 import mapCollection.GridConstants;
 import mapCollection.Map;
@@ -22,13 +25,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 	Player p1;
 	Player p2;
-	public Player getP2() {
-		return p2;
-	}
-
-	public void setP2(Player p2) {
-		this.p2 = p2;
-	}
 	Map map;
 	public BufferStrategy strategy;
 	boolean gameRunning;
@@ -40,6 +36,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	static TopPanel tPanel;
 	static BottomPanel bPanel;
 	AssetsManager assetsManager;
+	public static final String MOVE_UP = "move up";
+	public static final String MOVE_DOWN = "move down";
+	public static final String MOVE_LEFT = "move left";
+	public static final String MOVE_RIGHT = "move right";
+	public static final String FIRE = "fire";
 	
 	public Game(Map map) throws IOException {
 		this.p1 = new PlayerOne(0,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
@@ -54,11 +55,20 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	    addKeyListener(this);
 	    assetsManager = new AssetsManager();
 	}
+	
+	public Player getP2() {
+		return p2;
+	}
 
+	public void setP2(Player p2) {
+		this.p2 = p2;
+	}
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		
 	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
@@ -96,9 +106,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		    	p2.setBomb();
 		    }
 		}
-		
-		
-		
 	}
 	
 	public void setKeys(char key, Player p) {
@@ -134,7 +141,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
+		System.out.println("released");
 		if(p1.isActive()) {
+			System.out.println("p1" + (char) keyCode);
 			if (keyCode == KeyEvent.VK_A && !p1.right) 
 		    	p1.setDx(0);
 		    else if (keyCode == KeyEvent.VK_D && !p1.left)
@@ -145,13 +154,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		    	p1.setDy(0);
 		}
 		if(p2.isActive()) {
-		    if (keyCode == KeyEvent.VK_LEFT && ! p2.right) 
+			System.out.println("p2" + (char) keyCode);
+		    if (keyCode == KeyEvent.VK_LEFT && !p2.right) 
 		    	p2.setDx(0);
 		    else if (keyCode == KeyEvent.VK_RIGHT && !p2.left)
 		    	p2.setDx(0);
-		    else if (keyCode == KeyEvent.VK_UP && ! p2.down)
+		    else if (keyCode == KeyEvent.VK_UP &&  !p2.down)
 		    	p2.setDy(0);
-		    else if (keyCode == KeyEvent.VK_DOWN && ! p2.up)
+		    else if (keyCode == KeyEvent.VK_DOWN && !p2.up)
 		    	p2.setDy(0);
 		}
 		
@@ -275,5 +285,41 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			}
 		}
 	}
+	 private class MoveAction extends AbstractAction {
+
+	        int direction;
+	        int player;
+
+	        MoveAction(int direction, int player) {
+
+	            this.direction = direction;
+	            this.player = player;
+	        }
+
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+
+	            // Same as the move method in the question code.
+	            // Player can be detected by e.getSource() instead and call its own move method.
+	        }
+	    }
+
+	    private class FireAction extends AbstractAction {
+
+	        int player;
+
+	        FireAction(int player) {
+
+	            this.player = player;
+	        }
+
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+
+	            // Same as the fire method in the question code.
+	            // Player can be detected by e.getSource() instead, and call its own fire method.
+	            // If so then remove the constructor.
+	        }
+	    }
 	
 }

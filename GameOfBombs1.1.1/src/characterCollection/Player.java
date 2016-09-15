@@ -4,17 +4,17 @@ package characterCollection;
 import java.util.Stack;
 import java.util.Timer;
 
+import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 import game.Game;
-import game.GameRun;
 import game.HeartLabel;
 import gameItemCollection.Bomb;
 import mapCollection.GridConstants;
 import mapCollection.Map;
 import powerUpCollection.PowerUp;
 
-public abstract class Player implements Runnable {
+public abstract class Player extends JLabel implements Runnable {
 	
 	Map map;
 	private int x;
@@ -41,7 +41,7 @@ public abstract class Player implements Runnable {
 	public HeartLabel hl1;
 	public HeartLabel hl2;
 	public HeartLabel hl3;
-	public static boolean left,right,up,down;
+	public boolean left,right,up,down;
 	public JProgressBar p1healthbar;
 	Timer godModetimer;
 	Timer bombPasstimer;
@@ -342,8 +342,23 @@ public abstract class Player implements Runnable {
 		}		
 	}
 	public boolean checkPlayerCollisionX(int x, int y,double delta) {
-		if(getX() + width + dx * delta > x) {
-			this.x = x - width;
+		boolean checkRight = (getX() + width + dx * delta > x) && (getY() + height > y && getY() < y + height);
+		boolean checkLeft =  (getX() + dx * delta < (x + width)) && (getY() + height > y && getY() < y + height);
+		if(checkRight && checkLeft) {
+			if(this.x < x) this.x = x - width;
+			else this.x = x + width;
+			return true;
+		}
+		return false;
+	}
+	
+	
+	public boolean checkPlayerCollisionY(int x, int y,double delta) {
+		boolean checkUp = (getY() + width + dy * delta > y) && (getX() + height > x && getX() < x + height);
+		boolean checkDown =  (getY() + dy * delta < (y + width)) && (getX() + height > x && getX() < x + height);
+		if(checkUp && checkDown) {
+			if(this.y < y) this.y = y - width;
+			else this.y = y + width;
 			return true;
 		}
 		return false;
@@ -516,8 +531,11 @@ public abstract class Player implements Runnable {
 	}
 	
 	public void update(double delta,Map map) {
-		if(collisionCheckX(delta,map)) x += dx * delta;
-		if(collisionCheckY(delta,map)) y += dy * delta;
+		boolean checkPlayerX = checkPlayerCollisionX(otherPlayer.getX(),otherPlayer.getY(),delta);
+		boolean checkPlayerY = checkPlayerCollisionY(otherPlayer.getX(),otherPlayer.getY(),delta);
+//		if(!checkPlayerX) this.x = x - otherPlayer.width;
+		if(collisionCheckX(delta,map) && !checkPlayerX) x += dx * delta;
+		if(collisionCheckY(delta,map) && !checkPlayerY) y += dy * delta;
 	}
 	
 	public int getDiff() {
