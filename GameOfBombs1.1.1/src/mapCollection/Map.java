@@ -20,11 +20,12 @@ public abstract class Map {
 	int height;
 	Random rand;
 	Player p1;
+	Player p2;
 	PowerUpFactory powerFactory;
 	static int bombmin = 4;
 	static int speedmin = 3;
 	static int firemin = 4;
-	public Map(int width, int height,Player p1) {
+	public Map(int width, int height,Player p1,Player p2) {
 		rand = new Random();
 		powerFactory = new PowerUpFactory();
 		this.grids = new int[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
@@ -33,9 +34,20 @@ public abstract class Map {
 		bombGrids = new Bomb[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		initGrids(grids);
 		this.p1 = p1;
+		this.p2 = p2;
 		
 	}
 	
+
+	public Player getP2() {
+		return p2;
+	}
+
+
+	public void setP2(Player p2) {
+		this.p2 = p2;
+	}
+
 
 	public Player getP1() {
 		return p1;

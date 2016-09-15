@@ -26,11 +26,11 @@ public class GameRun {
 	public static Game game;
 	public static Map gameMap;
 	static JMenuBar jmbar;
-	public static JProgressBar p1healthbar;
-	public static JProgressBar p2healthbar;
-	public static HeartLabel hl1;
-	public static HeartLabel hl2;
-	public static HeartLabel hl3;
+//	public static JProgressBar p1healthbar;
+//	public static JProgressBar p2healthbar;
+//	public static HeartLabel hl1;
+//	public static HeartLabel hl2;
+//	public static HeartLabel hl3;
 	
 	public static void main(String[] args) throws IOException {
 		gameSetUp();
@@ -63,9 +63,10 @@ public class GameRun {
 		
 		frame.setSize(Game.maxWidth,Game.maxHeight + insets.top + Game.panelHeight);
 		frame.setLocationRelativeTo(null);
-		gameMap = new IceMap(Game.maxWidth,Game.maxHeight,null);
+		gameMap = new IceMap(Game.maxWidth,Game.maxHeight,null,null);
 		game = new Game(gameMap);
 		gameMap.setP1(game.getP1());
+		gameMap.setP2(game.getP2());
 		Container window = frame.getContentPane();
 		window.setLayout(border);
 		window.add(game,BorderLayout.CENTER);
@@ -79,25 +80,41 @@ public class GameRun {
 		Game.tPanel.add(Box.createRigidArea(new Dimension(10,0)));
 		Game.tPanel.add(new JLabel("P1"));
 		Game.tPanel.add(Box.createRigidArea(new Dimension(20,0)));
-		p1healthbar = new JProgressBar(0, 100);
-		p1healthbar.setValue(100);
+		game.getP1().p1healthbar = new JProgressBar(0, 100);
+		game.getP1().p1healthbar.setValue(100);
 		Game.tPanel.add(Box.createRigidArea(new Dimension(20,0)));
-		
-		p1healthbar.setMinimumSize(new Dimension(Game.maxWidth / 8,100));
-		p1healthbar.setMaximumSize(new Dimension(Game.maxWidth / 8,100));
-		p1healthbar.setStringPainted(true);
-		Game.tPanel.add(p1healthbar);
+		game.getP1().p1healthbar.setMaximumSize(new Dimension(Game.maxWidth / 8,100));
+		game.getP1().p1healthbar.setStringPainted(true);
+		Game.tPanel.add(game.getP1().p1healthbar);
 		Game.tPanel.add(Box.createRigidArea(new Dimension(10,0)));
-		Image image = ImageIO.read(new File("src/images/heart.png")); 
+		Image heart = ImageIO.read(new File("src/images/heart.png")); 
 		ImageIcon icon1 = new ImageIcon();
-		image = image.getScaledInstance(Game.gridWidth,Game.gridHeight, Image.SCALE_SMOOTH);
-		icon1.setImage(image);
-		hl1 = new HeartLabel(icon1);
-		hl2 = new HeartLabel(icon1);
-		hl3 = new HeartLabel(icon1);
-		Game.tPanel.add(hl1);
-		Game.tPanel.add(hl2);
-		Game.tPanel.add(hl3);
+		heart = heart.getScaledInstance(Game.gridWidth,Game.gridHeight, Image.SCALE_SMOOTH);
+		icon1.setImage(heart);
+		game.getP1().hl1 = new HeartLabel(icon1);
+		game.getP1().hl2 = new HeartLabel(icon1);
+		game.getP1().hl3 = new HeartLabel(icon1);
+		Game.tPanel.add(game.getP1().hl1);
+		Game.tPanel.add(game.getP1().hl2);
+		Game.tPanel.add(game.getP1().hl3);
+		Game.tPanel.add(Box.createHorizontalGlue());
+		
+		Game.tPanel.add(new JLabel("P2"));
+		Game.tPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		game.getP2().p1healthbar = new JProgressBar(0, 100);
+		game.getP2().p1healthbar.setValue(100);
+		Game.tPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		game.getP2().p1healthbar.setMaximumSize(new Dimension(Game.maxWidth / 8,100));
+		game.getP2().p1healthbar.setStringPainted(true);
+		Game.tPanel.add(game.getP2().p1healthbar);
+		Game.tPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		game.getP2().hl1 = new HeartLabel(icon1);
+		game.getP2().hl2 = new HeartLabel(icon1);
+		game.getP2().hl3 = new HeartLabel(icon1);
+		Game.tPanel.add(game.getP2().hl1);
+		Game.tPanel.add(game.getP2().hl2);
+		Game.tPanel.add(game.getP2().hl3);
+		Game.tPanel.add(Box.createRigidArea(new Dimension(10,0)));
 		window.add(Game.tPanel,BorderLayout.NORTH);
 		window.add(Game.bPanel, BorderLayout.SOUTH);
 		game.setFocusable(true);

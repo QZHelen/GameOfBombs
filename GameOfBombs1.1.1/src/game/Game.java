@@ -14,13 +14,21 @@ import mapCollection.GridConstants;
 import mapCollection.Map;
 import characterCollection.Player;
 import characterCollection.PlayerOne;
+import characterCollection.PlayerTwo;
 import gameItemCollection.Bomb;
 import gameItemCollection.Fire;
 
-public class Game extends Canvas implements Runnable, KeyListener{
+public class Game extends Canvas implements Runnable, KeyListener {
 	
 	Player p1;
 	Player p2;
+	public Player getP2() {
+		return p2;
+	}
+
+	public void setP2(Player p2) {
+		this.p2 = p2;
+	}
 	Map map;
 	public BufferStrategy strategy;
 	boolean gameRunning;
@@ -28,26 +36,22 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public static int gridHeight;
 	public static int maxWidth;
 	public static int maxHeight;
-	public static boolean left,right,up,down;
 	public static int panelHeight;
 	static TopPanel tPanel;
 	static BottomPanel bPanel;
-	static Timer godModetimer;
-	public static Timer bombPasstimer;
 	AssetsManager assetsManager;
 	
 	public Game(Map map) throws IOException {
-		this.p1 = new PlayerOne((int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
-		this.p2 = new PlayerOne((int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
+		this.p1 = new PlayerOne(0,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
+		this.p2 = new PlayerOne((GridConstants.GRIDNUMX - 1) * Game.gridWidth,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
 		this.map = map;
-		
+		p1.otherPlayer = p2;
+		p2.otherPlayer = p1;
+		new Thread(p1).start();
+		new Thread(p2).start();
 		gameRunning = true;
 		setBackground(Color.BLUE); 
 	    addKeyListener(this);
-	    left = false;
-	    right = false;
-	    up = false;
-	    down = false;
 	    assetsManager = new AssetsManager();
 	}
 
@@ -57,51 +61,71 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(!p1.isActive()) return;
 		int keyCode = e.getKeyCode();
-	    if (keyCode == KeyEvent.VK_LEFT) {
-	    	setKeys('l');
-	    	p1.moveLeft();
-	    }	else if (keyCode == KeyEvent.VK_RIGHT) {
-	    	setKeys('r');
-	    	p1.moveRight();
-	    }	else if (keyCode == KeyEvent.VK_UP) {
-	    	setKeys('u');
-	    	p1.moveUp();
-	    }	else if (keyCode == KeyEvent.VK_DOWN) {
-	    	setKeys('d');
-	    	p1.moveDown();
-	    }	else if (keyCode == KeyEvent.VK_SPACE) {
-	    	p1.setBomb();
-	    }
+		if(p1.isActive()) {
+			if (keyCode == KeyEvent.VK_A) {
+		    	setKeys('l',p1);
+		    	p1.moveLeft();
+		    }	else if (keyCode == KeyEvent.VK_D) {
+		    	setKeys('r',p1);
+		    	p1.moveRight();
+		    }	else if (keyCode == KeyEvent.VK_W) {
+		    	setKeys('u',p1);
+		    	p1.moveUp();
+		    }	else if (keyCode == KeyEvent.VK_S) {
+		    	setKeys('d',p1);
+		    	p1.moveDown();
+		    }	else if (keyCode == KeyEvent.VK_N) {
+		    	p1.setBomb();
+		    }
+		}
+		if(p2.isActive()) {
+			if (keyCode == KeyEvent.VK_LEFT) {
+		    	setKeys('l',p2);
+		    	p2.moveLeft();
+		    }	else if (keyCode == KeyEvent.VK_RIGHT) {
+		    	setKeys('r',p2);
+		    	p2.moveRight();
+		    }	else if (keyCode == KeyEvent.VK_UP) {
+		    	setKeys('u',p2);
+		    	p2.moveUp();
+		    }	else if (keyCode == KeyEvent.VK_DOWN) {
+		    	setKeys('d',p2);
+		    	p2.moveDown();
+		    }	else if (keyCode == KeyEvent.VK_SPACE) {
+		    	p2.setBomb();
+		    }
+		}
+		
+		
 		
 	}
 	
-	public void setKeys(char key) {
+	public void setKeys(char key, Player p) {
 		switch (key){
 			case 'l':
-				Game.left = true;
-				Game.right = false;
-				Game.up = false;
-				Game.down = false;
+				p.left = true;
+				p.right = false;
+				p.up = false;
+				p.down = false;
 				break;
 			case 'r':
-				Game.left = false;
-				Game.right = true;
-				Game.up = false;
-				Game.down = false;
+				p.left = false;
+				p.right = true;
+				p.up = false;
+				p.down = false;
 				break;
 			case 'u':
-				Game.left = false;
-				Game.right = false;
-				Game.up = true;
-				Game.down = false;
+				p.left = false;
+				p.right = false;
+				p.up = true;
+				p.down = false;
 				break;
 			case 'd':
-				Game.left = false;
-				Game.right = false;
-				Game.up = false;
-				Game.down = true;
+				p.left = false;
+				p.right = false;
+				p.up = false;
+				p.down = true;
 				break;
 			default:
 				break;
@@ -109,16 +133,28 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(!p1.isActive()) return;
 		int keyCode = e.getKeyCode();
-	    if (keyCode == KeyEvent.VK_LEFT && !right) 
-	    	p1.setDx(0);
-	    else if (keyCode == KeyEvent.VK_RIGHT && !left)
-	    	p1.setDx(0);
-	    else if (keyCode == KeyEvent.VK_UP && !down)
-	    	p1.setDy(0);
-	    else if (keyCode == KeyEvent.VK_DOWN && !up)
-	    	p1.setDy(0);
+		if(p1.isActive()) {
+			if (keyCode == KeyEvent.VK_A && !p1.right) 
+		    	p1.setDx(0);
+		    else if (keyCode == KeyEvent.VK_D && !p1.left)
+		    	p1.setDx(0);
+		    else if (keyCode == KeyEvent.VK_W && !p1.down)
+		    	p1.setDy(0);
+		    else if (keyCode == KeyEvent.VK_S && !p1.up)
+		    	p1.setDy(0);
+		}
+		if(p2.isActive()) {
+		    if (keyCode == KeyEvent.VK_LEFT && ! p2.right) 
+		    	p2.setDx(0);
+		    else if (keyCode == KeyEvent.VK_RIGHT && !p2.left)
+		    	p2.setDx(0);
+		    else if (keyCode == KeyEvent.VK_UP && ! p2.down)
+		    	p2.setDy(0);
+		    else if (keyCode == KeyEvent.VK_DOWN && ! p2.up)
+		    	p2.setDy(0);
+		}
+		
 		
 	}
 	public Player getP1() {
@@ -142,7 +178,6 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		    double delta = updateLength / ((double)OPTIMAL_TIME);
 
 		    // update the game logic
-		    updateAll(delta,map);
 		    //draw graphics 
 		    render();
 	        try {
@@ -151,10 +186,11 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		}
 	}
 
-	private void updateAll(double delta, Map map) {
-		p1.update(delta,map);
-		
-	}
+//	private void updateAll(double delta, Map map) {
+//		p1.update(delta,map);
+//		p2.update(delta, map);
+//		
+//	}
 
 	private void render() {
 		Graphics g = strategy.getDrawGraphics();
@@ -168,7 +204,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    		if(grids[i][j] == GridConstants.BRICK || grids[i][j] == GridConstants.POWERBRICK ) { // TODO modified here for powerup
 	    			g.setColor(Color.RED);
 	    			g.drawImage(assetsManager.getBrick(), j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight, null);
-	    		} else if (grids[i][j] == GridConstants.POWERUP ) { // TODO modified here for powerup
+	    		} else if (grids[i][j] == GridConstants.POWERUP ) { 
 	    			g.setColor(map.getPowerUpGrids()[i][j].renderColor(map.getPowerUpGrids()[i][j].getPowertype()));
 	    			g.fillOval(j * Game.gridWidth, i * Game.gridHeight, (int)(Game.gridWidth * .9),(int) (.9 * Game.gridHeight));
 	    		}
@@ -200,20 +236,13 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	    		if(fg[i][j] != null) {
 	    			if(!fg[i][j].timeUp()) {
 	    				g.fillRect(j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight);
-	    				if(!p1.isFirechecked()) {
-	    					if(!p1.isGodMode()) {
-	    						p1.checkFire(i, j);
-	    					} else {
-	    						if(godModetimer == null) {
-	    							godModetimer = new Timer();
-	    							godModetimer.schedule(new GodModTimerTask(p1), 10 * 1000);
-	    						}
-	    					}
-	    				}
+	    				checkPlayerBurn(fg,i,j,p1,p1.getGodModetimer());
+	    				checkPlayerBurn(fg,i,j,p2,p2.getGodModetimer());
 	    			}
 	    			else {
 	    				fg[i][j] = null;
 	    				p1.setFirechecked(false);
+	    				p2.setFirechecked(false);
 	    			}
 	    				
 	    		}
@@ -226,9 +255,25 @@ public class Game extends Canvas implements Runnable, KeyListener{
 //	    	g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
 	    	g.drawImage(assetsManager.getBombManFace(), p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight(), null);
 	    }
+	    if(p2.isActive()) {
+//	    	g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
+	    	g.drawImage(assetsManager.getBombManFace(), p2.getX(),p2.getY(),p2.getWidth(),p2.getHeight(), null);
+	    }
 	    g.dispose();
 	    strategy.show();
 		
+	}
+	public void checkPlayerBurn(Fire[][] fg,int i,int j,Player p,Timer timer) {
+		if(!p.isFirechecked()) {
+			if(!p.isGodMode()) {
+				p.checkFire(i, j);
+			} else {
+				if(timer == null) {
+					p1.setGodModetimer(new Timer());
+					p1.getGodModetimer().schedule(new GodModTimerTask(p), 10 * 1000);
+				}
+			}
+		}
 	}
 	
 }

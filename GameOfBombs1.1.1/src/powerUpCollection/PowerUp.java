@@ -15,10 +15,6 @@ public class PowerUp extends PerishBlock {
 	
 	PowerUpType powertype;
 	Player myPlayer;
-//	public static PowerUp powerUpFactory(int row, int col, int width, int height) {
-//		return new PowerUp(row, col, width, height);
-//	}
-	//FIREUP, BOMBUP, SPEEDUP, HEARTUP, FIREDOWN, BOMBDOWN, SPEEDDOWN,BOMBPASS,LIFEUP,INVINCIBLEVEST,MAXHEALTH;
 	
 	public PowerUpType getPowertype() {
 		return powertype;
@@ -67,9 +63,9 @@ public class PowerUp extends PerishBlock {
 				break;
 			case BOMBPASS:
 				myPlayer.setBombPassMode(true);
-				if(Game.bombPasstimer == null) {
-					Game.bombPasstimer = new Timer();
-					Game.bombPasstimer.schedule(new BombPassTimerTask(myPlayer), 10 * 1000);
+				if(myPlayer.getBombPasstimer() == null) {
+					myPlayer.setBombPasstimer(new Timer());
+					myPlayer.getBombPasstimer().schedule(new BombPassTimerTask(myPlayer), 10 * 1000);
 				}
 				break;
 			case LIFEUP:

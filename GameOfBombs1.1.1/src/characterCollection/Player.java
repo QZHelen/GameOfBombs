@@ -2,17 +2,23 @@ package characterCollection;
 
 
 import java.util.Stack;
+import java.util.Timer;
+
+import javax.swing.JProgressBar;
 
 import game.Game;
 import game.GameRun;
+import game.HeartLabel;
 import gameItemCollection.Bomb;
 import mapCollection.GridConstants;
 import mapCollection.Map;
 import powerUpCollection.PowerUp;
 
-public abstract class Player {
-	private int x = 0;
-	private int y = 0;
+public abstract class Player implements Runnable {
+	
+	Map map;
+	private int x;
+	private int y;
 	private int width;
 	private int height;
 	private double dx = 0;
@@ -31,8 +37,34 @@ public abstract class Player {
 	private boolean firechecked;
 	private boolean godMode;
 	private boolean bombPassMode;
-	static int healthCheck;
-	Map map;
+	private int healthCheck;
+	public HeartLabel hl1;
+	public HeartLabel hl2;
+	public HeartLabel hl3;
+	public static boolean left,right,up,down;
+	public JProgressBar p1healthbar;
+	Timer godModetimer;
+	Timer bombPasstimer;
+	public Player otherPlayer;
+	
+	public Timer getBombPasstimer() {
+		return bombPasstimer;
+	}
+
+	public void setBombPasstimer(Timer bombPasstimer) {
+		this.bombPasstimer = bombPasstimer;
+	}
+
+	
+	
+	public Timer getGodModetimer() {
+		return godModetimer;
+	}
+
+	public void setGodModetimer(Timer godModetimer) {
+		this.godModetimer = godModetimer;
+	}
+
 
 	public boolean isBombPassMode() {
 		return bombPassMode;
@@ -90,11 +122,13 @@ public abstract class Player {
 	}
 	
 	
-	public Player(int width, int height, int diff, Map map) {
+	public Player(int x, int y, int width, int height, int diff, Map map) {
 		setWidth(width);
 		setHeight(height);
 		this.diff = diff;
 		this.map = map;
+		this.x = x;
+		this.y = y;
 		fireRadius = 1;
 		bombNum = 1;
 		speed = 2;
@@ -106,6 +140,10 @@ public abstract class Player {
 		godMode = false;
 		bombPassMode = false;
 		healthCheck = 20;
+		left = false;
+	    right = false;
+	    up = false;
+	    down = false;
 	}
 	
 	public double getSpeed() {
@@ -113,7 +151,7 @@ public abstract class Player {
 	}
 
 	public void setSpeed(double speed) {
-		if (speed <=4 || speed >=0) {
+		if (speed <= 4 || speed >= 0) {
 		this.speed = speed;
 		}
 	}
@@ -180,57 +218,59 @@ public abstract class Player {
 		this.dy = speed2;
 	}
 	public void moveLeft() {
-		if(Game.left)
+		if(left)
 			setDx(-speed);
 		
 	}
 	public void moveRight() {
 
-		if(Game.right)
+		if(right)
 			setDx(speed);
 		
 	}
 	public void moveUp() {
 
-		if(Game.up)
+		if(up)
 			setDy(-speed);
 	}
 	public void moveDown() {
-		if(Game.down)
+		if(down)
 			setDy(speed);
 	}
 	
 	public void hurt() {
 		health -= healthCheck;
-		GameRun.p1healthbar.setValue(health);
+		p1healthbar.setValue(health);
 	}
+	
 	public void die() {
 		changeLifeBy(-1);
 		if(life <= 0) {
 			active = false;
 			health = 0;
-			GameRun.p1healthbar.setValue(health);
+			p1healthbar.setValue(health);
 		} else {
 			health = 100;
-			GameRun.p1healthbar.setValue(health);
+			p1healthbar.setValue(health);
 		}
 		
 	}
+	
 	public void changeLifeBy(int i) {
 		// TODO Auto-generated method stub
 		this.life += i;
 		if(life == 1) {
-			GameRun.hl1.setVisible(true);
-			GameRun.hl2.setVisible(false);
-			GameRun.hl3.setVisible(false);
+			hl1.setVisible(true);
+			hl2.setVisible(false);
+			hl3.setVisible(false);
 		} else if(life == 2) {
-			GameRun.hl1.setVisible(true);
-			GameRun.hl2.setVisible(true);
-			GameRun.hl3.setVisible(false);
+			hl1.setVisible(true);
+			hl2.setVisible(true);
+			hl3.setVisible(false);
 		} else if(life == 3) {
-			GameRun.hl1.setVisible(true);
-			GameRun.hl2.setVisible(true);
-			GameRun.hl3.setVisible(true);
+			hl1.setVisible(true);
+			hl2.setVisible(true);
+			hl3.setVisible(true);
 		}
 	}
 
@@ -249,14 +289,15 @@ public abstract class Player {
 		int jmod = y % Game.gridHeight;
 		System.out.println(imod + " " + jmod);
 		if(imod >= (int)(.7 * Game.gridWidth) && imod <= (int)(.99 * Game.gridWidth)) {
-			if(Game.right) x = (i + 1) * Game.gridWidth;
+			if(right) x = (i + 1) * Game.gridWidth;
 			i = i + 1;
 		}
 		
 		if(jmod >= (int)(.7 * Game.gridHeight) && jmod <= (int)(.99 * Game.gridWidth)) {
-			if(Game.down) y = (j + 1) * Game.gridHeight;
+			if(down) y = (j + 1) * Game.gridHeight;
 			j = j + 1;
 		}
+		
 		if(bombNum > 0 && this.map.getBombGrids()[j][i] == null) {
 			bombNum--;
 			
@@ -298,13 +339,21 @@ public abstract class Player {
 			} else {
 				die();
 			}
-		}
-			
+		}		
 	}
+	public boolean checkPlayerCollisionX(int x, int y,double delta) {
+		if(getX() + width + dx * delta > x) {
+			this.x = x - width;
+			return true;
+		}
+		return false;
+	}
+//	public boolean checkPlayerCollisionY(int x, int y) {
+//		return otherPlayer.getRow() == i && otherPlayer.getCol() == j? true : false;
+//	}
 	public boolean collisionCheckX(double delta, Map map) {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;
-//		System.out.println(x + " " + i + " " + y + " " + j);
 		if((x + dx * delta) < (i * Game.gridWidth)) {
 			if(i - 1 >= 0) {
 				if(map.getGrids()[j][i - 1] == GridConstants.BRICK || map.getGrids()[j][i - 1] == GridConstants.POWERBRICK || (map.getGrids()[j][i - 1] == GridConstants.BOMB && !isBombPassMode())) {
@@ -378,7 +427,6 @@ public abstract class Player {
 				
 			} else {
 				x = i * Game.gridWidth + diff;
-//				System.out.println(i + " " + x);
 				return false;
 			}
 		} 
@@ -390,7 +438,7 @@ public abstract class Player {
 	public boolean collisionCheckY(double delta, Map map) {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridWidth;
-
+//		map.getGrids()[getRow()][getCol()] = GridConstants.POWERBRICK
 		if ((y + dy * delta) < (j * Game.gridWidth)) {
 			if(j - 1 >= 0) {
 				if(map.getGrids()[j - 1][i] == GridConstants.BRICK || map.getGrids()[j - 1][i] == GridConstants.POWERBRICK || (map.getGrids()[j - 1][i] == GridConstants.BOMB && !isBombPassMode())) {
@@ -466,13 +514,16 @@ public abstract class Player {
 		return true;
 		
 	}
+	
 	public void update(double delta,Map map) {
 		if(collisionCheckX(delta,map)) x += dx * delta;
 		if(collisionCheckY(delta,map)) y += dy * delta;
 	}
+	
 	public int getDiff() {
 		return diff;
 	}
+	
 	public void setDiff(int diff) {
 		this.diff = diff;
 	}

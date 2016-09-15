@@ -13,8 +13,8 @@ public class BombPassTimerTask extends TimerTask {
 	@Override
 	public void run() {
 		p.setBombPassMode(false);
-		Game.bombPasstimer.cancel();
-		Game.bombPasstimer = null;
+		p.getBombPasstimer().cancel();
+		p.setBombPasstimer(null);
 	}
 
 }
