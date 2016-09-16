@@ -1,6 +1,7 @@
 package characterCollection;
 
 
+import java.util.Hashtable;
 import java.util.Stack;
 import java.util.Timer;
 
@@ -8,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 import game.Game;
-import game.HeartLabel;
+import game.CustomLabel;
 import gameItemCollection.Bomb;
 import mapCollection.GridConstants;
 import mapCollection.Map;
@@ -26,6 +27,7 @@ public abstract class Player extends JLabel implements Runnable {
 	private int diff = 0;
 	private int fireRadius;
 	private int bombNum;
+	private Hashtable<Integer,Stack<PowerUp>> badAssList; 
 	private double speed;
 	private Stack<PowerUp> powerUpList;
 	private PowerUp pu;
@@ -38,9 +40,14 @@ public abstract class Player extends JLabel implements Runnable {
 	private boolean godMode;
 	private boolean bombPassMode;
 	private int healthCheck;
-	public HeartLabel hl1;
-	public HeartLabel hl2;
-	public HeartLabel hl3;
+	public CustomLabel hl1;
+	public CustomLabel hl2;
+	public CustomLabel hl3;
+	public CustomLabel hl4;
+	public CustomLabel hl5;
+	public CustomLabel item1;
+	public CustomLabel item2;
+	public CustomLabel item3;
 	public boolean left,right,up,down;
 	public JProgressBar p1healthbar;
 	Timer godModetimer;
@@ -122,7 +129,7 @@ public abstract class Player extends JLabel implements Runnable {
 	}
 	
 	
-	public Player(int x, int y, int width, int height, int diff, Map map) {
+	public Player(int x, int y, int width, int height, int diff, Map map,int key1,int key2,int key3) {
 		setWidth(width);
 		setHeight(height);
 		this.diff = diff;
@@ -133,6 +140,10 @@ public abstract class Player extends JLabel implements Runnable {
 		bombNum = 1;
 		speed = 2;
 		powerUpList = new Stack<PowerUp>();
+		badAssList = new Hashtable<Integer,Stack<PowerUp>>();
+		badAssList.put(key1, new Stack<PowerUp>());
+		badAssList.put(key2, new Stack<PowerUp>());
+		badAssList.put(key3, new Stack<PowerUp>());
 		active = true;
 		health = 100;
 		life = 3;
@@ -146,6 +157,15 @@ public abstract class Player extends JLabel implements Runnable {
 	    down = false;
 	}
 	
+
+	public Hashtable<Integer, Stack<PowerUp>> getBadAssList() {
+		return badAssList;
+	}
+
+	public void setBadAssList(Hashtable<Integer, Stack<PowerUp>> badAssList) {
+		this.badAssList = badAssList;
+	}
+
 	public double getSpeed() {
 		return speed;
 	}
@@ -257,7 +277,6 @@ public abstract class Player extends JLabel implements Runnable {
 	}
 	
 	public void changeLifeBy(int i) {
-		// TODO Auto-generated method stub
 		this.life += i;
 		if(life == 1) {
 			hl1.setVisible(true);
@@ -271,6 +290,10 @@ public abstract class Player extends JLabel implements Runnable {
 			hl1.setVisible(true);
 			hl2.setVisible(true);
 			hl3.setVisible(true);
+		} else if(life == 4) {
+			
+		} else if(life == 5) {
+			
 		}
 	}
 
@@ -287,7 +310,31 @@ public abstract class Player extends JLabel implements Runnable {
 		int j = y / Game.gridHeight;
 		int imod = x % Game.gridWidth;
 		int jmod = y % Game.gridHeight;
-		System.out.println(imod + " " + jmod);
+		if(imod >= (int)(.7 * Game.gridWidth) && imod <= (int)(.99 * Game.gridWidth)) {
+			if(right) x = (i + 1) * Game.gridWidth;
+			i = i + 1;
+		}
+		
+		if(jmod >= (int)(.7 * Game.gridHeight) && jmod <= (int)(.99 * Game.gridWidth)) {
+			if(down) y = (j + 1) * Game.gridHeight;
+			j = j + 1;
+		}
+		
+		if(bombNum > 0 && this.map.getBombGrids()[j][i] == null) {
+			bombNum--;
+			
+			this.map.getBombGrids()[j][i] = new Bomb(i,j,Game.gridWidth,Game.gridHeight, map, this);
+			this.map.getGrids()[j][i] = GridConstants.BOMB;
+			
+		}
+			
+	}
+	
+	public void setPowerUp(int key) {
+		int i = x / Game.gridWidth;
+		int j = y / Game.gridHeight;
+		int imod = x % Game.gridWidth;
+		int jmod = y % Game.gridHeight;
 		if(imod >= (int)(.7 * Game.gridWidth) && imod <= (int)(.99 * Game.gridWidth)) {
 			if(right) x = (i + 1) * Game.gridWidth;
 			i = i + 1;
@@ -326,7 +373,6 @@ public abstract class Player extends JLabel implements Runnable {
 		pu = map.getPowerUpGrids()[row][col];
 		pu.setMyPlayer(this);
 		pu.takeEffect(pu.getPowertype());
-		powerUpList.add(pu);
 		map.getPowerUpGrids()[row][col] = null;
 		map.getGrids()[row][col] = GridConstants.NOTHING;
 	}
@@ -341,6 +387,7 @@ public abstract class Player extends JLabel implements Runnable {
 			}
 		}		
 	}
+	
 	public boolean checkPlayerCollisionX(int x, int y,double delta) {
 		boolean checkRight = (getX() + width + dx * delta > x) && (getY() + height > y && getY() < y + height);
 		boolean checkLeft =  (getX() + dx * delta < (x + width)) && (getY() + height > y && getY() < y + height);
@@ -363,9 +410,7 @@ public abstract class Player extends JLabel implements Runnable {
 		}
 		return false;
 	}
-//	public boolean checkPlayerCollisionY(int x, int y) {
-//		return otherPlayer.getRow() == i && otherPlayer.getCol() == j? true : false;
-//	}
+
 	public boolean collisionCheckX(double delta, Map map) {
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;

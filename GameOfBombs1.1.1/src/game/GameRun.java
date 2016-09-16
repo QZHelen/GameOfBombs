@@ -1,8 +1,10 @@
 package game;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Insets;
@@ -26,11 +28,6 @@ public class GameRun {
 	public static Game game;
 	public static Map gameMap;
 	static JMenuBar jmbar;
-//	public static JProgressBar p1healthbar;
-//	public static JProgressBar p2healthbar;
-//	public static HeartLabel hl1;
-//	public static HeartLabel hl2;
-//	public static HeartLabel hl3;
 	
 	public static void main(String[] args) throws IOException {
 		gameSetUp();
@@ -55,7 +52,7 @@ public class GameRun {
 		BorderLayout border = new BorderLayout(); 
 		Game.gridWidth = Game.maxWidth / GridConstants.GRIDNUMX;
 		Game.gridHeight = Game.maxHeight / GridConstants.GRIDNUMY;
-		System.out.println(Game.gridWidth + " " + Game.gridHeight);
+//		System.out.println(Game.gridWidth + " " + Game.gridHeight);
 		frame = new JFrame("Test");
 		frame.pack();
 		Insets insets = frame.getInsets();
@@ -87,18 +84,41 @@ public class GameRun {
 		game.getP1().p1healthbar.setStringPainted(true);
 		Game.tPanel.add(game.getP1().p1healthbar);
 		Game.tPanel.add(Box.createRigidArea(new Dimension(10,0)));
-		Image heart = ImageIO.read(new File("src/images/heart.png")); 
-		ImageIcon icon1 = new ImageIcon();
+		//image icon setting
+		Image heart = Game.assetsManager.getHeart(); 
+		ImageIcon heartIcon = new ImageIcon();
 		heart = heart.getScaledInstance(Game.gridWidth,Game.gridHeight, Image.SCALE_SMOOTH);
-		icon1.setImage(heart);
-		game.getP1().hl1 = new HeartLabel(icon1);
-		game.getP1().hl2 = new HeartLabel(icon1);
-		game.getP1().hl3 = new HeartLabel(icon1);
+		heartIcon.setImage(heart);
+		
+		Image fireDown = Game.assetsManager.getFireDown(); 
+		ImageIcon fireIcon = new ImageIcon();
+		fireDown = fireDown.getScaledInstance(Game.panelHeight / 2,Game.panelHeight / 2, Image.SCALE_SMOOTH);
+		fireIcon.setImage(fireDown);
+		
+		Image bombDown = Game.assetsManager.getBombChange(); 
+		ImageIcon bombIcon = new ImageIcon();
+		bombDown = bombDown.getScaledInstance(Game.panelHeight / 2,Game.panelHeight / 2, Image.SCALE_SMOOTH);
+		bombIcon.setImage(bombDown);
+		
+		Image speedDown = Game.assetsManager.getSpeedDown(); 
+		ImageIcon speedIcon = new ImageIcon();
+		speedDown = speedDown.getScaledInstance(Game.panelHeight / 2,Game.panelHeight / 2, Image.SCALE_SMOOTH);
+		speedIcon.setImage(speedDown);
+		
+		//top panel set up
+		game.getP1().hl1 = new CustomLabel(heartIcon);
+		game.getP1().hl2 = new CustomLabel(heartIcon);
+		game.getP1().hl3 = new CustomLabel(heartIcon);
+		game.getP1().hl4 = new CustomLabel(heartIcon);
+		game.getP1().hl5 = new CustomLabel(heartIcon);
+		game.getP1().hl4.setVisible(false);
+		game.getP1().hl5.setVisible(false);
 		Game.tPanel.add(game.getP1().hl1);
 		Game.tPanel.add(game.getP1().hl2);
 		Game.tPanel.add(game.getP1().hl3);
+		Game.tPanel.add(game.getP1().hl4);
+		Game.tPanel.add(game.getP1().hl5);
 		Game.tPanel.add(Box.createHorizontalGlue());
-		
 		Game.tPanel.add(new JLabel("P2"));
 		Game.tPanel.add(Box.createRigidArea(new Dimension(20,0)));
 		game.getP2().p1healthbar = new JProgressBar(0, 100);
@@ -108,13 +128,51 @@ public class GameRun {
 		game.getP2().p1healthbar.setStringPainted(true);
 		Game.tPanel.add(game.getP2().p1healthbar);
 		Game.tPanel.add(Box.createRigidArea(new Dimension(10,0)));
-		game.getP2().hl1 = new HeartLabel(icon1);
-		game.getP2().hl2 = new HeartLabel(icon1);
-		game.getP2().hl3 = new HeartLabel(icon1);
+		game.getP2().hl1 = new CustomLabel(heartIcon);
+		game.getP2().hl2 = new CustomLabel(heartIcon);
+		game.getP2().hl3 = new CustomLabel(heartIcon);
+		game.getP2().hl4 = new CustomLabel(heartIcon);
+		game.getP2().hl5 = new CustomLabel(heartIcon);
+		game.getP2().hl4.setVisible(false);
+		game.getP2().hl5.setVisible(false);
 		Game.tPanel.add(game.getP2().hl1);
 		Game.tPanel.add(game.getP2().hl2);
 		Game.tPanel.add(game.getP2().hl3);
+		Game.tPanel.add(game.getP2().hl4);
+		Game.tPanel.add(game.getP2().hl5);
 		Game.tPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		
+		//bottom panel set up
+		
+		game.getP1().item1 = new CustomLabel(fireIcon);
+		CustomLabel temp1 = game.getP1().item1;
+		temp1.setHorizontalTextPosition(JLabel.CENTER);
+		temp1.setVerticalTextPosition(JLabel.CENTER);
+		temp1.setFont(new Font("Impact", Font.BOLD, 20));
+		temp1.setForeground(Color.WHITE);
+		temp1.setText("" + game.getP1().getBadAssList().get(1).size());
+		game.getP1().item2 = new CustomLabel(bombIcon);
+		CustomLabel temp2 = game.getP1().item2;
+		temp2.setHorizontalTextPosition(JLabel.CENTER);
+		temp2.setVerticalTextPosition(JLabel.CENTER);
+		temp2.setFont(new Font("Impact", Font.BOLD, 20));
+		temp2.setForeground(Color.WHITE);
+		temp2.setText("" + game.getP1().getBadAssList().get(2).size());
+		game.getP1().item3 = new CustomLabel(speedIcon);
+		CustomLabel temp3 = game.getP1().item3;
+		temp3.setHorizontalTextPosition(JLabel.CENTER);
+		temp3.setVerticalTextPosition(JLabel.CENTER);
+		temp3.setFont(new Font("Impact", Font.BOLD, 20));
+		temp3.setForeground(Color.WHITE);
+		temp3.setText("" + game.getP1().getBadAssList().get(3).size());
+		Game.bPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		Game.bPanel.add(new JLabel("P1 ItemList"));
+		Game.bPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		Game.bPanel.add(game.getP1().item1);
+		Game.bPanel.add(game.getP1().item2);
+		Game.bPanel.add(game.getP1().item3);
+		
+		//jframe set up
 		window.add(Game.tPanel,BorderLayout.NORTH);
 		window.add(Game.bPanel, BorderLayout.SOUTH);
 		game.setFocusable(true);

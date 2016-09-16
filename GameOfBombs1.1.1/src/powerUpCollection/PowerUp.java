@@ -5,16 +5,15 @@ import java.util.Timer;
 
 import characterCollection.Player;
 import game.BombPassTimerTask;
-import game.Game;
-import game.GodModTimerTask;
 import gameItemCollection.PerishBlock;
-import interfaceCollection.Destroyable;
-import interfaceCollection.Immovable;
 
-public class PowerUp extends PerishBlock {
+import interfaceCollection.Pickable;
+
+public class PowerUp extends PerishBlock implements Pickable {
 	
 	PowerUpType powertype;
 	Player myPlayer;
+	boolean pickable;
 	
 	public PowerUpType getPowertype() {
 		return powertype;
@@ -36,32 +35,52 @@ public class PowerUp extends PerishBlock {
 		super(row, col, width, height);
 		powertype = powerUpType;
 		this.myPlayer = myplayer;
+		if(powerUpType == PowerUpType.BOMBDOWN || powerUpType == PowerUpType.FIREDOWN || powerUpType == PowerUpType.SPEEDDOWN) pickable = true;
+		else pickable = false;
 	}
 	
 	public void takeEffect(PowerUpType powertype) {
 		switch(powertype) {
 			case FIREUP:
+				myPlayer.getPowerUpList().add(this);
 				myPlayer.changeFireRadiusBy(1);
 				break;
 			case BOMBUP:
+				myPlayer.getPowerUpList().add(this);
 				myPlayer.changeBombNumBy(1);
 				break;
 			case SPEEDUP:
+				myPlayer.getPowerUpList().add(this);
 				myPlayer.changeSpeedBy(.5);;
 				break;
 			case HEARTUP:
+				myPlayer.getPowerUpList().add(this);
 				myPlayer.changeHealthBy(10);
 				break;
 			case FIREDOWN:
-				myPlayer.changeFireRadiusBy(-1);
+				if(pickable) {
+					pickable = false;
+					myPlayer.getBadAssList().get(1).push(this);
+					
+				} else
+					myPlayer.changeFireRadiusBy(-1);
 				break;
 			case BOMBDOWN:
-				myPlayer.changeBombNumBy(-1);
+				if(pickable) {
+					pickable = false;
+					myPlayer.getBadAssList().get(2).push(this);
+				} else 
+					myPlayer.changeBombNumBy(-1);
 				break;
 			case SPEEDDOWN:
-				myPlayer.changeSpeedBy(-.5);
+				if(pickable) {
+					myPlayer.getBadAssList().get(3).push(this);
+					pickable = false;
+				} else
+					myPlayer.changeSpeedBy(-.5);
 				break;
 			case BOMBPASS:
+				myPlayer.getPowerUpList().add(this);
 				myPlayer.setBombPassMode(true);
 				if(myPlayer.getBombPasstimer() == null) {
 					myPlayer.setBombPasstimer(new Timer());
@@ -105,6 +124,12 @@ public class PowerUp extends PerishBlock {
 	}
 	
 	public boolean isMovable(){
+		return false;
+	}
+
+	@Override
+	public boolean isPickable() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 	

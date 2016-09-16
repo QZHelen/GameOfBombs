@@ -155,7 +155,7 @@ public abstract class Map {
 		if(rowend > GridConstants.GRIDNUMY - 1) rowend = GridConstants.GRIDNUMY - 1;
 		if(colstart < 0) colstart = 0;
 		if(colend > GridConstants.GRIDNUMX - 1) colend = GridConstants.GRIDNUMX - 1;
-		System.out.println(p1);
+//		System.out.println(p1);
 		for(int i = row - 1; i >= rowstart; i--) {
 			if(grids[i][col] == GridConstants.NOTHING) {
 				fireGrids[i][col] = centerFire;
@@ -252,7 +252,6 @@ public abstract class Map {
 			}
 			if(grids[row][i] == GridConstants.POWERBRICK) {
 				grids[row][i] = GridConstants.POWERUP;
-//				powerUpGrids[row][i] = PowerUp.powerUpFactory(row, i, (int) (Game.gridWidth * .9), (int) (Game.gridHeight * .9) );
 				fireGrids[row][i] = centerFire;
 				break;
 			}

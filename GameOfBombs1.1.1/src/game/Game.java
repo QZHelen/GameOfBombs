@@ -17,7 +17,6 @@ import mapCollection.GridConstants;
 import mapCollection.Map;
 import characterCollection.Player;
 import characterCollection.PlayerOne;
-import characterCollection.PlayerTwo;
 import gameItemCollection.Bomb;
 import gameItemCollection.Fire;
 
@@ -35,7 +34,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static int panelHeight;
 	static TopPanel tPanel;
 	static BottomPanel bPanel;
-	AssetsManager assetsManager;
+	public static AssetsManager assetsManager;
 	public static final String MOVE_UP = "move up";
 	public static final String MOVE_DOWN = "move down";
 	public static final String MOVE_LEFT = "move left";
@@ -43,8 +42,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static final String FIRE = "fire";
 	
 	public Game(Map map) throws IOException {
-		this.p1 = new PlayerOne(0,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
-		this.p2 = new PlayerOne((GridConstants.GRIDNUMX - 1) * Game.gridWidth,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map);
+		this.p1 = new PlayerOne(0,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map,1,2,3);
+		this.p2 = new PlayerOne((GridConstants.GRIDNUMX - 1) * Game.gridWidth,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map,8,9,0);
 		this.map = map;
 		p1.otherPlayer = p2;
 		p2.otherPlayer = p1;
@@ -87,6 +86,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		    	p1.moveDown();
 		    }	else if (keyCode == KeyEvent.VK_N) {
 		    	p1.setBomb();
+		    }	else {
+		    	p1.setPowerUp(keyCode);
 		    }
 		}
 		if(p2.isActive()) {
@@ -141,9 +142,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		System.out.println("released");
+//		System.out.println("released");
 		if(p1.isActive()) {
-			System.out.println("p1" + (char) keyCode);
+//			System.out.println("p1" + (char) keyCode);
 			if (keyCode == KeyEvent.VK_A && !p1.right) 
 		    	p1.setDx(0);
 		    else if (keyCode == KeyEvent.VK_D && !p1.left)
@@ -154,7 +155,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		    	p1.setDy(0);
 		}
 		if(p2.isActive()) {
-			System.out.println("p2" + (char) keyCode);
+//			System.out.println("p2" + (char) keyCode);
 		    if (keyCode == KeyEvent.VK_LEFT && !p2.right) 
 		    	p2.setDx(0);
 		    else if (keyCode == KeyEvent.VK_RIGHT && !p2.left)

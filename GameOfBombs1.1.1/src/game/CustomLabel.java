@@ -3,19 +3,19 @@ package game;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
-public class HeartLabel extends JLabel {
+public class CustomLabel extends JLabel {
 	boolean active;
-	public HeartLabel() {
+	public CustomLabel() {
 		// TODO Auto-generated constructor stub
 		active = true;
 	}
 
-	public HeartLabel(String text) {
+	public CustomLabel(String text) {
 		super(text);
 		// TODO Auto-generated constructor stub
 	}
 
-	public HeartLabel(Icon image) {
+	public CustomLabel(Icon image) {
 		super(image);
 		
 		// TODO Auto-generated constructor stub
@@ -29,19 +29,20 @@ public class HeartLabel extends JLabel {
 		this.active = active;
 	}
 
-	public HeartLabel(String text, int horizontalAlignment) {
+	public CustomLabel(String text, int horizontalAlignment) {
 		super(text, horizontalAlignment);
 		// TODO Auto-generated constructor stub
 	}
 
-	public HeartLabel(Icon image, int horizontalAlignment) {
+	public CustomLabel(Icon image, int horizontalAlignment) {
 		super(image, horizontalAlignment);
 		// TODO Auto-generated constructor stub
 	}
 
-	public HeartLabel(String text, Icon icon, int horizontalAlignment) {
+	public CustomLabel(String text, Icon icon, int horizontalAlignment) {
 		super(text, icon, horizontalAlignment);
 		// TODO Auto-generated constructor stub
+		active = true;
 	}
 
 }
