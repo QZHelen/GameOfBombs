@@ -13,8 +13,8 @@ public class GodModTimerTask extends TimerTask {
 	@Override
 	public void run() {
 		p.setGodMode(false);
-		p.getBombPasstimer().cancel();
-		p.setBombPasstimer(null);
+		p.getGodModetimer().cancel();
+		p.setGodModetimer(null);
 	}
 
 }

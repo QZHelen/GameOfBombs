@@ -3,6 +3,7 @@ package game;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 //import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -15,6 +16,7 @@ import java.util.Timer;
 
 import mapCollection.GridConstants;
 import mapCollection.Map;
+import powerUpCollection.PowerUpType;
 import characterCollection.Player;
 import characterCollection.PlayerOne;
 import gameItemCollection.Bomb;
@@ -219,8 +221,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	    			g.setColor(Color.RED);
 	    			g.drawImage(assetsManager.getBrick(), j * Game.gridWidth, i * Game.gridHeight, Game.gridWidth, Game.gridHeight, null);
 	    		} else if (grids[i][j] == GridConstants.POWERUP ) { 
-	    			g.setColor(map.getPowerUpGrids()[i][j].renderColor(map.getPowerUpGrids()[i][j].getPowertype()));
-	    			g.fillOval(j * Game.gridWidth, i * Game.gridHeight, (int)(Game.gridWidth * .9),(int) (.9 * Game.gridHeight));
+	    			PowerUpType pt = map.getPowerUpGrids()[i][j].getPowertype();
+	    			g.drawImage(map.getPowerUpGrids()[i][j].renderImage(pt), j * Game.gridWidth, i * Game.gridHeight, (int)(Game.gridWidth * .9),(int) (.9 * Game.gridHeight), null);
 	    		}
 	    	}
 	    }
@@ -283,8 +285,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 				p.checkFire(i, j);
 			} else {
 				if(timer == null) {
-					p1.setGodModetimer(new Timer());
-					p1.getGodModetimer().schedule(new GodModTimerTask(p), 10 * 1000);
+					p.setGodModetimer(new Timer());
+					p.getGodModetimer().schedule(new GodModTimerTask(p), 10 * 1000);
 				}
 			}
 		}

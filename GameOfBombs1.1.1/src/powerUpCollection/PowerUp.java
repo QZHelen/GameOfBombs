@@ -1,10 +1,12 @@
 package powerUpCollection;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.Timer;
 
 import characterCollection.Player;
 import game.BombPassTimerTask;
+import game.Game;
 import gameItemCollection.PerishBlock;
 
 import interfaceCollection.Pickable;
@@ -59,7 +61,7 @@ public class PowerUp extends PerishBlock implements Pickable {
 				break;
 			case HEARTUP:
 				myPlayer.getPowerUpList().add(this);
-				myPlayer.changeHealthBy(10);
+				myPlayer.changeHealthBy(20);
 				break;
 			case FIREDOWN:
 				if(pickable) {
@@ -101,6 +103,7 @@ public class PowerUp extends PerishBlock implements Pickable {
 				break;
 			case MAXHEALTH:
 				myPlayer.setHealth(100);
+				myPlayer.p1healthbar.setValue(myPlayer.getHealth());
 				break;
 			default: break;
 		}
@@ -123,6 +126,25 @@ public class PowerUp extends PerishBlock implements Pickable {
 		case INVINCIBLEVEST:return new Color((int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256));
 		case MAXHEALTH:return new Color((int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256));
 		default: return Color.YELLOW;
+		}
+	}
+	public Image renderImage(PowerUpType powertype) {
+		switch(powertype) {
+		case FIREUP:
+			return Game.assetsManager.getFireDown();
+		case BOMBUP:
+			return Game.assetsManager.getBombChange();
+		case SPEEDUP:
+			return Game.assetsManager.getSpeedDown();
+		case HEARTUP:return Game.assetsManager.getHeart();
+		case FIREDOWN:return Game.assetsManager.getFireDown();
+		case BOMBDOWN:return Game.assetsManager.getBombChange();
+		case SPEEDDOWN:return Game.assetsManager.getSpeedDown();
+		case BOMBPASS:return Game.assetsManager.getBombPass();
+		case LIFEUP:return Game.assetsManager.getLife();
+		case INVINCIBLEVEST:return Game.assetsManager.getGodMode();
+		case MAXHEALTH:return Game.assetsManager.getMaxHealth();
+		default: return null;
 		}
 	}
 	public boolean isDestroyable(){

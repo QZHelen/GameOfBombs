@@ -169,13 +169,13 @@ public abstract class Player extends JLabel implements Runnable {
 	}
 
 	public void setSpeed(double speed) {
-		if (speed <= 4 || speed >= 0) {
+		if (speed <= 4 || speed >= 1) {
 		this.speed = speed;
 		}
 	}
 	
 	public void changeSpeedBy(double amount) {
-		if (speed + amount <=4 || speed + amount >=0) {
+		if (speed + amount <= 4 || speed + amount >= 1) {
 			this.speed = speed + amount;
 		}
 	}
@@ -275,23 +275,38 @@ public abstract class Player extends JLabel implements Runnable {
 	}
 	
 	public void changeLifeBy(int i) {
-		this.life += i;
+		if(this.life < 5)
+			this.life += i;
 		if(life == 1) {
 			hl1.setVisible(true);
 			hl2.setVisible(false);
 			hl3.setVisible(false);
+			hl4.setVisible(false);
+			hl5.setVisible(false);
 		} else if(life == 2) {
 			hl1.setVisible(true);
 			hl2.setVisible(true);
 			hl3.setVisible(false);
+			hl4.setVisible(false);
+			hl5.setVisible(false);
 		} else if(life == 3) {
 			hl1.setVisible(true);
 			hl2.setVisible(true);
 			hl3.setVisible(true);
+			hl4.setVisible(false);
+			hl5.setVisible(false);
 		} else if(life == 4) {
-			
+			hl1.setVisible(true);
+			hl2.setVisible(true);
+			hl3.setVisible(true);
+			hl4.setVisible(true);
+			hl5.setVisible(false);
 		} else if(life == 5) {
-			
+			hl1.setVisible(true);
+			hl2.setVisible(true);
+			hl3.setVisible(true);
+			hl4.setVisible(true);
+			hl5.setVisible(true);
 		}
 	}
 
@@ -351,7 +366,7 @@ public abstract class Player extends JLabel implements Runnable {
 			default:
 				return;
 		}
-		System.out.println("pressed" + key);
+//		System.out.println("pressed" + key);
 		key = key - 48;
 		int i = x / Game.gridWidth;
 		int j = y / Game.gridHeight;
@@ -371,7 +386,7 @@ public abstract class Player extends JLabel implements Runnable {
 			PowerUp temp = getBadAssList().get(key).pop();
 			temp.setRow(j);
 			temp.setCol(i);
-			temp.setMyPlayer(null);
+//			temp.setMyPlayer(null);
 			map.getPowerUpGrids()[j][i] = temp;
 			this.map.getGrids()[j][i] = GridConstants.POWERUP;
 			if(key == 1 || key == 8) {
@@ -402,10 +417,13 @@ public abstract class Player extends JLabel implements Runnable {
 	
 	public void checkPowerUp(int row, int col) {
 		pu = map.getPowerUpGrids()[row][col];
-		pu.setMyPlayer(this);
-		pu.takeEffect(pu.getPowertype(),key1,key2,key3);
-		map.getPowerUpGrids()[row][col] = null;
-		map.getGrids()[row][col] = GridConstants.NOTHING;
+//		if(pu.getMyPlayer() == this) return;
+		if(pu.getMyPlayer() != this) {
+			pu.setMyPlayer(this);
+			pu.takeEffect(pu.getPowertype(),key1,key2,key3);
+			map.getPowerUpGrids()[row][col] = null;
+			map.getGrids()[row][col] = GridConstants.NOTHING;
+		}
 	}
 	
 	public void checkFire(int row, int col) {
@@ -623,7 +641,10 @@ public abstract class Player extends JLabel implements Runnable {
 	}
 
 	public void changeHealthBy(int i) {
-		if(health <= 90) health += i;
+		if(health <= 80) {
+			health += i;
+			p1healthbar.setValue(health);
+		}
 		
 	}
 }
