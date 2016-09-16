@@ -172,6 +172,36 @@ public class GameRun {
 		Game.bPanel.add(game.getP1().item2);
 		Game.bPanel.add(game.getP1().item3);
 		
+		game.getP2().item1 = new CustomLabel(fireIcon);
+		temp1 = game.getP2().item1;
+		temp1.setHorizontalTextPosition(JLabel.CENTER);
+		temp1.setVerticalTextPosition(JLabel.CENTER);
+		temp1.setFont(new Font("Impact", Font.BOLD, 20));
+		temp1.setForeground(Color.WHITE);
+		temp1.setText("" + game.getP2().getBadAssList().get(8).size());
+		game.getP2().item2 = new CustomLabel(bombIcon);
+		temp2 = game.getP2().item2;
+		temp2.setHorizontalTextPosition(JLabel.CENTER);
+		temp2.setVerticalTextPosition(JLabel.CENTER);
+		temp2.setFont(new Font("Impact", Font.BOLD, 20));
+		temp2.setForeground(Color.WHITE);
+		temp2.setText("" + game.getP2().getBadAssList().get(9).size());
+		game.getP2().item3 = new CustomLabel(speedIcon);
+		temp3 = game.getP2().item3;
+		temp3.setHorizontalTextPosition(JLabel.CENTER);
+		temp3.setVerticalTextPosition(JLabel.CENTER);
+		temp3.setFont(new Font("Impact", Font.BOLD, 20));
+		temp3.setForeground(Color.WHITE);
+		temp3.setText("" + game.getP2().getBadAssList().get(0).size());
+		//add labels to panel
+		Game.bPanel.add(Box.createHorizontalGlue());
+		Game.bPanel.add(new JLabel("P2 ItemList"));
+		Game.bPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		Game.bPanel.add(game.getP2().item1);
+		Game.bPanel.add(game.getP2().item2);
+		Game.bPanel.add(game.getP2().item3);
+		
+		
 		//jframe set up
 		window.add(Game.tPanel,BorderLayout.NORTH);
 		window.add(Game.bPanel, BorderLayout.SOUTH);

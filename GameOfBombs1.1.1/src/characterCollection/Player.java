@@ -331,27 +331,27 @@ public abstract class Player extends JLabel implements Runnable {
 	}
 	
 	public void setPowerUp(int key) {
-		int i = x / Game.gridWidth;
-		int j = y / Game.gridHeight;
-		int imod = x % Game.gridWidth;
-		int jmod = y % Game.gridHeight;
-		if(imod >= (int)(.7 * Game.gridWidth) && imod <= (int)(.99 * Game.gridWidth)) {
-			if(right) x = (i + 1) * Game.gridWidth;
-			i = i + 1;
-		}
-		
-		if(jmod >= (int)(.7 * Game.gridHeight) && jmod <= (int)(.99 * Game.gridWidth)) {
-			if(down) y = (j + 1) * Game.gridHeight;
-			j = j + 1;
-		}
-		
-		if(bombNum > 0 && this.map.getBombGrids()[j][i] == null) {
-			bombNum--;
-			
-			this.map.getBombGrids()[j][i] = new Bomb(i,j,Game.gridWidth,Game.gridHeight, map, this);
-			this.map.getGrids()[j][i] = GridConstants.BOMB;
-			
-		}
+//		int i = x / Game.gridWidth;
+//		int j = y / Game.gridHeight;
+//		int imod = x % Game.gridWidth;
+//		int jmod = y % Game.gridHeight;
+//		if(imod >= (int)(.7 * Game.gridWidth) && imod <= (int)(.99 * Game.gridWidth)) {
+//			if(right) x = (i + 1) * Game.gridWidth;
+//			i = i + 1;
+//		}
+//		
+//		if(jmod >= (int)(.7 * Game.gridHeight) && jmod <= (int)(.99 * Game.gridWidth)) {
+//			if(down) y = (j + 1) * Game.gridHeight;
+//			j = j + 1;
+//		}
+//		
+//		if(bombNum > 0 && this.map.getBombGrids()[j][i] == null) {
+//			bombNum--;
+//			
+//			this.map.getBombGrids()[j][i] = new Bomb(i,j,Game.gridWidth,Game.gridHeight, map, this);
+//			this.map.getGrids()[j][i] = GridConstants.BOMB;
+//			
+//		}
 			
 	}
 	
