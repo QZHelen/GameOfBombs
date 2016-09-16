@@ -1,6 +1,7 @@
 package characterCollection;
 
 
+import java.awt.event.KeyEvent;
 import java.util.Hashtable;
 import java.util.Stack;
 import java.util.Timer;
@@ -32,27 +33,21 @@ public abstract class Player extends JLabel implements Runnable {
 	private Stack<PowerUp> powerUpList;
 	private PowerUp pu;
 	private boolean active;
-	private int row;
-	private int col;
+	private int row,col;
 	private int health;
 	private int life;
 	private boolean firechecked;
 	private boolean godMode;
 	private boolean bombPassMode;
 	private int healthCheck;
-	public CustomLabel hl1;
-	public CustomLabel hl2;
-	public CustomLabel hl3;
-	public CustomLabel hl4;
-	public CustomLabel hl5;
-	public CustomLabel item1;
-	public CustomLabel item2;
-	public CustomLabel item3;
+	public CustomLabel hl1,hl2,hl3,hl4,hl5;
+	public CustomLabel item1,item2,item3;
 	public boolean left,right,up,down;
 	public JProgressBar p1healthbar;
 	Timer godModetimer;
 	Timer bombPasstimer;
 	public Player otherPlayer;
+	int key1,key2,key3;
 	
 	public Timer getBombPasstimer() {
 		return bombPasstimer;
@@ -130,6 +125,9 @@ public abstract class Player extends JLabel implements Runnable {
 	
 	
 	public Player(int x, int y, int width, int height, int diff, Map map,int key1,int key2,int key3) {
+		this.key1 = key1;
+		this.key2 = key2;
+		this.key3 = key3;
 		setWidth(width);
 		setHeight(height);
 		this.diff = diff;
@@ -331,27 +329,60 @@ public abstract class Player extends JLabel implements Runnable {
 	}
 	
 	public void setPowerUp(int key) {
-//		int i = x / Game.gridWidth;
-//		int j = y / Game.gridHeight;
-//		int imod = x % Game.gridWidth;
-//		int jmod = y % Game.gridHeight;
-//		if(imod >= (int)(.7 * Game.gridWidth) && imod <= (int)(.99 * Game.gridWidth)) {
-//			if(right) x = (i + 1) * Game.gridWidth;
-//			i = i + 1;
-//		}
-//		
-//		if(jmod >= (int)(.7 * Game.gridHeight) && jmod <= (int)(.99 * Game.gridWidth)) {
-//			if(down) y = (j + 1) * Game.gridHeight;
-//			j = j + 1;
-//		}
-//		
-//		if(bombNum > 0 && this.map.getBombGrids()[j][i] == null) {
-//			bombNum--;
-//			
-//			this.map.getBombGrids()[j][i] = new Bomb(i,j,Game.gridWidth,Game.gridHeight, map, this);
-//			this.map.getGrids()[j][i] = GridConstants.BOMB;
-//			
-//		}
+		switch(key) {
+			case KeyEvent.VK_1:
+				if(getBadAssList().get(1).isEmpty()) return;
+				break;
+			case KeyEvent.VK_2:
+				if(getBadAssList().get(2).isEmpty()) return;
+				break;
+			case KeyEvent.VK_3:
+				if(getBadAssList().get(3).isEmpty()) return;
+				break;
+			case KeyEvent.VK_8:
+				if(getBadAssList().get(8).isEmpty()) return;
+				break;
+			case KeyEvent.VK_9:
+				if(getBadAssList().get(9).isEmpty()) return;
+				break;
+			case KeyEvent.VK_0:
+				if(getBadAssList().get(0).isEmpty()) return;
+				break;
+			default:
+				return;
+		}
+		System.out.println("pressed" + key);
+		key = key - 48;
+		int i = x / Game.gridWidth;
+		int j = y / Game.gridHeight;
+		int imod = x % Game.gridWidth;
+		int jmod = y % Game.gridHeight;
+		if(imod >= (int)(.7 * Game.gridWidth) && imod <= (int)(.99 * Game.gridWidth)) {
+			if(right) x = (i + 1) * Game.gridWidth;
+			i = i + 1;
+		}
+		
+		if(jmod >= (int)(.7 * Game.gridHeight) && jmod <= (int)(.99 * Game.gridWidth)) {
+			if(down) y = (j + 1) * Game.gridHeight;
+			j = j + 1;
+		}
+		//bug
+		if(map.getPowerUpGrids()[j][i] == null) {
+			PowerUp temp = getBadAssList().get(key).pop();
+			temp.setRow(j);
+			temp.setCol(i);
+			temp.setMyPlayer(null);
+			map.getPowerUpGrids()[j][i] = temp;
+			this.map.getGrids()[j][i] = GridConstants.POWERUP;
+			if(key == 1 || key == 8) {
+				item1.setText("" + getBadAssList().get(key).size());
+			} else if(key == 2 || key == 9) {
+				item2.setText("" + getBadAssList().get(key).size());
+			} else {
+				item3.setText("" + getBadAssList().get(key).size());
+			}
+			
+		}
 			
 	}
 	
@@ -372,7 +403,7 @@ public abstract class Player extends JLabel implements Runnable {
 	public void checkPowerUp(int row, int col) {
 		pu = map.getPowerUpGrids()[row][col];
 		pu.setMyPlayer(this);
-		pu.takeEffect(pu.getPowertype());
+		pu.takeEffect(pu.getPowertype(),key1,key2,key3);
 		map.getPowerUpGrids()[row][col] = null;
 		map.getGrids()[row][col] = GridConstants.NOTHING;
 	}

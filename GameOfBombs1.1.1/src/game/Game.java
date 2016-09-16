@@ -3,15 +3,15 @@ package game;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
+//import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.util.Timer;
-import java.util.TimerTask;
+//import java.util.TimerTask;
 
-import javax.swing.AbstractAction;
+//import javax.swing.AbstractAction;
 
 import mapCollection.GridConstants;
 import mapCollection.Map;
@@ -86,7 +86,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		    	p1.moveDown();
 		    }	else if (keyCode == KeyEvent.VK_N) {
 		    	p1.setBomb();
-		    }	else {
+		    }	else if(keyCode == KeyEvent.VK_1 || keyCode == KeyEvent.VK_2 || keyCode == KeyEvent.VK_3){
+//		    	System.out.println("pressed");
 		    	p1.setPowerUp(keyCode);
 		    }
 		}
@@ -105,6 +106,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		    	p2.moveDown();
 		    }	else if (keyCode == KeyEvent.VK_SPACE) {
 		    	p2.setBomb();
+		    } 	else if (keyCode == KeyEvent.VK_8 || keyCode == KeyEvent.VK_9 || keyCode == KeyEvent.VK_0) {
+		    	p2.setPowerUp(keyCode);
 		    }
 		}
 	}
@@ -184,9 +187,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		while(gameRunning) {
 			
 			long now = System.nanoTime();
-		    long updateLength = now - lastLoopTime;
+//		    long updateLength = now - lastLoopTime;
 		    lastLoopTime = now;
-		    double delta = updateLength / ((double)OPTIMAL_TIME);
+//		    double delta = updateLength / ((double)OPTIMAL_TIME);
 
 		    // update the game logic
 		    //draw graphics 
@@ -286,41 +289,41 @@ public class Game extends Canvas implements Runnable, KeyListener {
 			}
 		}
 	}
-	 private class MoveAction extends AbstractAction {
-
-	        int direction;
-	        int player;
-
-	        MoveAction(int direction, int player) {
-
-	            this.direction = direction;
-	            this.player = player;
-	        }
-
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-
-	            // Same as the move method in the question code.
-	            // Player can be detected by e.getSource() instead and call its own move method.
-	        }
-	    }
-
-	    private class FireAction extends AbstractAction {
-
-	        int player;
-
-	        FireAction(int player) {
-
-	            this.player = player;
-	        }
-
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-
-	            // Same as the fire method in the question code.
-	            // Player can be detected by e.getSource() instead, and call its own fire method.
-	            // If so then remove the constructor.
-	        }
-	    }
+//	 private class MoveAction extends AbstractAction {
+//
+//	        int direction;
+//	        int player;
+//
+//	        MoveAction(int direction, int player) {
+//
+//	            this.direction = direction;
+//	            this.player = player;
+//	        }
+//
+//	        @Override
+//	        public void actionPerformed(ActionEvent e) {
+//
+//	            // Same as the move method in the question code.
+//	            // Player can be detected by e.getSource() instead and call its own move method.
+//	        }
+//	    }
+//
+//	    private class FireAction extends AbstractAction {
+//
+//	        int player;
+//
+//	        FireAction(int player) {
+//
+//	            this.player = player;
+//	        }
+//
+//	        @Override
+//	        public void actionPerformed(ActionEvent e) {
+//
+//	            // Same as the fire method in the question code.
+//	            // Player can be detected by e.getSource() instead, and call its own fire method.
+//	            // If so then remove the constructor.
+//	        }
+//	    }
 	
 }

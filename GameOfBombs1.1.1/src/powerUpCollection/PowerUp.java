@@ -15,6 +15,10 @@ public class PowerUp extends PerishBlock implements Pickable {
 	Player myPlayer;
 	boolean pickable;
 	
+	public void setPickable(boolean pickable) {
+		this.pickable = pickable;
+	}
+
 	public PowerUpType getPowertype() {
 		return powertype;
 	}
@@ -39,7 +43,7 @@ public class PowerUp extends PerishBlock implements Pickable {
 		else pickable = false;
 	}
 	
-	public void takeEffect(PowerUpType powertype) {
+	public void takeEffect(PowerUpType powertype,int key1,int key2,int key3) {
 		switch(powertype) {
 			case FIREUP:
 				myPlayer.getPowerUpList().add(this);
@@ -60,22 +64,24 @@ public class PowerUp extends PerishBlock implements Pickable {
 			case FIREDOWN:
 				if(pickable) {
 					pickable = false;
-					myPlayer.getBadAssList().get(1).push(this);
-					
+					myPlayer.getBadAssList().get(key1).push(this);
+					myPlayer.item1.setText("" + myPlayer.getBadAssList().get(key1).size());
 				} else
 					myPlayer.changeFireRadiusBy(-1);
 				break;
 			case BOMBDOWN:
 				if(pickable) {
 					pickable = false;
-					myPlayer.getBadAssList().get(2).push(this);
+					myPlayer.getBadAssList().get(key2).push(this);
+					myPlayer.item2.setText("" + myPlayer.getBadAssList().get(key2).size());
 				} else 
 					myPlayer.changeBombNumBy(-1);
 				break;
 			case SPEEDDOWN:
 				if(pickable) {
-					myPlayer.getBadAssList().get(3).push(this);
+					myPlayer.getBadAssList().get(key3).push(this);
 					pickable = false;
+					myPlayer.item3.setText("" + myPlayer.getBadAssList().get(key3).size());
 				} else
 					myPlayer.changeSpeedBy(-.5);
 				break;
