@@ -8,6 +8,10 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Timer;
 //import java.util.TimerTask;
@@ -22,6 +26,8 @@ import characterCollection.Player;
 import characterCollection.PlayerOne;
 import gameItemCollection.Bomb;
 import gameItemCollection.Fire;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.*;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 	
@@ -61,7 +67,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	    addKeyListener(this);
 	    assetsManager = new AssetsManager();
 	}
-	
+
 	public Player getP2() {
 		return p2;
 	}

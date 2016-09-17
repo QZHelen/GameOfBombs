@@ -2,5 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="/Users/yunchu/Downloads/mp3spi.jar"/>
+	<classpathentry kind="lib" path="/Users/yunchu/Downloads/MpegAudioSPI1.9.5/mp3spi1.9.5.jar"/>
+	<classpathentry kind="lib" path="/Users/yunchu/Downloads/JLayer1.0.1/jl1.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

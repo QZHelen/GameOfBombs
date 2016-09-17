@@ -9,7 +9,10 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -19,6 +22,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JProgressBar;
+
+import javazoom.jl.decoder.JavaLayerException;
 import mapCollection.*;
 
 
@@ -214,5 +219,26 @@ public class GameRun {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		backgroundMusic();
+	}
+	
+	public static void backgroundMusic() {
+		try {
+			File f = new File("src/audio/background.mp3");
+			FileInputStream fs = new FileInputStream(f);
+			BufferedInputStream bs = new BufferedInputStream(fs);
+//			AudioInputStream audio = AudioSystem.getAudioInputStream();
+//			Clip clip = AudioSystem.getClip();
+//			clip.open(audio);
+//			clip.start();
+			javazoom.jl.player.Player player = new javazoom.jl.player.Player(bs);
+			player.play();
+		}	 catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JavaLayerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
