@@ -17,6 +17,7 @@ import java.util.Timer;
 import mapCollection.GridConstants;
 import mapCollection.Map;
 import powerUpCollection.PowerUpType;
+import characterCollection.AI;
 import characterCollection.Player;
 import characterCollection.PlayerOne;
 import gameItemCollection.Bomb;
@@ -26,6 +27,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 	Player p1;
 	Player p2;
+	AI monster1;
 	Map map;
 	public BufferStrategy strategy;
 	boolean gameRunning;
@@ -46,11 +48,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public Game(Map map) throws IOException {
 		this.p1 = new PlayerOne(0,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map,1,2,3);
 		this.p2 = new PlayerOne((GridConstants.GRIDNUMX - 1) * Game.gridWidth,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map,8,9,0);
+		this.monster1 = new AI((GridConstants.GRIDNUMX - 1) * Game.gridWidth,(GridConstants.GRIDNUMY - 1) * Game.gridHeight,gridWidth,gridWidth, map);
 		this.map = map;
 		p1.otherPlayer = p2;
 		p2.otherPlayer = p1;
+		monster1.otherPlayer = p1;
 		new Thread(p1).start();
 		new Thread(p2).start();
+		new Thread(monster1).start();
 		gameRunning = true;
 		setBackground(Color.BLUE); 
 	    addKeyListener(this);
@@ -274,6 +279,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	    if(p2.isActive()) {
 //	    	g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
 	    	g.drawImage(assetsManager.getBombManFace(), p2.getX(),p2.getY(),p2.getWidth(),p2.getHeight(), null);
+	    }
+	    if(monster1.isActive()) {
+//	    	g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
+	    	g.drawImage(assetsManager.getGhost(), monster1.getX(),monster1.getY(),monster1.getWidth(),monster1.getHeight(), null);
 	    }
 	    g.dispose();
 	    strategy.show();

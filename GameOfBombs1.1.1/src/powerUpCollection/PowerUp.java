@@ -92,7 +92,7 @@ public class PowerUp extends PerishBlock implements Pickable {
 				myPlayer.setBombPassMode(true);
 				if(myPlayer.getBombPasstimer() == null) {
 					myPlayer.setBombPasstimer(new Timer());
-					myPlayer.getBombPasstimer().schedule(new BombPassTimerTask(myPlayer), 10 * 1000);
+					myPlayer.getBombPasstimer().schedule(new BombPassTimerTask(myPlayer), 5 * 1000);
 				}
 				break;
 			case LIFEUP:

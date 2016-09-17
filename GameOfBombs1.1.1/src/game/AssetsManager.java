@@ -20,6 +20,7 @@ public class AssetsManager {
 	Image life;
 	Image maxHealth;
 	Image bombChange;
+	Image ghost;
 	
 	public AssetsManager() throws IOException {
 		brick = ImageIO.read(new File("src/images/brick.png")); 
@@ -34,10 +35,14 @@ public class AssetsManager {
 		life = ImageIO.read(new File("src/images/lifechange.png"));
 		maxHealth = ImageIO.read(new File("src/images/heartchange.png"));
 		bombChange = ImageIO.read(new File("src/images/bombchange.png"));
+		ghost = ImageIO.read(new File("src/images/ghost.gif"));
 	}
 	
 	public Image getBrick() {
 		return brick;
+	}
+	public Image getGhost() {
+		return ghost;
 	}
 	public Image getBackground() {
 		return background;

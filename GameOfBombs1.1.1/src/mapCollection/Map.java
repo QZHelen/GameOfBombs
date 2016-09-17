@@ -18,7 +18,7 @@ public abstract class Map {
 	Fire[][] fireGrids;
 	int width;
 	int height;
-	Random rand;
+	public static Random rand;
 	Player p1;
 	Player p2;
 	PowerUpFactory powerFactory;

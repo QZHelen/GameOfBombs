@@ -49,6 +49,7 @@ public abstract class Player extends JLabel implements Runnable {
 	public Player otherPlayer;
 	int key1,key2,key3;
 	
+	
 	public Timer getBombPasstimer() {
 		return bombPasstimer;
 	}
