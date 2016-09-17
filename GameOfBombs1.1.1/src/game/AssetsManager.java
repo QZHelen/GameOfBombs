@@ -23,8 +23,8 @@ public class AssetsManager {
 	Image ghost;
 	
 	public AssetsManager() throws IOException {
-		brick = ImageIO.read(new File("src/images/brick.png")); 
-		background = ImageIO.read(new File("src/images/lawn.jpg")); 
+		brick = ImageIO.read(new File("src/images/brick.jpeg")); 
+		background = ImageIO.read(new File("src/images/floor.jpg")); 
 		bombmanFace = ImageIO.read(new File("src/images/bombface.png")); 
 		bomb = ImageIO.read(new File("src/images/bomb.png"));
 		heart = ImageIO.read(new File("src/images/heart.png"));

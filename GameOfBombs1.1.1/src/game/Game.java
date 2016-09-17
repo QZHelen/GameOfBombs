@@ -216,9 +216,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	private void render() {
 		Graphics g = strategy.getDrawGraphics();
 		//draw background
-	    g.setColor(Color.CYAN);
-//	    g.fillRect(0,0,Game.maxWidth,Game.maxHeight);
-	    g.drawImage(assetsManager.getBackground(),0,0,Game.maxWidth,Game.maxHeight,null);
+	    g.setColor(Color.decode("#EEB2BB"));
+	    g.fillRect(0,0,Game.maxWidth,Game.maxHeight);
+//	    g.drawImage(assetsManager.getBackground(),0,0,Game.maxWidth,Game.maxHeight,null);
 	    int[][] grids = map.getGrids();
 	    for(int i = 0; i < grids.length; i++) {
 	    	for(int j = 0; j < grids[0].length; j++) {
