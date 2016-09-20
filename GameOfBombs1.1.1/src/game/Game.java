@@ -3,15 +3,11 @@ package game;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 //import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.util.Timer;
 //import java.util.TimerTask;
@@ -26,8 +22,6 @@ import characterCollection.Player;
 import characterCollection.PlayerOne;
 import gameItemCollection.Bomb;
 import gameItemCollection.Fire;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.*;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 	
@@ -158,9 +152,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-//		System.out.println("released");
 		if(p1.isActive()) {
-//			System.out.println("p1" + (char) keyCode);
 			if (keyCode == KeyEvent.VK_A && !p1.right) 
 		    	p1.setDx(0);
 		    else if (keyCode == KeyEvent.VK_D && !p1.left)
@@ -171,7 +163,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		    	p1.setDy(0);
 		}
 		if(p2.isActive()) {
-//			System.out.println("p2" + (char) keyCode);
 		    if (keyCode == KeyEvent.VK_LEFT && !p2.right) 
 		    	p2.setDx(0);
 		    else if (keyCode == KeyEvent.VK_RIGHT && !p2.left)

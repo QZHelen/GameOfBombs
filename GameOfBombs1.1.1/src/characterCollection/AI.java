@@ -1,10 +1,8 @@
 package characterCollection;
 
 
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Random;
 import java.util.Stack;
 import java.util.Timer;
 
@@ -12,6 +10,7 @@ import javax.swing.JLabel;
 
 import game.Game;
 import game.PathTimerTask;
+import gameItemCollection.PerishBlock;
 import mapCollection.GridConstants;
 import mapCollection.Map;
 import powerUpCollection.PowerUp;
@@ -33,11 +32,8 @@ public class AI extends JLabel implements Runnable {
 	private int health;
 	Timer pathTimer;
 	public boolean changePath;
-
-	//	private int life;
+	public int[] destination;
 	private boolean firechecked;
-//	private boolean godMode;
-//	private boolean bombPassMode;
 	public boolean left,right,up,down;
 	private int healthCheck;
 	public Player otherPlayer;
@@ -47,6 +43,7 @@ public class AI extends JLabel implements Runnable {
 	public int prevdir;
 	public int[] arr1;
 	public int[] arr2;
+	public PerishBlock topBlock,bottomBlock,leftBlock,rightBlock;
 	
 
 	
@@ -74,48 +71,7 @@ public class AI extends JLabel implements Runnable {
 		}
 		
 	}
-	public Timer getPathTimer() {
-		return pathTimer;
-	}
 
-	public void setPathTimer(Timer pathTimer) {
-		this.pathTimer = pathTimer;
-	}
-
-	
-	public boolean isFirechecked() {
-		return firechecked;
-	}
-
-	public void setFirechecked(boolean firechecked) {
-		this.firechecked = firechecked;
-	}
-	
-	public int getHealth() {
-		return health;
-	}
-
-	public void setHealth(int health) {
-		this.health = health;
-	}
-	
-	public int getRow() {
-		return y / Game.gridHeight;
-	}
-
-	public void setRow(int row) {
-		this.row = row;
-	}
-
-	public int getCol() {
-		return x / Game.gridWidth;
-	}
-
-	public void setCol(int col) {
-		this.col = col;
-	}
-	
-	
 	public AI(int x, int y, int width, int height, Map map) {
 		directions = new ArrayList<Integer>();
 		setWidth(width);
@@ -139,6 +95,11 @@ public class AI extends JLabel implements Runnable {
 	    arr1 = new int[]{0,1,3};
 	    arr2 = new int[]{0,2,3};
 	    changePath = false;
+	    destination = new int[2];
+	    topBlock = new PerishBlock(0,0,Game.gridWidth,Game.gridHeight);
+	    bottomBlock = new PerishBlock(0,0,Game.gridWidth,Game.gridHeight);
+	    leftBlock = new PerishBlock(0,0,Game.gridWidth,Game.gridHeight);
+	    rightBlock = new PerishBlock(0,0,Game.gridWidth,Game.gridHeight);
 	}
 	
 
@@ -220,7 +181,7 @@ public class AI extends JLabel implements Runnable {
 		setDy(speed);
 //		y += y * delta;
 	}
-	public int move(ArrayList<Integer> directions,double delta) {
+	public int changeDirection(ArrayList<Integer> directions,double delta) {
 		
 		int direction = Map.rand.nextInt(directions.size());
 		if(prevdir == 3) {
@@ -232,11 +193,6 @@ public class AI extends JLabel implements Runnable {
 		} else {
 			direction = Map.rand.nextInt(3) + 1;
 		}
-//		if(!directions.contains(0) || !directions.contains(1)) {
-//			direction = rand.nextInt(2) + 2;
-//		} else {
-//			direction = rand.nextInt(2);
-//		}
 		switch(direction) {
 			case 0:
 //				if(prevdir == 2 || prevdir == 3) {
@@ -446,35 +402,17 @@ public class AI extends JLabel implements Runnable {
 		}
 		return true;
 	}
-//	public void collisionCheckX(double delta, Map map) {
-//		int i = x / Game.gridWidth;
-//		int j = y / Game.gridHeight;
-//		
-//		
-//	}
-//	
-//	public void collisionCheckY(double delta, Map map) {
-//		int i = x / Game.gridWidth;
-//		int j = y / Game.gridWidth;
-//		
-//	}
+
+	public void moveTo(int row,int col) {
+		destination[0] = row;
+		destination[1] = col;
+	}
 	
-	public void pathFind(double delta,Map map) {
-//		boolean checkPlayerX = checkPlayerCollisionX(otherPlayer.getX(),otherPlayer.getY(),delta);
-//		boolean checkPlayerY = checkPlayerCollisionY(otherPlayer.getX(),otherPlayer.getY(),delta);
-//		if(prevdir == 2 || prevdir == 3) {
-//			up = collisionCheckYUp(delta, map);
-//			down = collisionCheckYDown(delta, map);
-//			left = true;
-//			right = true;
-//		}
+//	public int bestDirection() {
 //		
-//		if(prevdir == 0 || prevdir == 1) {
-//			up = true;
-//			down = true;
-//			left = collisionCheckXLeft(delta, map);
-//			right = collisionCheckXRight(delta, map);
-//		}
+//	}
+	public void pathFind(double delta,Map map) {
+
 		
 		up = collisionCheckYUp(delta, map);
 		down = collisionCheckYDown(delta, map);
@@ -487,10 +425,9 @@ public class AI extends JLabel implements Runnable {
 		if(up) directions.add(2);
 		if(down) directions.add(3);
 
-		int temp = 3;
 		if(directions.size() < 4 || changePath) {
-			temp = move(directions,delta);
-//			System.out.println(temp);
+			changeDirection(directions,delta);
+
 		}
 		if(changePath) changePath = false;
 		x += dx * delta;
@@ -518,4 +455,46 @@ public class AI extends JLabel implements Runnable {
 		}
 		
 	}
+	public Timer getPathTimer() {
+		return pathTimer;
+	}
+
+	public void setPathTimer(Timer pathTimer) {
+		this.pathTimer = pathTimer;
+	}
+
+	
+	public boolean isFirechecked() {
+		return firechecked;
+	}
+
+	public void setFirechecked(boolean firechecked) {
+		this.firechecked = firechecked;
+	}
+	
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	
+	public int getRow() {
+		return y / Game.gridHeight;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getCol() {
+		return x / Game.gridWidth;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
+	}
+	
+	
 }

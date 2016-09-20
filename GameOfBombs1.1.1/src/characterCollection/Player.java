@@ -16,7 +16,7 @@ import mapCollection.GridConstants;
 import mapCollection.Map;
 import powerUpCollection.PowerUp;
 
-public abstract class Player extends JLabel implements Runnable {
+public abstract class Player extends JLabel implements Runnable{
 	
 	Map map;
 	private int x;

@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -57,7 +56,6 @@ public class GameRun {
 		BorderLayout border = new BorderLayout(); 
 		Game.gridWidth = Game.maxWidth / GridConstants.GRIDNUMX;
 		Game.gridHeight = Game.maxHeight / GridConstants.GRIDNUMY;
-//		System.out.println(Game.gridWidth + " " + Game.gridHeight);
 		frame = new JFrame("Test");
 		frame.pack();
 		Insets insets = frame.getInsets();
@@ -224,15 +222,16 @@ public class GameRun {
 	
 	public static void backgroundMusic() {
 		try {
-			File f = new File("src/audio/background.mp3");
-			FileInputStream fs = new FileInputStream(f);
-			BufferedInputStream bs = new BufferedInputStream(fs);
-//			AudioInputStream audio = AudioSystem.getAudioInputStream();
-//			Clip clip = AudioSystem.getClip();
-//			clip.open(audio);
-//			clip.start();
-			javazoom.jl.player.Player player = new javazoom.jl.player.Player(bs);
-			player.play();
+			boolean loop = true;
+			do{
+				File f = new File("src/audio/background.mp3");
+				FileInputStream fs = new FileInputStream(f);
+				BufferedInputStream bs = new BufferedInputStream(fs);
+				javazoom.jl.player.Player player = new javazoom.jl.player.Player(bs);
+				player.play();
+			} while(loop);
+			
+		    
 		}	 catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

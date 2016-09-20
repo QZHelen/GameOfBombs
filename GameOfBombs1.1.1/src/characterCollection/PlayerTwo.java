@@ -4,10 +4,10 @@ import java.awt.event.KeyEvent;
 
 import mapCollection.Map;
 
-public class PlayerOne extends Player {
+public class PlayerTwo extends Player {
 	
 	private boolean gameRunning;
-	public PlayerOne(int x,int y,int width, int height, int diff,Map map,int key1,int key2,int key3) {
+	public PlayerTwo(int x,int y,int width, int height, int diff,Map map,int key1,int key2,int key3) {
 		super(x, y, width, height, diff, map, key1, key2, key3);
 		gameRunning = true;
 	}
@@ -23,7 +23,7 @@ public class PlayerOne extends Player {
 			long now = System.nanoTime();
 		    long updateLength = now - lastLoopTime;
 		    lastLoopTime = now;
-		    double delta = updateLength / ((double)OPTIMAL_TIME);
+		    double delta = updateLength / ((double) OPTIMAL_TIME);
 
 		    // update the game logic
 		    update(delta,map);
