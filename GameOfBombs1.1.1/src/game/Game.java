@@ -22,6 +22,7 @@ import characterCollection.Player;
 import characterCollection.PlayerOne;
 import gameItemCollection.Bomb;
 import gameItemCollection.Fire;
+import gameItemCollection.PathNode;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 	
@@ -49,6 +50,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		this.p1 = new PlayerOne(0,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map,1,2,3);
 		this.p2 = new PlayerOne((GridConstants.GRIDNUMX - 1) * Game.gridWidth,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map,8,9,0);
 		this.monster1 = new AI((GridConstants.GRIDNUMX - 1) * Game.gridWidth,(GridConstants.GRIDNUMY - 1) * Game.gridHeight,gridWidth,gridWidth, map);
+		map.getPathGrids()[GridConstants.GRIDNUMY - 1][GridConstants.GRIDNUMX - 1].setF();
 		this.map = map;
 		p1.otherPlayer = p2;
 		p2.otherPlayer = p1;
@@ -267,6 +269,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	    	}
 	    }
 	    fg = null;
+	    //draw path
+	    g.setColor(Color.GREEN);
+		if(monster1.getPath().size() != 0) {
+			for(PathNode pn: monster1.getPath()) {
+				g.fillRect(pn.col * Game.gridWidth, pn.row * Game.gridHeight, Game.gridWidth, Game.gridHeight);
+			}
+		}
 	    //draw player	
 	    g.setColor(Color.gray);
 	    if(p1.isActive()) {

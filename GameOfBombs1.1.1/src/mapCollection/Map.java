@@ -7,7 +7,7 @@ import characterCollection.Player;
 import game.Game;
 import gameItemCollection.Bomb;
 import gameItemCollection.Fire;
-import gameItemCollection.Steel;
+import gameItemCollection.PathNode;
 import powerUpCollection.*;
 
 public abstract class Map {
@@ -16,6 +16,7 @@ public abstract class Map {
 	Bomb[][] bombGrids;
 	PowerUp[][] powerUpGrids;
 	Fire[][] fireGrids;
+	PathNode[][] pathGrids;
 	int width;
 	int height;
 	public static Random rand;
@@ -25,6 +26,7 @@ public abstract class Map {
 	static int bombmin = 4;
 	static int speedmin = 3;
 	static int firemin = 4;
+	
 	public Map(int width, int height,Player p1,Player p2) {
 		rand = new Random();
 		powerFactory = new PowerUpFactory();
@@ -32,12 +34,22 @@ public abstract class Map {
 		powerUpGrids =  new PowerUp[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		fireGrids = new Fire[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		bombGrids = new Bomb[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
+		pathGrids = new PathNode[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		initGrids(grids);
 		this.p1 = p1;
 		this.p2 = p2;
 		
 	}
 	
+
+	public PathNode[][] getPathGrids() {
+		return pathGrids;
+	}
+
+
+	public void setPathGrids(PathNode[][] pathGrids) {
+		this.pathGrids = pathGrids;
+	}
 
 	public Player getP2() {
 		return p2;
@@ -114,7 +126,17 @@ public abstract class Map {
 			powerUpGrids[row][col] = powerFactory.createType(row,col,Game.gridWidth,Game.gridHeight, null);
 //			powerUpGrids[row][col] = new SpeedUp(row, col, Game.gridWidth, Game.gridHeight, PowerUpType.SPEEDUP, null);
 
-			
+		}
+		
+		//init pathgrids
+		for (int row = 0; row < grids.length; row++) {
+			for (int col = 0; col < grids[0].length; col++) {
+				if(grids[row][col] == GridConstants.POWERBRICK || grids[row][col] == GridConstants.BRICK) {
+					pathGrids[row][col] = new PathNode(row, col, 0, 0, false, null);
+				} else {
+					pathGrids[row][col] = new PathNode(row, col, 0, 0, true, null);
+				}
+			}
 		}
 
 	}

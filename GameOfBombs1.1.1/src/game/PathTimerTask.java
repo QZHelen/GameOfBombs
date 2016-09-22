@@ -3,7 +3,6 @@ package game;
 import java.util.TimerTask;
 
 import characterCollection.AI;
-import mapCollection.Map;
 
 public class PathTimerTask extends TimerTask {
 	AI p;
