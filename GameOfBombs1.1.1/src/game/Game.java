@@ -270,12 +270,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	    }
 	    fg = null;
 	    //draw path
-	    g.setColor(Color.GREEN);
-		if(monster1.getPath().size() != 0) {
-			for(PathNode pn: monster1.getPath()) {
-				g.fillRect(pn.col * Game.gridWidth, pn.row * Game.gridHeight, Game.gridWidth, Game.gridHeight);
-			}
-		}
+//	    g.setColor(Color.GREEN);
+//		if(monster1.getPath().size() != 0) {
+//			for(PathNode pn: monster1.getPath()) {
+//				g.fillRect(pn.col * Game.gridWidth, pn.row * Game.gridHeight, Game.gridWidth, Game.gridHeight);
+//			}
+//		}
 	    //draw player	
 	    g.setColor(Color.gray);
 	    if(p1.isActive()) {

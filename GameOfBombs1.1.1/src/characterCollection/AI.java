@@ -134,8 +134,8 @@ public class AI extends JLabel implements Runnable {
 		    	foundPath = false;
 		    	System.out.println(target);
 		    	start = map.getPathGrids()[target.row][target.col];
-		    	path.clear();
-		    	target = null;
+//		    	path.clear();
+//		    	target = null;
 		    }
 		    //draw graphics 
 	        try {
@@ -145,7 +145,11 @@ public class AI extends JLabel implements Runnable {
 		
 	}
 	private boolean targetChecked() {
-		if(target == null) return true;
+		if(target == null)  {
+//	    	x = start.x;
+//	    	y = start.y;
+			return true;
+		}
 		//bug
 		double diffx = Math.abs(target.x - x);
 		double diffy = Math.abs(target.y - y);
@@ -581,7 +585,7 @@ public class AI extends JLabel implements Runnable {
 	
 	public int bestDirection() {
 		//bug2
-//		if(target == null) return prevdir;
+		if(target == null) return prevdir;
 		if(target.row < getRow()) {
 			prevdir = 2;
 		}
