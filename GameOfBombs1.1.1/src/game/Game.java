@@ -51,7 +51,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static final String FIRE = "fire";
 	
 	public Game(Map map) throws IOException {
-//		monsterlist.add(new AssaultAI(Map.rand.nextInt(GridConstants.GRIDNUMX)* Game.gridWidth,(GridConstants.GRIDNUMY - 1) * Game.gridHeight,gridWidth,gridWidth, map));
+		monsterlist.add(new AssaultAI(Map.rand.nextInt(GridConstants.GRIDNUMX)* Game.gridWidth,(GridConstants.GRIDNUMY - 1) * Game.gridHeight,gridWidth,gridWidth, map));
 		monsterlist.add(new ScoutAI(Map.rand.nextInt(GridConstants.GRIDNUMX)* Game.gridWidth,(GridConstants.GRIDNUMY - 1) * Game.gridHeight,gridWidth,gridWidth, map));
 		for(AI monster: monsterlist) {
 			map.getPathGrids()[monster.getRow()][monster.getCol()].setF();

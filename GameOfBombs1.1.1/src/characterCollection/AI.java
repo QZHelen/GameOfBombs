@@ -57,7 +57,7 @@ public abstract class AI extends JLabel implements Runnable {
 	public int[] topBlock,bottomBlock,leftBlock,rightBlock;
 	
 
-	static class PathSort implements Comparator<PathNode> {
+	class PathSort implements Comparator<PathNode> {
 
 		@Override
 		public int compare(PathNode o1, PathNode o2) {
@@ -540,119 +540,119 @@ public abstract class AI extends JLabel implements Runnable {
 
 
 	public boolean pathFind(double delta,Map map) {
-
-//		openList.add(map.getPathGrids()[getRow()][getCol()]);
-		openList.add(start);
-		PathNode current;
-		PathNode neighbor;
-		boolean result;
-		while(!closeList.contains(map.getPathGrids()[destination[0]][destination[1]])) {
-			if(openList.isEmpty()) {
-				break;
-			}
-			current = openList.poll();
-			closeList.add(current);
-			if(current.row + 1 < GridConstants.GRIDNUMY) {
-				neighbor = map.getPathGrids()[current.row + 1][current.col];
-				if(neighbor.isWalkable() && !closeList.contains(neighbor)) {
-					if(!openList.contains(neighbor)) {
-						neighbor.setParent(current);
-						neighbor.setF();
-						openList.add(neighbor);
-					} else {
-						if(current.g + 1 < neighbor.g) {
+			openList.add(start);
+			PathNode current;
+			PathNode neighbor;
+			boolean result;
+			while(!closeList.contains(map.getPathGrids()[destination[0]][destination[1]])) {
+				if(openList.isEmpty()) {
+					break;
+				}
+				current = openList.poll();
+				closeList.add(current);
+				if(current.row + 1 < GridConstants.GRIDNUMY) {
+					neighbor = map.getPathGrids()[current.row + 1][current.col];
+					if(neighbor.isWalkable() && !closeList.contains(neighbor)) {
+						if(!openList.contains(neighbor)) {
 							neighbor.setParent(current);
 							neighbor.setF();
+							openList.add(neighbor);
+						} else {
+							if(current.g + 1 < neighbor.g) {
+								neighbor.setParent(current);
+								neighbor.setF();
+							}
+						}
+						
+					}
+				}
+				if(current.row - 1 >= 0 ) {
+					neighbor = map.getPathGrids()[current.row - 1][current.col];
+					if(neighbor.isWalkable() && !closeList.contains(neighbor)) {
+						if(!openList.contains(neighbor)) {
+							neighbor.setParent(current);
+							neighbor.setF();
+							openList.add(neighbor);
+						} else {
+							if(current.g + 1 < neighbor.g) {
+								neighbor.setParent(current);
+								neighbor.setF();
+							}
+						}
+					}
+				}
+				if(current.col + 1 < GridConstants.GRIDNUMX) {
+					neighbor = map.getPathGrids()[current.row][current.col + 1];
+					if(neighbor.isWalkable() && !closeList.contains(neighbor)) {
+						if(!openList.contains(neighbor)) {
+							neighbor.setParent(current);
+							neighbor.setF();
+							openList.add(neighbor);
+						} else {
+							if(current.g + 1 < neighbor.g) {
+								neighbor.setParent(current);
+								neighbor.setF();
+							}
 						}
 					}
 					
 				}
-			}
-			if(current.row - 1 >= 0 ) {
-				neighbor = map.getPathGrids()[current.row - 1][current.col];
-				if(neighbor.isWalkable() && !closeList.contains(neighbor)) {
-					if(!openList.contains(neighbor)) {
-						neighbor.setParent(current);
-						neighbor.setF();
-						openList.add(neighbor);
-					} else {
-						if(current.g + 1 < neighbor.g) {
+				if(current.col - 1 >= 0) {
+					neighbor = map.getPathGrids()[current.row][current.col - 1];
+					if(neighbor.isWalkable() && !closeList.contains(neighbor)) {
+						if(!openList.contains(neighbor)) {
 							neighbor.setParent(current);
 							neighbor.setF();
+							openList.add(neighbor);
+						} else {
+							if(current.g + 1 < neighbor.g) {
+								neighbor.setParent(current);
+								neighbor.setF();
+							}
 						}
 					}
-				}
-			}
-			if(current.col + 1 < GridConstants.GRIDNUMX) {
-				neighbor = map.getPathGrids()[current.row][current.col + 1];
-				if(neighbor.isWalkable() && !closeList.contains(neighbor)) {
-					if(!openList.contains(neighbor)) {
-						neighbor.setParent(current);
-						neighbor.setF();
-						openList.add(neighbor);
-					} else {
-						if(current.g + 1 < neighbor.g) {
-							neighbor.setParent(current);
-							neighbor.setF();
-						}
-					}
+
 				}
 				
 			}
-			if(current.col - 1 >= 0) {
-				neighbor = map.getPathGrids()[current.row][current.col - 1];
-				if(neighbor.isWalkable() && !closeList.contains(neighbor)) {
-					if(!openList.contains(neighbor)) {
-						neighbor.setParent(current);
-						neighbor.setF();
-						openList.add(neighbor);
-					} else {
-						if(current.g + 1 < neighbor.g) {
-							neighbor.setParent(current);
-							neighbor.setF();
-						}
-					}
-				}
-
-			}
+			result = (closeList.contains(map.getPathGrids()[destination[0]][destination[1]]))? true : false;
+//			collisionCheckYUp(delta, map);
+//			collisionCheckYDown(delta, map);
+//			System.out.println("running");
 			
-		}
-		result = (closeList.contains(map.getPathGrids()[destination[0]][destination[1]]))? true : false;
-//		collisionCheckYUp(delta, map);
-//		collisionCheckYDown(delta, map);
-//		System.out.println("running");
-		
-		return result;
-//		up = collisionCheckYUp(delta, map);
-//		down = collisionCheckYDown(delta, map);
-//		left = collisionCheckXLeft(delta, map);
-//		right = collisionCheckXRight(delta, map);
-//		if(left) directions.add(0);
-//		if(right) directions.add(1);
-//		if(up) directions.add(2);
-//		if(down) directions.add(3);
-//		prevdir = bestDirection();
-//		changeDirection(directions,delta);
-//		x += dx * delta;
-//		y += dy * delta;
-////		if(changePath) changePath = false;
-////		if(collisionCheckX(delta,map)) x += dx * delta;
-////		if(collisionCheckY(delta, map)) y += dy * delta;
-
-////		if(temp == 0 || temp == 1) {
-////			x += dx * delta;
-////		} else {
-////			y += dy * delta;
-////
-////		}
-//		directions.clear();
-//		if(collisionCheckX(delta,map) && dx != 0) {
+			return result;
+//			up = collisionCheckYUp(delta, map);
+//			down = collisionCheckYDown(delta, map);
+//			left = collisionCheckXLeft(delta, map);
+//			right = collisionCheckXRight(delta, map);
+//			if(left) directions.add(0);
+//			if(right) directions.add(1);
+//			if(up) directions.add(2);
+//			if(down) directions.add(3);
+//			prevdir = bestDirection();
+//			changeDirection(directions,delta);
 //			x += dx * delta;
-//			return;
-//		}
-//		if(collisionCheckY(delta,map) && dy != 0) {
 //			y += dy * delta;
-//		} 
+////			if(changePath) changePath = false;
+////			if(collisionCheckX(delta,map)) x += dx * delta;
+////			if(collisionCheckY(delta, map)) y += dy * delta;
+
+////			if(temp == 0 || temp == 1) {
+////				x += dx * delta;
+////			} else {
+////				y += dy * delta;
+	////
+////			}
+//			directions.clear();
+//			if(collisionCheckX(delta,map) && dx != 0) {
+//				x += dx * delta;
+//				return;
+//			}
+//			if(collisionCheckY(delta,map) && dy != 0) {
+//				y += dy * delta;
+//			} 
+		
+		
 	}
 	
 
