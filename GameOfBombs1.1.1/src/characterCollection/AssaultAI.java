@@ -68,23 +68,23 @@ public class AssaultAI extends AI {
 			    	
 			    	checkReached = followPath(1);
 			    } else {
-			    	moveTo(Map.rand.nextInt(GridConstants.GRIDNUMY),Map.rand.nextInt(GridConstants.GRIDNUMX));
+			    	moveTo(rand.nextInt(GridConstants.GRIDNUMY),rand.nextInt(GridConstants.GRIDNUMX));
 			    	findPath = false;
 			    	foundPath = false;
 			    	path.clear();
 			    }
-
 			    if(checkReached() || destPosChecked()) {
 			    	//bug:target null pointer
 //			    	moveTo(Map.rand.nextInt(GridConstants.GRIDNUMY),Map.rand.nextInt(GridConstants.GRIDNUMX));
 			    	reset();
 
 			    }
-			}
 
+			}
 	        try {
 	        	Thread.sleep( (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000);
 	        } catch (Exception ex) {}
+
 		}
 		
 	}

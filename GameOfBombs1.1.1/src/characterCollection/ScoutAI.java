@@ -15,10 +15,11 @@ public class ScoutAI extends AI {
 
 	@Override
 	public void run() {
+		//bug:some variable cause deadlock
 		// TODO Auto-generated method stub
 		long lastLoopTime = System.nanoTime();
 		final int TARGET_FPS = 60;
-		final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;   
+		final long OPTIMAL_TIME = 1000000000 / TARGET_FPS; 
 		while(gameRunning) {
 			synchronized(map) {
 				long now = System.nanoTime();
@@ -30,7 +31,7 @@ public class ScoutAI extends AI {
 //			    	pathTimer.schedule(new PathTimerTask(this), 3 * 1000);
 //			    }
 			    // update the game logic
-			    
+				System.out.println("stuck");
 			    if(!findPath) {
 
 			    	for(PathNode pn:openList) {
@@ -60,7 +61,7 @@ public class ScoutAI extends AI {
 			    	
 			    	checkReached = followPath(1);
 			    } else {
-			    	moveTo(Map.rand.nextInt(GridConstants.GRIDNUMY),Map.rand.nextInt(GridConstants.GRIDNUMX));
+			    	moveTo(rand.nextInt(GridConstants.GRIDNUMY),rand.nextInt(GridConstants.GRIDNUMX));
 			    	findPath = false;
 			    	foundPath = false;
 			    	path.clear();
@@ -68,7 +69,7 @@ public class ScoutAI extends AI {
 //			    System.out.println(checkReached());
 			    if(checkReached()) {
 			    	//bug:target null pointer
-			    	moveTo(Map.rand.nextInt(GridConstants.GRIDNUMY),Map.rand.nextInt(GridConstants.GRIDNUMX));
+			    	moveTo(rand.nextInt(GridConstants.GRIDNUMY),rand.nextInt(GridConstants.GRIDNUMX));
 			    	findPath = false;
 			    	foundPath = false;
 			    	start = map.getPathGrids()[target.row][target.col];
@@ -76,11 +77,11 @@ public class ScoutAI extends AI {
 //			    	target = null;
 			    }
 			}
-			
-		    //draw graphics 
 	        try {
 	        	Thread.sleep( (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000);
 	        } catch (Exception ex) {}
+			
+		    //draw graphics 
 		}
 		
 		

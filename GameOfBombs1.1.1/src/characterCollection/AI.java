@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.PriorityQueue;
+import java.util.Random;
 import java.util.Stack;
 import java.util.Timer;
 
@@ -48,7 +49,8 @@ public abstract class AI extends JLabel implements Runnable {
 	public boolean left,right,up,down;
 	protected int healthCheck;
 	public Player otherPlayer;
-	int key1,key2,key3;
+//	int key1,key2,key3;
+	protected Random rand;
 	protected boolean gameRunning;
 	ArrayList<Integer> directions;
 	public int prevdir;
@@ -61,7 +63,6 @@ public abstract class AI extends JLabel implements Runnable {
 
 		@Override
 		public int compare(PathNode o1, PathNode o2) {
-			// TODO Auto-generated method stub
 			return (int)(o1.f - o2.f);
 		}
 	}
@@ -161,6 +162,7 @@ public abstract class AI extends JLabel implements Runnable {
 		firechecked = false;
 		gameRunning = true;
 		healthCheck = 20;
+		rand = new Random();
 //		left = false;
 //	    right = false;
 //	    up = true;
@@ -173,10 +175,10 @@ public abstract class AI extends JLabel implements Runnable {
 	    arr2 = new int[]{0,2,3};
 	    changePath = false;
 	    destination = new int[2];
-	    topBlock = new int[2]; 
-	    bottomBlock = new int[2];
-	    leftBlock = new int[2];
-	    rightBlock = new int[2];
+//	    topBlock = new int[2]; 
+//	    bottomBlock = new int[2];
+//	    leftBlock = new int[2];
+//	    rightBlock = new int[2];
 	    PathSort ps = new PathSort();
 	    openList = new PriorityQueue<PathNode>(10,ps);
 	    closeList = new ArrayList<PathNode>();
@@ -540,6 +542,7 @@ public abstract class AI extends JLabel implements Runnable {
 
 
 	public boolean pathFind(double delta,Map map) {
+		synchronized(map) {
 			openList.add(start);
 			PathNode current;
 			PathNode neighbor;
@@ -621,6 +624,8 @@ public abstract class AI extends JLabel implements Runnable {
 //			System.out.println("running");
 			
 			return result;
+		}
+			
 //			up = collisionCheckYUp(delta, map);
 //			down = collisionCheckYDown(delta, map);
 //			left = collisionCheckXLeft(delta, map);

@@ -628,7 +628,8 @@ public abstract class Player extends JLabel implements Runnable{
 		
 	}
 	
-	public void update(double delta,Map map) {
+	public synchronized void update(double delta,Map map) {
+		
 		boolean checkPlayerX = checkPlayerCollisionX(otherPlayer.getX(),otherPlayer.getY(),delta);
 		boolean checkPlayerY = checkPlayerCollisionY(otherPlayer.getX(),otherPlayer.getY(),delta);
 //		if(!checkPlayerX) this.x = x - otherPlayer.width;
