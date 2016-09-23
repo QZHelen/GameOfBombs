@@ -17,6 +17,16 @@ public abstract class Map {
 	PowerUp[][] powerUpGrids;
 	Fire[][] fireGrids;
 	PathNode[][] pathGrids;
+	PathNode[][] pathGrids2;
+	public PathNode[][] getPathGrids2() {
+		return pathGrids2;
+	}
+
+
+	public void setPathGrids2(PathNode[][] pathGrids2) {
+		this.pathGrids2 = pathGrids2;
+	}
+
 	int width;
 	int height;
 	public static Random rand;
@@ -35,6 +45,7 @@ public abstract class Map {
 		fireGrids = new Fire[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		bombGrids = new Bomb[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		pathGrids = new PathNode[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
+		pathGrids2 = new PathNode[GridConstants.GRIDNUMY][GridConstants.GRIDNUMX];
 		initGrids(grids);
 		this.p1 = p1;
 		this.p2 = p2;
@@ -133,8 +144,10 @@ public abstract class Map {
 			for (int col = 0; col < grids[0].length; col++) {
 				if(grids[row][col] == GridConstants.POWERBRICK || grids[row][col] == GridConstants.BRICK) {
 					pathGrids[row][col] = new PathNode(row, col, 0, 0, false, null);
+					pathGrids2[row][col] = new PathNode(row, col, 0, 0, false, null);
 				} else {
 					pathGrids[row][col] = new PathNode(row, col, 0, 0, true, null);
+					pathGrids2[row][col] = new PathNode(row, col, 0, 0, true, null);
 				}
 			}
 		}

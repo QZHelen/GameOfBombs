@@ -52,9 +52,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	
 	public Game(Map map) throws IOException {
 		monsterlist.add(new AssaultAI(Map.rand.nextInt(GridConstants.GRIDNUMX)* Game.gridWidth,(GridConstants.GRIDNUMY - 1) * Game.gridHeight,gridWidth,gridWidth, map));
-		monsterlist.add(new ScoutAI(Map.rand.nextInt(GridConstants.GRIDNUMX)* Game.gridWidth,(GridConstants.GRIDNUMY - 1) * Game.gridHeight,gridWidth,gridWidth, map));
+		monsterlist.add(new ScoutAI(Map.rand.nextInt(GridConstants.GRIDNUMX)* Game.gridWidth,(GridConstants.GRIDNUMY - 1) * Game.gridHeight,gridWidth,gridWidth, map,map.getPathGrids2()));
 		for(AI monster: monsterlist) {
-			map.getPathGrids()[monster.getRow()][monster.getCol()].setF();
+			if(monster.getClass().equals(AssaultAI.class)) {
+				map.getPathGrids()[monster.getRow()][monster.getCol()].setF();
+			} else {
+				map.getPathGrids2()[monster.getRow()][monster.getCol()].setF();
+			}
 		}
 		this.p1 = new PlayerOne(0,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map,1,2,3,monsterlist);
 		this.p2 = new PlayerOne((GridConstants.GRIDNUMX - 1) * Game.gridWidth,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map,8,9,0,monsterlist);

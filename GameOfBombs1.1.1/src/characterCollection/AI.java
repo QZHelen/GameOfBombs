@@ -45,7 +45,7 @@ public abstract class AI extends JLabel implements Runnable {
 	Timer pathTimer;
 	public boolean changePath;
 	public int[] destination;
-	private boolean firechecked;
+	protected boolean firechecked;
 	public boolean left,right,up,down;
 	protected int healthCheck;
 	public Player otherPlayer;
@@ -147,7 +147,67 @@ public abstract class AI extends JLabel implements Runnable {
 		
 		
 	}
-
+	protected boolean followPath(double delta,PathNode[][] pathgrids) {
+		// TODO Auto-generated method stub
+		boolean result = false;
+		if(!path.isEmpty()) {
+//			up = collisionCheckYUp(delta, map);
+//			down = collisionCheckYDown(delta, map);
+//			left = collisionCheckXLeft(delta, map);
+//			right = collisionCheckXRight(delta, map);
+//			if(left) directions.add(0);
+//			if(right) directions.add(1);
+//			if(up) directions.add(2);
+//			if(down) directions.add(3);
+//			collisionCheckYUp(delta, map);
+//			collisionCheckYDown(delta, map);
+//			collisionCheckXLeft(delta, map);
+//			collisionCheckXRight(delta, map);
+			int count = -1;
+			result = targetChecked();
+			if(result) {
+				for (int i = 0; i < path.size();i++) {
+					if(path.get(i).equals(pathgrids[getRow()][getCol()])) {
+						if(i + 1 < path.size()) {
+							target = path.get(i + 1);
+						}
+						
+						count = i;
+//						System.out.println("target " + target.row + " " + target.col);
+						break;
+					}
+				}
+				if(path.size() > count && count >= 0) path.remove(count);
+			}
+			prevdir = bestDirection();
+//			System.out.println(prevdir+ " " + target);
+			changeDirection(delta);
+			x += dx * delta;
+			y += dy * delta;
+//			if(dx < 0) {
+//				x += Math.floor(dx * delta);
+//			} else if(dx > 0) {
+//				x += Math.ceil(dx * delta);
+//			} else {
+//				x += dx * delta;
+//			}
+//			if(dy < 0) {
+//				y += Math.floor(dy * delta);
+//			} else if(dy > 0) {
+//				y += Math.ceil(dy * delta);
+//			} else {
+//				
+//			}
+//			y += dy * delta;
+//			System.out.println(x);
+		
+//			path.remove(count);
+		} 
+//		System.out.println(path.size());
+		return result && path.isEmpty();
+		
+		
+	}
 	public AI(int x, int y, int width, int height, Map map) {
 		directions = new ArrayList<Integer>();
 		setWidth(width);
@@ -540,9 +600,95 @@ public abstract class AI extends JLabel implements Runnable {
 	
 
 
+	public boolean pathFind(double delta,Map map,PathNode[][] pathgrids) {
+		synchronized(map) {
+			//parent bug
+			openList.add(start);
+			PathNode current;
+			PathNode neighbor;
+			boolean result;
+			while(!closeList.contains(pathgrids[destination[0]][destination[1]])) {
+				if(openList.isEmpty()) {
+					break;
+				}
+				current = openList.poll();
+				closeList.add(current);
+				if(current.row + 1 < GridConstants.GRIDNUMY) {
+					neighbor = pathgrids[current.row + 1][current.col];
+					if(neighbor.isWalkable() && !closeList.contains(neighbor)) {
+						if(!openList.contains(neighbor)) {
+							neighbor.setParent(current);
+							neighbor.setF();
+							openList.add(neighbor);
+						} else {
+							if(current.g + 1 < neighbor.g) {
+								neighbor.setParent(current);
+								neighbor.setF();
+							}
+						}
+						
+					}
+				}
+				if(current.row - 1 >= 0 ) {
+					neighbor = pathgrids[current.row - 1][current.col];
+					if(neighbor.isWalkable() && !closeList.contains(neighbor)) {
+						if(!openList.contains(neighbor)) {
+							neighbor.setParent(current);
+							neighbor.setF();
+							openList.add(neighbor);
+						} else {
+							if(current.g + 1 < neighbor.g) {
+								neighbor.setParent(current);
+								neighbor.setF();
+							}
+						}
+					}
+				}
+				if(current.col + 1 < GridConstants.GRIDNUMX) {
+					neighbor = pathgrids[current.row][current.col + 1];
+					if(neighbor.isWalkable() && !closeList.contains(neighbor)) {
+						if(!openList.contains(neighbor)) {
+							neighbor.setParent(current);
+							neighbor.setF();
+							openList.add(neighbor);
+						} else {
+							if(current.g + 1 < neighbor.g) {
+								neighbor.setParent(current);
+								neighbor.setF();
+							}
+						}
+					}
+					
+				}
+				if(current.col - 1 >= 0) {
+					neighbor = pathgrids[current.row][current.col - 1];
+					if(neighbor.isWalkable() && !closeList.contains(neighbor)) {
+						if(!openList.contains(neighbor)) {
+							neighbor.setParent(current);
+							neighbor.setF();
+							openList.add(neighbor);
+						} else {
+							if(current.g + 1 < neighbor.g) {
+								neighbor.setParent(current);
+								neighbor.setF();
+							}
+						}
+					}
 
+				}
+				
+			}
+			result = (closeList.contains(pathgrids[destination[0]][destination[1]]))? true : false;
+//			collisionCheckYUp(delta, map);
+//			collisionCheckYDown(delta, map);
+//			System.out.println("running");
+			
+			return result;
+		}
+	}
 	public boolean pathFind(double delta,Map map) {
 		synchronized(map) {
+			//parent bug
 			openList.add(start);
 			PathNode current;
 			PathNode neighbor;

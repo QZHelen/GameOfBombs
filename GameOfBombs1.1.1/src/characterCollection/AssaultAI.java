@@ -50,7 +50,7 @@ public class AssaultAI extends AI {
 			    	openList.clear();
 			    	closeList.clear();
 			    	path.clear();
-		    		foundPath = pathFind(delta,map);
+		    		foundPath = pathFind(delta,map,map.getPathGrids());
 		    		findPath = true;
 		    	} 
 			    if(foundPath) {

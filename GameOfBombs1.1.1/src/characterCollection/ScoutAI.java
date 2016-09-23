@@ -1,16 +1,21 @@
 package characterCollection;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.PriorityQueue;
+import java.util.Random;
 
+import characterCollection.AI.PathSort;
 import gameItemCollection.PathNode;
 import mapCollection.GridConstants;
 import mapCollection.Map;
 
 public class ScoutAI extends AI {
-
-	public ScoutAI(int x, int y, int width, int height, Map map) {
+	
+	public ScoutAI(int x, int y, int width, int height, Map map,PathNode[][] pathgrids) {
 		super(x, y, width, height, map);
 		// TODO Auto-generated constructor stub
+		start = pathgrids[getRow()][getCol()];
 	}
 
 	@Override
@@ -43,12 +48,12 @@ public class ScoutAI extends AI {
 			    	openList.clear();
 			    	closeList.clear();
 			    	path.clear();
-		    		foundPath = pathFind(delta,map);
+		    		foundPath = pathFind(delta,map,map.getPathGrids2());
 		    		findPath = true;
 		    	} 
 			    if(foundPath) {
 			    	if(path.size() == 0) {
-					    PathNode temp = map.getPathGrids()[destination[0]][destination[1]];
+					    PathNode temp = map.getPathGrids2()[destination[0]][destination[1]];
 						path.add(temp);
 						while(temp.getParent() != null) {
 //							System.out.println(temp.row + " " + temp.col);
@@ -59,7 +64,7 @@ public class ScoutAI extends AI {
 						Collections.reverse(path);
 			    	}
 			    	
-			    	checkReached = followPath(1);
+			    	checkReached = followPath(1,map.getPathGrids2());
 			    } else {
 			    	moveTo(rand.nextInt(GridConstants.GRIDNUMY),rand.nextInt(GridConstants.GRIDNUMX));
 			    	findPath = false;
@@ -72,7 +77,7 @@ public class ScoutAI extends AI {
 			    	moveTo(rand.nextInt(GridConstants.GRIDNUMY),rand.nextInt(GridConstants.GRIDNUMX));
 			    	findPath = false;
 			    	foundPath = false;
-			    	start = map.getPathGrids()[target.row][target.col];
+			    	start = map.getPathGrids2()[target.row][target.col];
 //			    	path.clear();
 //			    	target = null;
 			    }
