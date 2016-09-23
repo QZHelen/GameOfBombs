@@ -1,14 +1,15 @@
 package characterCollection;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import mapCollection.Map;
 
 public class PlayerOne extends Player {
 	
 	private boolean gameRunning;
-	public PlayerOne(int x,int y,int width, int height, int diff,Map map,int key1,int key2,int key3) {
-		super(x, y, width, height, diff, map, key1, key2, key3);
+	public PlayerOne(int x,int y,int width, int height, int diff,Map map,int key1,int key2,int key3,ArrayList<AI> monsterlist) {
+		super(x, y, width, height, diff, map, key1, key2, key3, monsterlist);
 		gameRunning = true;
 	}
 

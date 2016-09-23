@@ -2,7 +2,6 @@ package characterCollection;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
@@ -15,51 +14,42 @@ import javax.swing.JLabel;
 import game.Game;
 import game.PathTimerTask;
 import gameItemCollection.PathNode;
-import gameItemCollection.PerishBlock;
 import mapCollection.GridConstants;
 import mapCollection.Map;
 import powerUpCollection.PowerUp;
 
-public class AI extends JLabel implements Runnable {
+public abstract class AI extends JLabel implements Runnable {
 	
 	Map map;
-	private int x;
-	private int y;
-	private int width;
-	private int height;
-	private double dx = 0;
-	private double dy = 0;
-	private Hashtable<Integer,Stack<PowerUp>> badAssList; 
-	private double speed;
+	protected int x;
+	protected int y;
+	protected int width;
+	protected int height;
+	protected double dx = 0;
+	protected double dy = 0;
+	protected Hashtable<Integer,Stack<PowerUp>> badAssList; 
+	protected double speed;
 //	private PowerUp pu;
-	private boolean active;
-	private int row,col;
-	private int health;
-	private boolean findPath;
-	private boolean foundPath;
-	private PriorityQueue<PathNode> openList;
-	private ArrayList<PathNode> closeList;
-	private ArrayList<PathNode> path;
-	private PathNode target;
-	private PathNode start;
-	private boolean checkReached;
-	public ArrayList<PathNode> getPath() {
-		return path;
-	}
-
-	public void setPath(ArrayList<PathNode> path) {
-		this.path = path;
-	}
-
+	protected boolean active;
+	protected int row,col;
+	protected int health;
+	protected boolean findPath;
+	protected boolean foundPath;
+	protected PriorityQueue<PathNode> openList;
+	protected ArrayList<PathNode> closeList;
+	protected ArrayList<PathNode> path;
+	protected PathNode target;
+	protected PathNode start;
+	protected boolean checkReached;
 	Timer pathTimer;
 	public boolean changePath;
 	public int[] destination;
 	private boolean firechecked;
 	public boolean left,right,up,down;
-	private int healthCheck;
+	protected int healthCheck;
 	public Player otherPlayer;
 	int key1,key2,key3;
-	private boolean gameRunning;
+	protected boolean gameRunning;
 	ArrayList<Integer> directions;
 	public int prevdir;
 	public int[] arr1;
@@ -76,78 +66,16 @@ public class AI extends JLabel implements Runnable {
 		}
 	}
 	@Override
-	public void run() {
-		long lastLoopTime = System.nanoTime();
-		final int TARGET_FPS = 60;
-		final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;   
-		while(gameRunning) {
-			
-			long now = System.nanoTime();
-		    long updateLength = now - lastLoopTime;
-		    lastLoopTime = now;
-		    double delta = updateLength / ((double)OPTIMAL_TIME);
-//		    if(pathTimer == null) {
-//		    	pathTimer = new Timer();
-//		    	pathTimer.schedule(new PathTimerTask(this), 3 * 1000);
-//		    }
-		    // update the game logic
-		    
-		    if(!findPath) {
-
-		    	for(PathNode pn:openList) {
-		    		pn.setParent(null);
-		    	}
-		    	for(PathNode pn:closeList) {
-		    		pn.setParent(null);
-		    	}
-		    	openList.clear();
-		    	closeList.clear();
-		    	path.clear();
-	    		foundPath = pathFind(delta,map);
-	    		findPath = true;
-	    	} 
-		    if(foundPath) {
-		    	if(path.size() == 0) {
-				    PathNode temp = map.getPathGrids()[destination[0]][destination[1]];
-					path.add(temp);
-					while(temp.getParent() != null) {
-//						System.out.println(temp.row + " " + temp.col);
-						path.add(temp);
-						temp = temp.getParent();
-					}
-					path.add(temp);
-					Collections.reverse(path);
-		    	}
-		    	
-		    	checkReached = followPath(1);
-		    } else {
-		    	moveTo(Map.rand.nextInt(GridConstants.GRIDNUMY),Map.rand.nextInt(GridConstants.GRIDNUMX));
-		    	findPath = false;
-		    	foundPath = false;
-		    	path.clear();
-		    }
-//		    System.out.println(checkReached());
-		    if(checkReached()) {
-		    	//bug:target null pointer
-		    	moveTo(Map.rand.nextInt(GridConstants.GRIDNUMY),Map.rand.nextInt(GridConstants.GRIDNUMX));
-		    	findPath = false;
-		    	foundPath = false;
-		    	System.out.println(target);
-		    	start = map.getPathGrids()[target.row][target.col];
-//		    	path.clear();
-//		    	target = null;
-		    }
-		    //draw graphics 
-	        try {
-	        	Thread.sleep( (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000);
-	        } catch (Exception ex) {}
-		}
-		
+	public abstract void run();
+	
+	public void reset() {
+		findPath = false;
+    	foundPath = false;
+    	start = map.getPathGrids()[target.row][target.col];
 	}
 	private boolean targetChecked() {
 		if(target == null)  {
-//	    	x = start.x;
-//	    	y = start.y;
+
 			return true;
 		}
 		//bug
@@ -157,7 +85,7 @@ public class AI extends JLabel implements Runnable {
 		if(diffy >= 0 && diffy <= 1) y = target.y;
 		return target.x == x && target.y == y;
 	}
-	private boolean followPath(double delta) {
+	protected boolean followPath(double delta) {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		if(!path.isEmpty()) {
@@ -233,10 +161,10 @@ public class AI extends JLabel implements Runnable {
 		firechecked = false;
 		gameRunning = true;
 		healthCheck = 20;
-		left = false;
-	    right = false;
-	    up = true;
-	    down = false;
+//		left = false;
+//	    right = false;
+//	    up = true;
+//	    down = false;
 	    checkReached = false;
 	    setDy(-speed);
 	    findPath = false;
@@ -256,7 +184,14 @@ public class AI extends JLabel implements Runnable {
 	    start = map.getPathGrids()[getRow()][getCol()];
 	}
 	
+	public abstract boolean destPosChecked();
+	public ArrayList<PathNode> getPath() {
+		return path;
+	}
 
+	public void setPath(ArrayList<PathNode> path) {
+		this.path = path;
+	}
 	public Hashtable<Integer, Stack<PowerUp>> getBadAssList() {
 		return badAssList;
 	}

@@ -2,6 +2,7 @@ package characterCollection;
 
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Stack;
 import java.util.Timer;
@@ -40,6 +41,7 @@ public abstract class Player extends JLabel implements Runnable{
 	private boolean godMode;
 	private boolean bombPassMode;
 	private int healthCheck;
+	private ArrayList<AI> monsterlist;
 	public CustomLabel hl1,hl2,hl3,hl4,hl5;
 	public CustomLabel item1,item2,item3;
 	public boolean left,right,up,down;
@@ -125,7 +127,7 @@ public abstract class Player extends JLabel implements Runnable{
 	}
 	
 	
-	public Player(int x, int y, int width, int height, int diff, Map map,int key1,int key2,int key3) {
+	public Player(int x, int y, int width, int height, int diff, Map map,int key1,int key2,int key3,ArrayList<AI> monsterlist) {
 		this.key1 = key1;
 		this.key2 = key2;
 		this.key3 = key3;
@@ -154,6 +156,7 @@ public abstract class Player extends JLabel implements Runnable{
 	    right = false;
 	    up = false;
 	    down = false;
+	    this.monsterlist = monsterlist;
 	}
 	
 

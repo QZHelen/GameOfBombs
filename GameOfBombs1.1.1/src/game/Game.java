@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Timer;
 //import java.util.TimerTask;
 
@@ -18,17 +19,20 @@ import mapCollection.GridConstants;
 import mapCollection.Map;
 import powerUpCollection.PowerUpType;
 import characterCollection.AI;
+import characterCollection.AssaultAI;
 import characterCollection.Player;
 import characterCollection.PlayerOne;
+import characterCollection.ScoutAI;
 import gameItemCollection.Bomb;
 import gameItemCollection.Fire;
-import gameItemCollection.PathNode;
+//import gameItemCollection.PathNode;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 	
 	Player p1;
 	Player p2;
-	AI monster1;
+	ArrayList<AI> monsterlist = new ArrayList<AI>();
+//	AI monster1;
 	Map map;
 	public BufferStrategy strategy;
 	boolean gameRunning;
@@ -47,17 +51,25 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static final String FIRE = "fire";
 	
 	public Game(Map map) throws IOException {
-		this.p1 = new PlayerOne(0,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map,1,2,3);
-		this.p2 = new PlayerOne((GridConstants.GRIDNUMX - 1) * Game.gridWidth,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map,8,9,0);
-		this.monster1 = new AI((GridConstants.GRIDNUMX - 1) * Game.gridWidth,(GridConstants.GRIDNUMY - 1) * Game.gridHeight,gridWidth,gridWidth, map);
-		map.getPathGrids()[GridConstants.GRIDNUMY - 1][GridConstants.GRIDNUMX - 1].setF();
+//		monsterlist.add(new AssaultAI(Map.rand.nextInt(GridConstants.GRIDNUMX)* Game.gridWidth,(GridConstants.GRIDNUMY - 1) * Game.gridHeight,gridWidth,gridWidth, map));
+		monsterlist.add(new ScoutAI(Map.rand.nextInt(GridConstants.GRIDNUMX)* Game.gridWidth,(GridConstants.GRIDNUMY - 1) * Game.gridHeight,gridWidth,gridWidth, map));
+		for(AI monster: monsterlist) {
+			map.getPathGrids()[monster.getRow()][monster.getCol()].setF();
+		}
+		this.p1 = new PlayerOne(0,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map,1,2,3,monsterlist);
+		this.p2 = new PlayerOne((GridConstants.GRIDNUMX - 1) * Game.gridWidth,0,(int) Math.floor(gridWidth * .9),(int) Math.floor(gridWidth * .9),gridWidth - (int)Math.floor(gridWidth * .9), map,8,9,0,monsterlist);
+//		this.monster1 = new AI((GridConstants.GRIDNUMX - 1) * Game.gridWidth,(GridConstants.GRIDNUMY - 1) * Game.gridHeight,gridWidth,gridWidth, map);
 		this.map = map;
 		p1.otherPlayer = p2;
 		p2.otherPlayer = p1;
-		monster1.otherPlayer = p1;
+		for(AI monster: monsterlist) {
+			monster.otherPlayer = p1;
+		}
 		new Thread(p1).start();
 		new Thread(p2).start();
-		new Thread(monster1).start();
+		for(AI monster:monsterlist) {
+			new Thread(monster).start();
+		}
 		gameRunning = true;
 		setBackground(Color.BLUE); 
 	    addKeyListener(this);
@@ -286,10 +298,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
 //	    	g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
 	    	g.drawImage(assetsManager.getBombManFace(), p2.getX(),p2.getY(),p2.getWidth(),p2.getHeight(), null);
 	    }
-	    if(monster1.isActive()) {
-//	    	g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
-	    	g.drawImage(assetsManager.getGhost(), monster1.getX(),monster1.getY(),monster1.getWidth(),monster1.getHeight(), null);
+	    for(AI monster:monsterlist) {
+		    if(monster.isActive()) {
+//		    	g.fillRect(p1.getX(),p1.getY(),p1.getWidth(),p1.getHeight());
+		    	g.drawImage(assetsManager.getGhost(), monster.getX(),monster.getY(),monster.getWidth(),monster.getHeight(), null);
+		    }
 	    }
+
 	    g.dispose();
 	    strategy.show();
 		
