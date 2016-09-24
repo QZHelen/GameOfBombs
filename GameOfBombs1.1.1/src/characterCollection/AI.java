@@ -1,19 +1,28 @@
 package characterCollection;
 
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.PriorityQueue;
 import java.util.Random;
+import java.util.Set;
 import java.util.Stack;
 import java.util.Timer;
+import java.util.TreeSet;
+import java.util.Vector;
 
 import javax.swing.JLabel;
 
+import org.javatuples.Pair;
+
 import game.Game;
 import game.PathTimerTask;
+import gameItemCollection.Bomb;
+import gameItemCollection.Fire;
 import gameItemCollection.PathNode;
 import mapCollection.GridConstants;
 import mapCollection.Map;
@@ -28,6 +37,8 @@ public abstract class AI extends JLabel implements Runnable {
 	protected int height;
 	protected double dx = 0;
 	protected double dy = 0;
+	public boolean bombStay;
+	public boolean fireStay;
 	protected Hashtable<Integer,Stack<PowerUp>> badAssList; 
 	protected double speed;
 //	private PowerUp pu;
@@ -41,14 +52,16 @@ public abstract class AI extends JLabel implements Runnable {
 	protected ArrayList<PathNode> path;
 	protected PathNode target;
 	protected PathNode start;
+	protected int fireRadius;
 	protected boolean checkReached;
+	protected int bombNum;
 	Timer pathTimer;
 	public boolean changePath;
 	public int[] destination;
 	protected boolean firechecked;
 	public boolean left,right,up,down;
 	protected int healthCheck;
-	public Player otherPlayer;
+	public Vector<Player> playList;
 //	int key1,key2,key3;
 	protected Random rand;
 	protected boolean gameRunning;
@@ -58,7 +71,48 @@ public abstract class AI extends JLabel implements Runnable {
 	public int[] arr2;
 	public int[] topBlock,bottomBlock,leftBlock,rightBlock;
 	
-
+	class AIBomb extends Bomb{
+		AI monster;
+		public AIBomb(int col, int row, int width, int height, Map map, Player p) {
+			super(col, row, width, height, map, p);
+			// TODO Auto-generated constructor stub
+		}
+		public AIBomb(int col, int row, int width, int height, Map map, AI monster) {
+			super(col, row, width, height, map,null);
+			this.monster = monster;
+			// TODO Auto-generated constructor stub
+		}
+		@Override
+		public void explode() {
+			map.getGrids()[row][col] = GridConstants.NOTHING;
+			map.setWalkable(row, col);
+			bombNum++;
+			map.setFireGrids(row, col, new Fire(width, height, getFireRadius()));
+			
+		}
+		public ArrayList<Pair<Integer, Integer>> range() {
+			int radius = fireRadius;
+			int rowstart,rowend,colstart,colend;
+			rowstart = row - radius;
+			rowend = row + radius;
+			colstart = col - radius;
+			colend = col + radius;
+			if(rowstart < 0) rowstart = 0;
+			if(rowend > GridConstants.GRIDNUMY - 1) rowend = GridConstants.GRIDNUMY - 1;
+			if(colstart < 0) colstart = 0;
+			if(colend > GridConstants.GRIDNUMX - 1) colend = GridConstants.GRIDNUMX - 1;
+			ArrayList<Pair<Integer,Integer>> bombs = new ArrayList<>();
+			for(; rowstart <= rowend; rowstart++) {
+				bombs.add(new Pair<>(rowstart,col));
+			}
+			for(; colstart <= colend; colstart++) {
+				bombs.add(new Pair<>(row,colstart));
+			}
+//			bombs.add(new Pair<>(row,col));
+			return bombs;
+		}
+		
+	}
 	class PathSort implements Comparator<PathNode> {
 
 		@Override
@@ -73,6 +127,26 @@ public abstract class AI extends JLabel implements Runnable {
 		findPath = false;
     	foundPath = false;
     	start = map.getPathGrids()[target.row][target.col];
+	}
+	public double distanceToP(Player player) {
+		int diffx = x - player.getX();
+		int diffy = y - player.getY();
+		return (double) Math.sqrt((diffx * diffx)+(diffy*diffy));
+	}
+	public int getBombNum() {
+		return bombNum;
+	}
+	public void setBombNum(int bombNum) {
+		if (bombNum > 0) {
+		this.bombNum = bombNum;
+		}
+	}
+	public int getFireRadius() {
+		return fireRadius;
+	}
+
+	public void setFireRadius(int fireRadius) {
+		this.fireRadius = fireRadius;
 	}
 	private boolean targetChecked() {
 		if(target == null)  {
@@ -218,6 +292,7 @@ public abstract class AI extends JLabel implements Runnable {
 		prevdir = 2;
 		speed = 1;
 		active = true;
+		bombNum = 1;
 		health = 100;
 		firechecked = false;
 		gameRunning = true;
@@ -227,6 +302,7 @@ public abstract class AI extends JLabel implements Runnable {
 //	    right = false;
 //	    up = true;
 //	    down = false;
+		fireRadius = 1;
 	    checkReached = false;
 	    setDy(-speed);
 	    findPath = false;
@@ -235,6 +311,7 @@ public abstract class AI extends JLabel implements Runnable {
 	    arr2 = new int[]{0,2,3};
 	    changePath = false;
 	    destination = new int[2];
+	    fireStay = false;
 //	    topBlock = new int[2]; 
 //	    bottomBlock = new int[2];
 //	    leftBlock = new int[2];
@@ -244,6 +321,7 @@ public abstract class AI extends JLabel implements Runnable {
 	    closeList = new ArrayList<PathNode>();
 	    path = new ArrayList<PathNode>();
 	    start = map.getPathGrids()[getRow()][getCol()];
+	    playList = new Vector<Player>();
 	}
 	
 	public abstract boolean destPosChecked();
@@ -278,8 +356,86 @@ public abstract class AI extends JLabel implements Runnable {
 		}
 	}
 	
+	public void setBomb() {
+		int i = x / Game.gridWidth;
+		int j = y / Game.gridHeight;
+		int imod = x % Game.gridWidth;
+		int jmod = y % Game.gridHeight;
+		if(imod >= (int)(.7 * Game.gridWidth) && imod <= (int)(.99 * Game.gridWidth)) {
+			if(right) x = (i + 1) * Game.gridWidth;
+			i = i + 1;
+		}
+		
+		if(jmod >= (int)(.7 * Game.gridHeight) && jmod <= (int)(.99 * Game.gridWidth)) {
+			if(down) y = (j + 1) * Game.gridHeight;
+			j = j + 1;
+		}
+		
+		if(bombNum > 0 && this.map.getBombGrids()[j][i] == null) {
+			bombNum--;
+			
+			map.getBombGrids()[j][i] = new AIBomb(i,j,Game.gridWidth,Game.gridHeight, map, this);
+			map.getGrids()[j][i] = GridConstants.BOMB;
+			map.setUnWalkable(j, i);
+//			avoidBomb();
+			
+		}
+			
+	}
 	public boolean checkReached() {
 		return checkReached;
+	}
+	
+	public void avoidBomb(){
+		System.out.println("avoidbomb: " + bombStay);
+		if(!bombStay){
+			int rowstart = 0;
+			int rowend = 0;
+			int colstart = 0;
+			int colend = 0;
+//			bombStay = false;
+			if(getRow()<= Bomb.MAXFIRERAD) {
+				rowstart = 0;
+			} else {
+				rowstart = getRow() - Bomb.MAXFIRERAD;
+			}
+			if(getRow() >= GridConstants.GRIDNUMY - Bomb.MAXFIRERAD) {
+				rowend = GridConstants.GRIDNUMY;
+			} else {
+				rowend = getRow() + Bomb.MAXFIRERAD;
+			}
+			if(getCol()<= Bomb.MAXFIRERAD) {
+				colstart = 0;
+			} else {
+				colstart = getCol() - Bomb.MAXFIRERAD;
+			}
+			if(getCol() >= GridConstants.GRIDNUMX - Bomb.MAXFIRERAD) {
+				colend = GridConstants.GRIDNUMX;
+			} else {
+				colend = getCol() + Bomb.MAXFIRERAD;
+			}
+			HashSet<Pair<Integer,Integer>> bombs = new HashSet<Pair<Integer,Integer>>();
+			for (int i = rowstart; i < rowend; i++) {
+				for (int j = colstart; j < colend; j++) {
+					if(map.getBombGrids()[i][j] != null) {
+						bombs.addAll(map.getBombGrids()[i][j].range());
+					}
+				}
+			}
+			Pair<Integer,Integer> currLoc = new Pair<>(getRow(),getCol());
+			if(bombs.contains(currLoc)) {
+				while(true) {
+					Pair<Integer,Integer> noBomb = new Pair<Integer,Integer>(rand.nextInt(rowend - rowstart - 1) + rowstart,rand.nextInt(colend - colstart -1) + colstart);
+					if(!bombs.contains(noBomb) && !noBomb.equals(currLoc)){
+						moveAwayBomb(noBomb.getValue0(),noBomb.getValue1());
+						reset();
+						bombStay = true;
+						break;
+					}
+				}
+			}	
+		}
+		
 	}
 	public int getX() {
 		return x;
@@ -578,6 +734,11 @@ public abstract class AI extends JLabel implements Runnable {
 	public void moveTo(int row,int col) {
 		destination[0] = row;
 		destination[1] = col;
+	}
+	public Pair<Integer,Integer> moveAwayBomb(int row,int col) {
+		destination[0] = row;
+		destination[1] = col;
+		return new Pair(destination[0],destination[1]);
 	}
 	
 	public int bestDirection() {

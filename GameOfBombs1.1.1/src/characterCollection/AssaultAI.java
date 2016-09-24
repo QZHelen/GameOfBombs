@@ -1,7 +1,9 @@
 package characterCollection;
 
 import java.util.Collections;
+import java.util.Timer;
 
+import game.PathTimerTask;
 import gameItemCollection.PathNode;
 import mapCollection.GridConstants;
 import mapCollection.Map;
@@ -10,12 +12,23 @@ public class AssaultAI extends AI {
 
 	public AssaultAI(int x, int y, int width, int height, Map map) {
 		super(x, y, width, height, map);
-		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public boolean checkReached() {
+		return checkReached;
 	}
 	public boolean destPosChecked() {
-		 if(otherPlayer.getRow() != destination[0] || otherPlayer.getCol() != destination[1]) {
-			 destination[0] = otherPlayer.getRow();
-			 destination[1] = otherPlayer.getCol();
+		double minDis = Double.POSITIVE_INFINITY;
+		Player targetPlayer = null;
+		for(int i = 0; i < playList.size();i++) {
+			if(distanceToP(playList.get(i)) < minDis) {
+				minDis = distanceToP(playList.get(i));
+				targetPlayer = playList.get(i);
+			}
+		}
+		 if(targetPlayer.getRow() != destination[0] || targetPlayer.getCol() != destination[1]) {
+			 destination[0] = targetPlayer.getRow();
+			 destination[1] = targetPlayer.getCol();
 			 return true;
 		 } else {
 			 return false;
@@ -23,64 +36,87 @@ public class AssaultAI extends AI {
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+
 		long lastLoopTime = System.nanoTime();
 		final int TARGET_FPS = 60;
 		final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;   
 		while(gameRunning) {
 			synchronized(map) {
-				System.out.println("hellow");
+//				System.out.println("hellow");
 				long now = System.nanoTime();
 			    long updateLength = now - lastLoopTime;
 			    lastLoopTime = now;
 			    double delta = updateLength / ((double)OPTIMAL_TIME);
-//			    if(pathTimer == null) {
-//			    	pathTimer = new Timer();
-//			    	pathTimer.schedule(new PathTimerTask(this), 3 * 1000);
-//			    }
+
 			    // update the game logic
-			    if(!findPath) {
-
-			    	for(PathNode pn:openList) {
-			    		pn.setParent(null);
+//			    if(!bombStay) {
+//			    	bombStay = avoidBomb();
+//			    }
+			    if(fireStay) {
+//			    	System.out.println("fireStay: " + fireStay);
+			    	if(pathTimer == null) {
+			    		pathTimer = new Timer();
+			    		pathTimer.schedule(new PathTimerTask(this), 3 * 1000);
 			    	}
-			    	for(PathNode pn:closeList) {
-			    		pn.setParent(null);
-			    	}
-			    	openList.clear();
-			    	closeList.clear();
-			    	path.clear();
-		    		foundPath = pathFind(delta,map,map.getPathGrids());
-		    		findPath = true;
-		    	} 
-			    if(foundPath) {
-			    	if(path.size() == 0) {
-					    PathNode temp = map.getPathGrids()[destination[0]][destination[1]];
-						path.add(temp);
-						while(temp.getParent() != null) {
-
+			    }
+			    if(!fireStay) {
+			    	avoidBomb();
+			    	if(!findPath) {
+			    		for(PathNode pn:openList) {
+				    		pn.setParent(null);
+				    	}
+				    	for(PathNode pn:closeList) {
+				    		pn.setParent(null);
+				    	}
+				    	openList.clear();
+				    	closeList.clear();
+				    	path.clear();
+			    		foundPath = pathFind(delta,map,map.getPathGrids());
+			    		findPath = true;
+			    	} 
+				    if(foundPath) {
+				    	if(path.size() == 0) {
+						    PathNode temp = map.getPathGrids()[destination[0]][destination[1]];
 							path.add(temp);
-							temp = temp.getParent();
-						}
-						path.add(temp);
-						Collections.reverse(path);
+							while(temp.getParent() != null) {
+
+								path.add(temp);
+								temp = temp.getParent();
+							}
+							path.add(temp);
+							Collections.reverse(path);
+				    	}
+				    	
+				    	checkReached = followPath(1);
+				    } else {
+//				    	moveTo(rand.nextInt(GridConstants.GRIDNUMY),rand.nextInt(GridConstants.GRIDNUMX));
+//				    	findPath = false;
+//				    	foundPath = false;
+//				    	path.clear();
+				    }
+//				    if(checkReached() && bombStay) {
+	//
+//				    }
+			    	if(checkReached()) {
+//			    		System.out.println("checkreached: " + checkReached() + target.x + " " + target.y);
+			    		if(bombStay) {
+				    		bombStay = false;
+				    		avoidBomb();
+				    		if(!bombStay)fireStay = true;
+			    		} else {
+				    		setBomb();
+				    		assert fireStay == false;
+			    		}
 			    	}
-			    	
-			    	checkReached = followPath(1);
-			    } else {
-			    	moveTo(rand.nextInt(GridConstants.GRIDNUMY),rand.nextInt(GridConstants.GRIDNUMX));
-			    	findPath = false;
-			    	foundPath = false;
-			    	path.clear();
-			    }
-			    if(checkReached() || destPosChecked()) {
-			    	//bug:target null pointer
-//			    	moveTo(Map.rand.nextInt(GridConstants.GRIDNUMY),Map.rand.nextInt(GridConstants.GRIDNUMX));
-			    	reset();
+			    	if(!bombStay && !fireStay) {
+			    		if(destPosChecked()) {
+			    			reset();
+						}
+			    	}
 
-			    }
-
+				}
 			}
+			    
 	        try {
 	        	Thread.sleep( (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000);
 	        } catch (Exception ex) {}

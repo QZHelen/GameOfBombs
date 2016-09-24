@@ -36,7 +36,7 @@ public class ScoutAI extends AI {
 //			    	pathTimer.schedule(new PathTimerTask(this), 3 * 1000);
 //			    }
 			    // update the game logic
-				System.out.println("stuck");
+//				System.out.println("stuck");
 			    if(!findPath) {
 
 			    	for(PathNode pn:openList) {
@@ -74,6 +74,7 @@ public class ScoutAI extends AI {
 //			    System.out.println(checkReached());
 			    if(checkReached()) {
 			    	//bug:target null pointer
+			    	setBomb();
 			    	moveTo(rand.nextInt(GridConstants.GRIDNUMY),rand.nextInt(GridConstants.GRIDNUMX));
 			    	findPath = false;
 			    	foundPath = false;

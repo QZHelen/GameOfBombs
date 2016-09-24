@@ -1,4 +1,4 @@
-package game;
+package gameItemCollection;
 
 import java.util.TimerTask;
 

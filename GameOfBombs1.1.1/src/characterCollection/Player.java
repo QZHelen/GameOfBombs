@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Stack;
 import java.util.Timer;
+import java.util.Vector;
 
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
@@ -140,6 +141,7 @@ public abstract class Player extends JLabel implements Runnable{
 		fireRadius = 1;
 		bombNum = 1;
 		speed = 2;
+		this.monsterlist = monsterlist;
 		powerUpList = new Stack<PowerUp>();
 		badAssList = new Hashtable<Integer,Stack<PowerUp>>();
 		badAssList.put(key1, new Stack<PowerUp>());
@@ -340,13 +342,24 @@ public abstract class Player extends JLabel implements Runnable{
 		if(bombNum > 0 && this.map.getBombGrids()[j][i] == null) {
 			bombNum--;
 			
-			this.map.getBombGrids()[j][i] = new Bomb(i,j,Game.gridWidth,Game.gridHeight, map, this);
-			this.map.getGrids()[j][i] = GridConstants.BOMB;
-			
+			map.getBombGrids()[j][i] = new Bomb(i,j,Game.gridWidth,Game.gridHeight, map, this);
+			map.getGrids()[j][i] = GridConstants.BOMB;
+			map.setUnWalkable(j, i);
+//			for(AI monster:monsterlist) {
+//				monster.avoidBomb();
+//			}
 		}
 			
 	}
 	
+	public ArrayList<AI> getMonsterlist() {
+		return monsterlist;
+	}
+
+	public void setMonsterlist(ArrayList<AI> monsterlist) {
+		this.monsterlist = monsterlist;
+	}
+
 	public void setPowerUp(int key) {
 		switch(key) {
 			case KeyEvent.VK_1:

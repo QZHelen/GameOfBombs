@@ -21,7 +21,11 @@ public class PathTimerTask extends TimerTask {
 //		} else {
 //			p.prevdir = Map.rand.nextInt(3) + 1;
 //		}
-		p.changePath = true;
+//		p.changePath = true;
+		if(p.fireStay) {
+			p.fireStay = false;
+		}
+//		p.bombStay = false;
 		p.getPathTimer().cancel();
 		p.setPathTimer(null);
 	}

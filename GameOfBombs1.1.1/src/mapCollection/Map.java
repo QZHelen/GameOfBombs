@@ -178,6 +178,14 @@ public abstract class Map {
 		this.fireGrids = fireGrids;
 	}
 	
+	public void setWalkable(int row,int col) {
+		getPathGrids()[row][col].setWalkable(true);
+		getPathGrids()[row][col].setWalkable(true);
+	}
+	public void setUnWalkable(int row,int col) {
+		getPathGrids()[row][col].setWalkable(false);
+		getPathGrids()[row][col].setWalkable(false);
+	}
 	public void setFireGrids(int row, int col, Fire centerFire) {
 		int radius = centerFire.getRadius();
 		fireGrids[row][col] = centerFire;
@@ -199,11 +207,13 @@ public abstract class Map {
 			if(grids[i][col] == GridConstants.BRICK) {
 				grids[i][col] = GridConstants.NOTHING;
 				fireGrids[i][col] = centerFire;
+				setWalkable(i, col);
 				break;
 			}
 			if(grids[i][col] == GridConstants.POWERBRICK) {
 				grids[i][col] = GridConstants.POWERUP;
 				fireGrids[i][col] = centerFire;
+				setWalkable(i, col);
 				break;
 			}
 
@@ -229,11 +239,13 @@ public abstract class Map {
 			if(grids[i][col] == GridConstants.BRICK) {
 				grids[i][col] = GridConstants.NOTHING;
 				fireGrids[i][col] = centerFire;
+				setWalkable(i, col);
 				break;
 			}
 			if(grids[i][col] == GridConstants.POWERBRICK) {
 				grids[i][col] = GridConstants.POWERUP;
 				fireGrids[i][col] = centerFire;
+				setWalkable(i, col);
 				break;
 			}
 			if(grids[i][col] == GridConstants.STEEL) {
@@ -256,11 +268,13 @@ public abstract class Map {
 			if(grids[row][i] == GridConstants.BRICK) {
 				grids[row][i] = GridConstants.NOTHING;
 				fireGrids[row][i] = centerFire;
+				setWalkable(row, i);
 				break;
 			}
 			if(grids[row][i] == GridConstants.POWERBRICK) {
 				grids[row][i] = GridConstants.POWERUP;
 				fireGrids[row][i] = centerFire;
+				setWalkable(row, i);
 				break;
 			}
 			if(grids[row][i] == GridConstants.STEEL) {
@@ -283,11 +297,13 @@ public abstract class Map {
 			if(grids[row][i] == GridConstants.BRICK) {
 				grids[row][i] = GridConstants.NOTHING;
 				fireGrids[row][i] = centerFire;
+				setWalkable(row, i);
 				break;
 			}
 			if(grids[row][i] == GridConstants.POWERBRICK) {
 				grids[row][i] = GridConstants.POWERUP;
 				fireGrids[row][i] = centerFire;
+				setWalkable(row, i);
 				break;
 			}
 			if(grids[row][i] == GridConstants.STEEL) {

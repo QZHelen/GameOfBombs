@@ -26,6 +26,7 @@ import characterCollection.ScoutAI;
 import gameItemCollection.Bomb;
 import gameItemCollection.Fire;
 //import gameItemCollection.PathNode;
+import gameItemCollection.GodModTimerTask;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 	
@@ -67,8 +68,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		p1.otherPlayer = p2;
 		p2.otherPlayer = p1;
 		for(AI monster: monsterlist) {
-			monster.otherPlayer = p1;
+			monster.playList.add(p1);
+			monster.playList.add(p2);
 		}
+		p1.setMonsterlist(monsterlist);
+		p2.setMonsterlist(monsterlist);
 		new Thread(p1).start();
 		new Thread(p2).start();
 		for(AI monster:monsterlist) {
