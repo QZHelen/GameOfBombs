@@ -16,6 +16,7 @@ public class ScoutAI extends AI {
 		super(x, y, width, height, map);
 		// TODO Auto-generated constructor stub
 		start = pathgrids[getRow()][getCol()];
+		moveTo(rand.nextInt(GridConstants.GRIDNUMY),rand.nextInt(GridConstants.GRIDNUMX));
 	}
 
 	@Override
@@ -36,7 +37,6 @@ public class ScoutAI extends AI {
 //			    	pathTimer.schedule(new PathTimerTask(this), 3 * 1000);
 //			    }
 			    // update the game logic
-//				System.out.println("stuck");
 			    if(!findPath) {
 
 			    	for(PathNode pn:openList) {
@@ -56,7 +56,6 @@ public class ScoutAI extends AI {
 					    PathNode temp = map.getPathGrids2()[destination[0]][destination[1]];
 						path.add(temp);
 						while(temp.getParent() != null) {
-//							System.out.println(temp.row + " " + temp.col);
 							path.add(temp);
 							temp = temp.getParent();
 						}
@@ -73,14 +72,11 @@ public class ScoutAI extends AI {
 			    }
 //			    System.out.println(checkReached());
 			    if(checkReached()) {
-			    	//bug:target null pointer
 			    	setBomb();
 			    	moveTo(rand.nextInt(GridConstants.GRIDNUMY),rand.nextInt(GridConstants.GRIDNUMX));
 			    	findPath = false;
 			    	foundPath = false;
 			    	start = map.getPathGrids2()[target.row][target.col];
-//			    	path.clear();
-//			    	target = null;
 			    }
 			}
 	        try {
@@ -92,7 +88,7 @@ public class ScoutAI extends AI {
 		
 		
 	}
-
+	
 	@Override
 	public boolean destPosChecked() {
 		// TODO Auto-generated method stub

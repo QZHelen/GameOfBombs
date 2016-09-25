@@ -46,14 +46,14 @@ public class AssaultAI extends AI {
 				long now = System.nanoTime();
 			    long updateLength = now - lastLoopTime;
 			    lastLoopTime = now;
-			    double delta = updateLength / ((double)OPTIMAL_TIME);
+			    double delta = updateLength / ((double) OPTIMAL_TIME);
 
 			    // update the game logic
 //			    if(!bombStay) {
 //			    	bombStay = avoidBomb();
 //			    }
 			    if(fireStay) {
-//			    	System.out.println("fireStay: " + fireStay);
+			    	System.out.println("fireStay: " + fireStay);
 			    	if(pathTimer == null) {
 			    		pathTimer = new Timer();
 			    		pathTimer.schedule(new PathTimerTask(this), 3 * 1000);
@@ -89,10 +89,8 @@ public class AssaultAI extends AI {
 				    	
 				    	checkReached = followPath(1);
 				    } else {
-//				    	moveTo(rand.nextInt(GridConstants.GRIDNUMY),rand.nextInt(GridConstants.GRIDNUMX));
-//				    	findPath = false;
-//				    	foundPath = false;
-//				    	path.clear();
+
+				    	reset();
 				    }
 //				    if(checkReached() && bombStay) {
 	//
@@ -102,7 +100,7 @@ public class AssaultAI extends AI {
 			    		if(bombStay) {
 				    		bombStay = false;
 				    		avoidBomb();
-				    		if(!bombStay)fireStay = true;
+				    		if(!bombStay) fireStay = true;
 			    		} else {
 				    		setBomb();
 				    		assert fireStay == false;

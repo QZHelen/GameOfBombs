@@ -75,12 +75,10 @@ public abstract class AI extends JLabel implements Runnable {
 		AI monster;
 		public AIBomb(int col, int row, int width, int height, Map map, Player p) {
 			super(col, row, width, height, map, p);
-			// TODO Auto-generated constructor stub
 		}
 		public AIBomb(int col, int row, int width, int height, Map map, AI monster) {
 			super(col, row, width, height, map,null);
 			this.monster = monster;
-			// TODO Auto-generated constructor stub
 		}
 		@Override
 		public void explode() {
@@ -161,21 +159,9 @@ public abstract class AI extends JLabel implements Runnable {
 		return target.x == x && target.y == y;
 	}
 	protected boolean followPath(double delta) {
-		// TODO Auto-generated method stub
 		boolean result = false;
 		if(!path.isEmpty()) {
-//			up = collisionCheckYUp(delta, map);
-//			down = collisionCheckYDown(delta, map);
-//			left = collisionCheckXLeft(delta, map);
-//			right = collisionCheckXRight(delta, map);
-//			if(left) directions.add(0);
-//			if(right) directions.add(1);
-//			if(up) directions.add(2);
-//			if(down) directions.add(3);
-//			collisionCheckYUp(delta, map);
-//			collisionCheckYDown(delta, map);
-//			collisionCheckXLeft(delta, map);
-//			collisionCheckXRight(delta, map);
+
 			int count = -1;
 			result = targetChecked();
 			if(result) {
@@ -197,24 +183,7 @@ public abstract class AI extends JLabel implements Runnable {
 			changeDirection(delta);
 			x += dx * delta;
 			y += dy * delta;
-//			if(dx < 0) {
-//				x += Math.floor(dx * delta);
-//			} else if(dx > 0) {
-//				x += Math.ceil(dx * delta);
-//			} else {
-//				x += dx * delta;
-//			}
-//			if(dy < 0) {
-//				y += Math.floor(dy * delta);
-//			} else if(dy > 0) {
-//				y += Math.ceil(dy * delta);
-//			} else {
-//				
-//			}
-//			y += dy * delta;
-//			System.out.println(x);
-		
-//			path.remove(count);
+
 		} 
 //		System.out.println(path.size());
 		return result && path.isEmpty();
@@ -225,18 +194,7 @@ public abstract class AI extends JLabel implements Runnable {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		if(!path.isEmpty()) {
-//			up = collisionCheckYUp(delta, map);
-//			down = collisionCheckYDown(delta, map);
-//			left = collisionCheckXLeft(delta, map);
-//			right = collisionCheckXRight(delta, map);
-//			if(left) directions.add(0);
-//			if(right) directions.add(1);
-//			if(up) directions.add(2);
-//			if(down) directions.add(3);
-//			collisionCheckYUp(delta, map);
-//			collisionCheckYDown(delta, map);
-//			collisionCheckXLeft(delta, map);
-//			collisionCheckXRight(delta, map);
+
 			int count = -1;
 			result = targetChecked();
 			if(result) {
@@ -258,24 +216,7 @@ public abstract class AI extends JLabel implements Runnable {
 			changeDirection(delta);
 			x += dx * delta;
 			y += dy * delta;
-//			if(dx < 0) {
-//				x += Math.floor(dx * delta);
-//			} else if(dx > 0) {
-//				x += Math.ceil(dx * delta);
-//			} else {
-//				x += dx * delta;
-//			}
-//			if(dy < 0) {
-//				y += Math.floor(dy * delta);
-//			} else if(dy > 0) {
-//				y += Math.ceil(dy * delta);
-//			} else {
-//				
-//			}
-//			y += dy * delta;
-//			System.out.println(x);
-		
-//			path.remove(count);
+
 		} 
 //		System.out.println(path.size());
 		return result && path.isEmpty();
@@ -840,9 +781,6 @@ public abstract class AI extends JLabel implements Runnable {
 				
 			}
 			result = (closeList.contains(pathgrids[destination[0]][destination[1]]))? true : false;
-//			collisionCheckYUp(delta, map);
-//			collisionCheckYDown(delta, map);
-//			System.out.println("running");
 			
 			return result;
 		}
@@ -926,44 +864,11 @@ public abstract class AI extends JLabel implements Runnable {
 				
 			}
 			result = (closeList.contains(map.getPathGrids()[destination[0]][destination[1]]))? true : false;
-//			collisionCheckYUp(delta, map);
-//			collisionCheckYDown(delta, map);
-//			System.out.println("running");
 			
 			return result;
 		}
 			
-//			up = collisionCheckYUp(delta, map);
-//			down = collisionCheckYDown(delta, map);
-//			left = collisionCheckXLeft(delta, map);
-//			right = collisionCheckXRight(delta, map);
-//			if(left) directions.add(0);
-//			if(right) directions.add(1);
-//			if(up) directions.add(2);
-//			if(down) directions.add(3);
-//			prevdir = bestDirection();
-//			changeDirection(directions,delta);
-//			x += dx * delta;
-//			y += dy * delta;
-////			if(changePath) changePath = false;
-////			if(collisionCheckX(delta,map)) x += dx * delta;
-////			if(collisionCheckY(delta, map)) y += dy * delta;
 
-////			if(temp == 0 || temp == 1) {
-////				x += dx * delta;
-////			} else {
-////				y += dy * delta;
-	////
-////			}
-//			directions.clear();
-//			if(collisionCheckX(delta,map) && dx != 0) {
-//				x += dx * delta;
-//				return;
-//			}
-//			if(collisionCheckY(delta,map) && dy != 0) {
-//				y += dy * delta;
-//			} 
-		
 		
 	}
 	
